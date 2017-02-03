@@ -1,0 +1,7 @@
+**/launchConfigurations
+**/node_modules
+**/.vscode
+**/temp
+**/public/logs/**
+.idea
+.project
