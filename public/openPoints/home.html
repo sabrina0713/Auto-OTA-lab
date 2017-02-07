@@ -39,10 +39,10 @@
 		evt.currentTarget.className += " active";
 
 		// Show/hide the travel offers tab
-		if (tabName == "Create Travel Offers") {
+		/*if (tabName == "Create Travel Offers") {
 			document.getElementById("CreateOfferPage").style.display = "block";
 			document.getElementById("CreateOfferMessage").style.display = "none";
-		}
+		}*/
 	}
 
 	// Make REST calls to the blockchain using the NODE JS REST API
@@ -355,13 +355,13 @@
 	$(document).ready(
 			function() {
 
-				document.getElementById("Travel Offers").addEventListener(
+				document.getElementById("Configuration").addEventListener(
 						"click", displaySmartContracts);
-				document.getElementById("Account Details").addEventListener(
+				document.getElementById("Update").addEventListener(
 						"click", displayUserAccount);
-				document.getElementById("Transfer Points").addEventListener(
+				document.getElementById("Compatibility").addEventListener(
 						"click", refreshTransferTab);
-				document.getElementById("Provide Feedback").addEventListener(
+				document.getElementById("Synchronize").addEventListener(
 						"click", refreshFeedbackTab);
 
 			});
@@ -373,14 +373,14 @@
 <body>
 	<div class="content">
 		<div class="top-header">
-			<div class="col50 main-font">Open Points</div>
+			<div class="col50 main-font">OEM OTA Update management</div>
 			<div class="col50 user">
-				Current User: <select id="userAccount"
+				Subsystem: <select id="userAccount"
 					onchange="changeUserAccount()">
-					<option value="U2974034">Telemetric</option>
+					<option value="U2974034">Telematics</option>
 					<option value="U3151672">Powertrain</option>
-					<option value="B1928564">OpenFN</option>
-					<option value="T5940872">Open Travel</option>
+					<option value="B1928564">Chassis</option>
+					<option value="T5940872">Safety</option>
 				</select>
 
 			</div>
@@ -390,33 +390,34 @@
 
 		<ul class="tab">
 			<li><a href="#" class="tablinks"
-				onclick="openTab(event, 'Travel Offers')">Travel Offers</a></li>
+				onclick="openTab(event, 'Configuration')">Configuration</a></li>
 			<li><a href="#" class="tablinks"
-				onclick="openTab(event, 'Account Details')">Account Details</a></li>
+				onclick="openTab(event, 'Update')">Update</a></li>
 			<li><a href="#" class="tablinks"
-				onclick="openTab(event, 'Transfer Points')">Transfer Points</a></li>
+				onclick="openTab(event, 'Compatibility')">Compatibility</a></li>
 			<li id="FeedbackTab"><a href="#" class="tablinks"
-				onclick="openTab(event, 'Provide Feedback')">Provide Feedback</a></li>
-			<li id="CreateOfferListElement" style="display: none"><a
+				onclick="openTab(event, 'Synchronize')">Synchronize</a></li>
+			<!--  li id="CreateOfferListElement" style="display: none"><a
 				href="#" class="tablinks"
 				onclick="openTab(event, 'Create Travel Offers')">Create Travel
-					Offers</a></li>
+					Offers</a></li-->
 		</ul>
 
-		<div id="Travel Offers" class="tabcontent">
+		<div id="Configuration" class="tabcontent">
 			<span id='TravelOffersPage'>
 
-				<h3>Travel Offers</h3>
+				<h3>Active Configuration</h3>
 				<hr>
 
 				<p id="smartContractTable"></p>
 
 
 
-				<h3 class="purchase-header">Purchase Travel Package</h3>
+				<h3 class="purchase-header">Configuration History</h3>
+				<p id="transactionsTable"></p>
 				<hr>
 				<p></p>
-				<form id="travelPackageChoice">
+				<!--  form id="travelPackageChoice">
 					<input type="radio" name="city" value="Paris:10000" checked>
 					Paris: 10k Points <br> <input type="radio" name="city"
 						value="New York City:15000"> New York City: 15k Points<br>
@@ -426,16 +427,16 @@
 						type="radio" name="city" value="Rio de Janeiro:30000"> Rio
 					de Janeiro: 30k Points <br>
 
-				</form>
+				</form-->
 				<p></p>
-				<button onclick="purchaseTravelPackage()" class="purchase-btn">Purchase
-					Travel Package</button>
+				<!--  button onclick="purchaseTravelPackage()" class="purchase-btn">Purchase
+					Travel Package</button-->
 
 			</span> <span id='TravelOffersMessage' style='display: none'>
 				Purchase completed! </span>
 		</div>
 
-		<div id="Account Details" class="tabcontent">
+		<div id="Update" class="tabcontent">
 			<h3>Account Balance</h3>
 			<hr>
 
@@ -445,15 +446,15 @@
 			<h3>Transaction History</h3>
 			<hr>
 
-			<p id="transactionsTable"></p>
+			
 
 
 
 		</div>
 
-		<div id="Transfer Points" class="tabcontent">
-
-			<span id='TransferPointsPage'>
+		<div id="Compatibility" class="tabcontent">
+         <p id="smartContractTable"></p>
+			<!--  span id='TransferPointsPage'>
 				<h3>Transfer Points</h3>
 
 				<hr> <br> To: <select id="toUser">
@@ -473,12 +474,12 @@
 				<button onclick="transferPoints()" class="purchase-btn">Transfer
 					Points</button>
 
-			</span> <span id='TransferPointsMessage'> Transfer completed! </span>
+			</span> <span id='TransferPointsMessage'> Transfer completed! </span-->
 
 		</div>
 
 
-		<div id="Provide Feedback" class="tabcontent">
+		<div id="Synchronize" class="tabcontent">
 
 			<span id='FeedbackPage'>
 
@@ -517,7 +518,7 @@
 			</span> <span id='FeedbackMessage'> Feedback submitted! </span>
 		</div>
 
-		<div id="Create Travel Offers" class="tabcontent">
+		<!--  div id="Create Travel Offers" class="tabcontent">
 
 			<span id="CreateOfferPage">
 				<h3>Create Travel Offer</h3>
@@ -548,7 +549,7 @@
 
 			</span> <span id="CreateOfferMessage"> Contract Submitted! </span>
 
-		</div>
+		</div-->
 
 
 	</div>

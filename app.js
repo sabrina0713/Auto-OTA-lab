@@ -40,7 +40,7 @@ var chaincode 	= null;
 // Set chaincode source repository
 var chaincode_zip_url 		= "https://github.com/apiBlockchain/GscLabChaincode/archive/master.zip";
 var chaincode_unzip_dir 	= "GscLabChaincode-master";
-var chaincode_git_url 		= "https://github.com/apiBlockchain/GscLabChaincode";
+var chaincode_git_url 		= "https://github.com/sabrina0713/GscLabChaincode";
 
 ////// Pathing and Module Setup ////////
 app.set('views', path.join(__dirname, 'views'));
@@ -81,12 +81,12 @@ app.use(cors());
 // ---------------------
 // Cache Busting Hash
 // ---------------------
-var bust_js = require('./busters_js.json');
+/*var bust_js = require('./busters_js.json');
 var bust_css = require('./busters_css.json');
 process.env.cachebust_js = bust_js['public/js/singlejshash']; 
 process.env.cachebust_css = bust_css['public/css/singlecsshash']; 
 console.log('cache busting hash js', process.env.cachebust_js, 'css',
-		process.env.cachebust_css);
+		process.env.cachebust_css); */
 
 ///////// Configure Webserver ///////////
 app.use(function(req, res, next) {
@@ -311,9 +311,7 @@ var ibc 	= new Ibc1();
 // Load blockchain service peers manually, or from the Bluemix VCAP variable.
 // Note: Bluemix peers will overwrite local peers!
 try {
-	//var manual 	= JSON.parse(fs.readFileSync('mycreds_BlockchainAug22.json','utf8'));
 	var manual 	= JSON.parse(fs.readFileSync('ServiceCredentials.json','utf8'));
-	//var manual 	= JSON.parse(fs.readFileSync('my_credsgsclabtest3.json','utf8'));
 	peers 		= manual.credentials.peers;
 	users 		= null; // users are only found if security is on
 	
