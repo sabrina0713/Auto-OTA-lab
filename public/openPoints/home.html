@@ -74,7 +74,7 @@
 	}
 
 	// Parse smart contracts from Blockchain service into HTML table
-	function parseSmartContracts(response) {
+	function parseConfiguration(response) {
 	
 		var arr = JSON.parse(response);
 
@@ -106,29 +106,50 @@
 	
 
 	// Parse a user account response from the Blockchain service into an HTML table
-	function parseConfiguration(response) {
-		var versions = {"subsystem": "chassis","version":"023"}
-		var out = "<table border='1'><tr><td style='width: 100px; text-align: center; color: black; background-color:#f1f1f1;'>Name</td>";
-		out += "<td style='width: 100px; color: black; text-align: center; background-color:#f1f1f1;'>Balance </td>";
-		out += "<td style='width: 200px; color: black; text-align: center; background-color:#f1f1f1;'>Number Of Transactions </td></tr>"
+	function parseCompatibility(response) {
+		//will replace this with response
+		var obj={"Chassis":["023","024","025","031"],"Safety":["137","139","140"],"Telematics":["036","047","091"]}
+        var ChassisString="";
+		var SafetyString="";
+		var TeleString="";
+		obj["Chassis"].forEach(function(e){
+			ChassisString=ChassisString+e+"</br>"
+		});
+		obj["Safety"].forEach(function(e){
+			SafetyString=SafetyString+e+"</br>"
+		});
+		
+		obj["Telematics"].forEach(function(e){
+			TeleString=TeleString+e+"</br>"
+		});
+		
+		var out = "<table border='1'><tr><td style='width: 80%; text-align: center; color: black; background-color:#f1f1f1;'>Subsystem</td>";
+		out += "<td style='width: 80%; color: black; text-align: center; background-color:#f1f1f1;'>Compatibility Versions</td>";
+		out += "</tr>"
 
-		out += "<tr><td style='text-align:center;'>" + versions.subsystem
-				+ "</td><td style='text-align: center;'>" + versions.version
-				+ "</td><td style='text-align: center;'>"+"</td></tr>";
+		out += "<tr><td style='text-align:center;'>" + "Chassis"
+				+ "</td><td style='text-align: center;'>" + ChassisString
+				+ "</td></tr>"
+				+"<tr><td style='text-align:center;'>" + "Safety"
+				+ "</td><td style='text-align: center;'>" + SafetyString
+				+ "</td></tr>"
+				+"<tr><td style='text-align:center;'>" + "Telemetrics"
+				+ "</td><td style='text-align: center;'>" + TeleString
+				+ "</td></tr>";
 
 		out += "</table>";
-		document.getElementById("userAccountTable").innerHTML = out;
+		document.getElementById("compatibilityTable").innerHTML = out;
 
 	}
 
 	// Get the smart contracts from the Blockchain service using the NODE JS REST API
-	function displaySmartContracts() {
+	function displayConfiguration() {
 
 		document.getElementById('ConfigurationPage').style.display = "block"
 		//document.getElementById('TravelOffersMessage').style.display = "none"
 
 		var url = localUrlStub + "/getAllContracts";
-		blockchainRestApi(url, parseSmartContracts);
+		blockchainRestApi(url, parseConfiguration);
 
 	}
 
@@ -245,7 +266,7 @@
 
 	// Refresh the 'Transfer Points' tab after a user submits a points transfer
 	function displayCompatibility() {
-
+        parseCompatibility();
 		document.getElementById('TransferPointsPage').style.display = "block";
 		//document.getElementById('TransferPointsMessage').style.display = "none";
 
@@ -264,7 +285,7 @@
 			function() {
 
 				document.getElementById("Configuration").addEventListener(
-						"click", displaySmartContracts);
+						"click", displayConfiguration);
 				document.getElementById("Update").addEventListener(
 						"click", displayUpdate);
 				document.getElementById("Compatibility").addEventListener(
