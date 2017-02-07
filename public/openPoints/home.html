@@ -102,87 +102,19 @@
 
 	}
 
-	// Parse transactions from Blockchain service into HTML table
-	function parseTransactions(response) {
-		var arr = JSON.parse(response);
-
-		var i;
-		var out = "<table border='1'><tr><td style='width: 200px; text-align: center; color: black;padding:7px; color:#000; background-color:#f1f1f1;'>Date</td>";
-		out += "<td style='width: 200px; color: black; text-align: center;padding:7px; color:#000; background-color:#f1f1f1;'>Description </td>";
-		out += "<td style='width: 200px; color: black; text-align: center;padding:7px; color:#000; background-color:#f1f1f1;'>To/From </td>";
-		out += "<td style='width: 200px; color: black; text-align: center;padding:7px; color:#000; background-color:#f1f1f1;'>Amount </td></tr>"
-		var arrLength = arr.transactions.length;
-
-		var e = document.getElementById("userAccount");
-		var currentUserId = e.options[e.selectedIndex].value;
-
-		for (i = 0; i < arrLength; i++) {
-
-			var thisTxs = arr.transactions[i];
-
-			var txsDateStr = thisTxs.Date;
-			var res = txsDateStr.split("T");
-
-			var txsDate = res[0];
-			var timeStr = res[1].split("Z")
-
-			out += "<tr><td>" +
-			txsDate + " " + timeStr[0] + "</td><td>" + thisTxs.description;
-
-			if (thisTxs.FromUserid == currentUserId) {
-
-				out += "</td><td>" + thisTxs.ToName;
-
-				out += "</td><td style='text-align: center; color: red;'>-"
-						+ thisTxs.Amount + "</td></tr>";
-			}
-
-			else {
-				out += "</td><td>" + thisTxs.FromName;
-				out += "</td><td style='text-align: center; color: black;'>"
-						+ thisTxs.Amount + "</td></tr>";
-			}
-
-		}
-		out += "</table>";
-		document.getElementById("transactionsTable").innerHTML = out;
-
-	}
-
 	
-	// Parse a 'transfer points' response from Blockchain service
-	function parseTransfer(response) {
-
-		document.getElementById('TransferPointsPage').style.display = "none"
-		document.getElementById('TransferPointsMessage').style.display = "block"
-
-	}
-
-	// Parse a travel purchase response from Blockchain service
-	function parseTravelPurchase(response) {
-
-		document.getElementById('TravelOffersPage').style.display = "none"
-		document.getElementById('TravelOffersMessage').style.display = "block"
-	}
-
-	// Parse a user feedback response from the Blockchain service
-	function parseFeedback(response) {
-
-		document.getElementById('FeedbackPage').style.display = "none"
-		document.getElementById('FeedbackMessage').style.display = "block"
-	}
+	
 
 	// Parse a user account response from the Blockchain service into an HTML table
-	function parseUserAccount(response) {
-		var userAccount = JSON.parse(response);
+	function parseConfiguration(response) {
+		var versions = {"subsystem": "chassis","version":"023"}
 		var out = "<table border='1'><tr><td style='width: 100px; text-align: center; color: black; background-color:#f1f1f1;'>Name</td>";
 		out += "<td style='width: 100px; color: black; text-align: center; background-color:#f1f1f1;'>Balance </td>";
 		out += "<td style='width: 200px; color: black; text-align: center; background-color:#f1f1f1;'>Number Of Transactions </td></tr>"
 
-		out += "<tr><td style='text-align:center;'>" + userAccount.Name
-				+ "</td><td style='text-align: center;'>" + userAccount.Balance
-				+ "</td><td style='text-align: center;'>"
-				+ userAccount.NumberOfTransactions + "</td></tr>";
+		out += "<tr><td style='text-align:center;'>" + versions.subsystem
+				+ "</td><td style='text-align: center;'>" + versions.version
+				+ "</td><td style='text-align: center;'>"+"</td></tr>";
 
 		out += "</table>";
 		document.getElementById("userAccountTable").innerHTML = out;
@@ -192,8 +124,8 @@
 	// Get the smart contracts from the Blockchain service using the NODE JS REST API
 	function displaySmartContracts() {
 
-		document.getElementById('TravelOffersPage').style.display = "block"
-		document.getElementById('TravelOffersMessage').style.display = "none"
+		document.getElementById('ConfigurationPage').style.display = "block"
+		//document.getElementById('TravelOffersMessage').style.display = "none"
 
 		var url = localUrlStub + "/getAllContracts";
 		blockchainRestApi(url, parseSmartContracts);
@@ -211,12 +143,7 @@
 	// Issues a transfer points request to the Blockchain service using the NODE JS REST API
 	function transferPoints() {
 
-		var e 				= document.getElementById("userAccount");
-		var fromUser 		= e.options[e.selectedIndex].value;
-		e 					= document.getElementById("toUser");
-		var toUser 			= e.options[e.selectedIndex].value;
-		var pointsAmount 	= document.getElementById("pointsAmountToTransfer").value;
-		var description 	= "Points Transfer";
+		
 
 		transferString = "sender=" + fromUser + "&receiver=" + toUser
 				+ "&amount=" + pointsAmount + "&description=" + description;
@@ -228,45 +155,12 @@
 
 	}
 
-	// Issues a purchase package request to the Blockchain service using the NODE JS REST API
-	function purchaseTravelPackage() {
-
-		var e 				= document.getElementById("userAccount");
-		var fromUser 		= e.options[e.selectedIndex].value;
-		var toUser 			= "T5940872";
-		var description 	= "Purchased Travel Package"
-
-		var travelPackage 	= $('input[name="city"]:checked').val();
-		var arraySplit 		= travelPackage.split(':');
-		var cityName 		= arraySplit[0];
-		var pointsAmount 	= arraySplit[1];
-		var description 	= "Purchased Travel Package to " + cityName;
-		var contract 		= cityName;
-		var e 				= document.getElementById("travelPackageChoice");
-
-		transferString = "sender=" + fromUser + "&receiver=" + toUser
-				+ "&amount=" + pointsAmount;
-		transferString += "&contract=" + contract + "&description="
-				+ description;
-
-		var url = localUrlStub + "/transferpoints?" + transferString
-				+ "&activities=2&type=Transfer&money=0"
-
-		blockchainRestApi(url, parseTravelPurchase);
-
-	}
+	
 
 	// Issues a submit feedback request to the Blockchain service using the NODE JS REST API
 	function submitFeedback() {
 
-		var e = document.getElementById("userAccount");
-		var toUser = e.options[e.selectedIndex].value;
-		var fromUser = "T5940872";
-		var description = "Points For Feedback"
-
-		var pointsAmount = 1000;
-
-		var e = document.getElementById("travelPackageChoice");
+		
 
 		transferString = "sender=" + fromUser + "&receiver=" + toUser
 				+ "&amount=" + pointsAmount + "&description=" + description;
@@ -274,50 +168,44 @@
 
 		var url = localUrlStub + "/transferpoints?" + transferString
 				+ "&activities=2&type=Transfer&money=0"
-		blockchainRestApi(url, parseFeedback);
+		blockchainRestApi(url, updateSynchronize);
 
 	}
 
 	// Get a user's account information from the Blockchain service using the NODE JS REST API
-	function displayUserAccount() {
+	function displayUpdate() {
 
 		var e 			= document.getElementById("userAccount");
 		var strUser 	= e.options[e.selectedIndex].value;
 		var url 		= localUrlStub + "/getCustomerPoints?userid=" + strUser;
 
-		blockchainRestApi(url, parseUserAccount);
+		blockchainRestApi(url, updateConfiguration);
 
 		displayUserTransactions();
 
 	}
 
 	// Get a user's account information from the Blockchain service using the NODE JS REST API
-	function changeUserAccount() {
+	function changeSubsystem() {
 
 		var e = document.getElementById("userAccount");
 		var currentIndex = e.selectedIndex;
 		var currentUserId = e.options[e.selectedIndex].value;
-
+        //update the view for different subsystem
 		// Only show the 'Create Travel Offer' tab for Open Travel
-		var contractTab = document.getElementById("CreateOfferListElement");
+		/*var contractTab = document.getElementById("CreateOfferListElement");
 		if (currentUserId == "T5940872") {
 			contractTab.style.display = "block";
 		} else {
 			contractTab.style.display = "none";
-		}
+		}*/
 
 	}
 
 	// Submit a new smart contract to the Blockchain service using the NODE JS REST API
 	function addSmartContract() {
 
-		var e = document.getElementById("SmartContractCity");
-		var contractId = e.options[e.selectedIndex].value;
-		var title = document.getElementById("contractTitle").value;
-		var term1 = document.getElementById("term1").value;
-		var term2 = document.getElementById("term2").value;
-		var discountRate = document.getElementById("discountRate").value;
-		discountRate = discountRate / 100.0;
+		
 
 		var contractTerms = "contractid=" + contractId + "&title=" + title
 				+ "&condition1=" + term1 + "&condition2=" + term2
@@ -328,26 +216,46 @@
 
 	}
 
+	function parseTransfer(response) {
+
+		document.getElementById('CompatibilityPage').style.display = "none"
+		document.getElementById('CompatibilityMessage').style.display = "block"
+
+	}
+
+	// Parse a travel purchase response from Blockchain service
+	function parseTravelPurchase(response) {
+
+		document.getElementById('ConfigurationPage').style.display = "none"
+		//document.getElementById('TravelOffersMessage').style.display = "block"
+	}
+
+	// Parse a user feedback response from the Blockchain service
+	function updateSynchronize(response) {
+
+		document.getElementById('SynchronizePage').style.display = "none"
+		document.getElementById('SynchronizeMessage').style.display = "block"
+	}
 	// Parse an 'add contract' response from the Blockchain service
 	function parseContract(response) {
 
 		document.getElementById('CreateOfferPage').style.display = "none";
-		document.getElementById('CreateOfferMessage').style.display = "block";
+		//document.getElementById('CreateOfferMessage').style.display = "block";
 	}
 
 	// Refresh the 'Transfer Points' tab after a user submits a points transfer
-	function refreshTransferTab() {
+	function displayCompatibility() {
 
 		document.getElementById('TransferPointsPage').style.display = "block";
-		document.getElementById('TransferPointsMessage').style.display = "none";
+		//document.getElementById('TransferPointsMessage').style.display = "none";
 
 	}
 
 	// Refresh the feedback tab after a user submits feedback
-	function refreshFeedbackTab() {
+	function displaySynchronize() {
 
-		document.getElementById('FeedbackPage').style.display = "block";
-		document.getElementById('FeedbackMessage').style.display = "none";
+		document.getElementById('SynchronizePage').style.display = "block";
+		document.getElementById('SynchronizeMessage').style.display = "none";
 
 	}
 
@@ -358,11 +266,11 @@
 				document.getElementById("Configuration").addEventListener(
 						"click", displaySmartContracts);
 				document.getElementById("Update").addEventListener(
-						"click", displayUserAccount);
+						"click", displayUpdate);
 				document.getElementById("Compatibility").addEventListener(
-						"click", refreshTransferTab);
+						"click", displayCompatibility);
 				document.getElementById("Synchronize").addEventListener(
-						"click", refreshFeedbackTab);
+						"click", displaySynchronize);
 
 			});
 </script>
@@ -376,7 +284,7 @@
 			<div class="col50 main-font">OEM OTA Update management</div>
 			<div class="col50 user">
 				Subsystem: <select id="userAccount"
-					onchange="changeUserAccount()">
+					onchange="changeSubsystem()">
 					<option value="U2974034">Telematics</option>
 					<option value="U3151672">Powertrain</option>
 					<option value="B1928564">Chassis</option>
@@ -397,14 +305,11 @@
 				onclick="openTab(event, 'Compatibility')">Compatibility</a></li>
 			<li id="FeedbackTab"><a href="#" class="tablinks"
 				onclick="openTab(event, 'Synchronize')">Synchronize</a></li>
-			<!--  li id="CreateOfferListElement" style="display: none"><a
-				href="#" class="tablinks"
-				onclick="openTab(event, 'Create Travel Offers')">Create Travel
-					Offers</a></li-->
+			
 		</ul>
 
 		<div id="Configuration" class="tabcontent">
-			<span id='TravelOffersPage'>
+			<span id='ConfigurationPage'>
 
 				<h3>Active Configuration</h3>
 				<hr>
@@ -417,139 +322,56 @@
 				<p id="transactionsTable"></p>
 				<hr>
 				<p></p>
-				<!--  form id="travelPackageChoice">
-					<input type="radio" name="city" value="Paris:10000" checked>
-					Paris: 10k Points <br> <input type="radio" name="city"
-						value="New York City:15000"> New York City: 15k Points<br>
-					<input type="radio" name="city" value="London:20000">
-					London: 20k Points <br> <input type="radio" name="city"
-						value="Tokyo:25000"> Tokyo: 25k Points <br> <input
-						type="radio" name="city" value="Rio de Janeiro:30000"> Rio
-					de Janeiro: 30k Points <br>
-
-				</form-->
+				
 				<p></p>
-				<!--  button onclick="purchaseTravelPackage()" class="purchase-btn">Purchase
-					Travel Package</button-->
+				
 
-			</span> <span id='TravelOffersMessage' style='display: none'>
-				Purchase completed! </span>
+			</span> 
 		</div>
 
 		<div id="Update" class="tabcontent">
-			<h3>Account Balance</h3>
+			<h3>UpdateSystem</h3>
 			<hr>
 
-			<p id="userAccountTable"></p>
-
-			<p></p>
-			<h3>Transaction History</h3>
-			<hr>
-
-			
+			<select id="userAccount"
+					onchange="changeSubsystem()">
+					<option value="Tele">Telematics</option>
+					<option value="Power">Powertrain</option>
+					<option value="Chassis">Chassis</option>
+					<option value="Safety">Safety</option>
+				</select>
+			<button onclick="updateOTA()" class="purchase-btn">Submit</button>
+			<span id='updateMessage' style='display: none'>
+				Update completed! </span>
 
 
 
 		</div>
 
 		<div id="Compatibility" class="tabcontent">
-         <p id="smartContractTable"></p>
-			<!--  span id='TransferPointsPage'>
-				<h3>Transfer Points</h3>
+        
+			<span id='TransferPointsPage'>
+			 <p id="compatibilityTable"></p>
+				
 
-				<hr> <br> To: <select id="toUser">
-					<option value="U2974034">Natalie</option>
-					<option value="U3151672">Anthony</option>
-					<option value="B1928564">OpenFN</option>
-					<option value="T5940872">Open Travel</option>
-			</select>
-
-				<p></p>
-				<form action="demo_form.asp">
-					Amount: <input type="text" id="pointsAmountToTransfer"
-						class="amount"><br>
-				</form>
-				<p></p>
-
-				<button onclick="transferPoints()" class="purchase-btn">Transfer
-					Points</button>
-
-			</span> <span id='TransferPointsMessage'> Transfer completed! </span-->
+			</span>
+			 <!--<span id='TransferPointsMessage'> Transfer completed! </span>-->
 
 		</div>
 
 
 		<div id="Synchronize" class="tabcontent">
 
-			<span id='FeedbackPage'>
+			<span id='SynchronizePage'>
+            <h3>Install Current Compatibility Master Segment</h3>
+				
+				<button onclick="submitSynchronize()" class="purchase-btn">Submit
+				</button>
 
-				<h3>Rate Your Travel Experience</h3>
-				<hr> Buying Process: <select id="process">
-					<option value="great">Great</option>
-					<option value="good">Good</option>
-					<option value="fair">Fair</option>
-					<option value="bad">Bad</option>
-					<option value="terrible">Terrible</option>
-			</select> <br>
-			<br> Food: <select id="food">
-					<option value="great">Great</option>
-					<option value="good">Good</option>
-					<option value="fair">Fair</option>
-					<option value="bad">Bad</option>
-					<option value="terrible">Terrible</option>
-			</select> <br>
-			<br> Transportation: <select id="transportation">
-					<option value="great">Great</option>
-					<option value="good">Good</option>
-					<option value="fair">Fair</option>
-					<option value="bad">Bad</option>
-					<option value="terrible">Terrible</option>
-			</select> <br>
-			<br> Customer Service: <select id="service">
-					<option value="great">Great</option>
-					<option value="good">Good</option>
-					<option value="fair">Fair</option>
-					<option value="bad">Bad</option>
-					<option value="terrible">Terrible</option>
-			</select> <br> <br>
-				<button onclick="submitFeedback()" class="purchase-btn">Submit
-					User Feedback</button>
-
-			</span> <span id='FeedbackMessage'> Feedback submitted! </span>
+			</span> <span id='SynchronizeMessage'> Synchronize submitted! </span>
 		</div>
 
-		<!--  div id="Create Travel Offers" class="tabcontent">
-
-			<span id="CreateOfferPage">
-				<h3>Create Travel Offer</h3>
-
-				<hr> <br> Package: <select id="SmartContractCity">
-					<option value="Paris">Paris: 10k Points</option>
-					<option value="New York City">New York City: 15k Points</option>
-					<option value="London">London: 20k Points</option>
-					<option value="Tokyo">Tokyo: 25k Points</option>
-					<option value="Rio de Janeiro">Rio de Janeiro: 30k Points</option>
-			</select>
-				<p></p>
-
-				<form action="demo_form.asp">
-					Title: <input type="text" id="contractTitle" class="amount"><br>
-					<p></p>
-					Term 1: <input type="text" id="term1" class="amount"><br>
-					<p></p>
-					Term 2: <input type="text" id="term2" class="amount"><br>
-					<p></p>
-					Point Discount (%): <input type="text" id="discountRate"
-						class="amount"><br>
-				</form>
-				<p></p>
-
-				<button onclick="addSmartContract()" class="purchase-btn">Create
-					Offer</button>
-
-			</span> <span id="CreateOfferMessage"> Contract Submitted! </span>
-
-		</div-->
+		
 
 
 	</div>
