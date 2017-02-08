@@ -293,13 +293,11 @@
 
 	// Refresh the 'Transfer Points' tab after a user submits a points transfer
 	function displayCompatibility() {
-		var contractTerms = "contractid=" + contractId + "&title=" + title
-		+ "&condition1=" + term1 + "&condition2=" + term2
-		+ "&discountrate=" + discountRate;
+		
 
-		var url = localUrlStub + "/addSmartContract?" + contractTerms;
-		blockchainRestApi(url, parseContract);
-        parseCompatibility();
+		var url = localUrlStub + "/getCompatibility";
+		blockchainRestApi(url, parseCompatibility);  
+       // parseCompatibility();
 		document.getElementById('CompatibilityPage').style.display = "block";
 		//document.getElementById('TransferPointsMessage').style.display = "none";
 

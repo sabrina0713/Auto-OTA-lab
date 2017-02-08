@@ -158,6 +158,20 @@ app.get('/getAllContracts', function(req, res) {
 
 });
 
+app.get('/getCompatibility', function(req, res) {
+
+	
+	console.log("getCompatibility")
+	chaincode.query.getReferenceTables(['getReferenceTables','dummy_argument'], function(e,data){	
+		res.send(data,e)
+		//var jsonObj = "{\"array\":" + data + "}";
+		//cb_received_response(e,jsonObj,res);
+
+	});
+	
+	
+
+});
 
 // Transfer points in between members of the open points network
 app.get('/transferPoints', function(req, res) {
