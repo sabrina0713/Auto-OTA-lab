@@ -103,7 +103,7 @@
 	}
 
 	function parseHistory(response) {
-		
+	
 		var arr = JSON.parse(response);
 
 		var i, j;
@@ -133,8 +133,10 @@
 
 	// Parse a user account response from the Blockchain service into an HTML table
 	function parseCompatibility(response) {
+		console.log(response)
+		var obj=JSON.parse(response).array;
 		//will replace this with response
-		var obj={"Chassis":["023","024","025","031"],"Safety":["137","139","140"],"Telematics":["036","047","091"]}
+		//var obj={"Chassis":["023","024","025","031"],"Safety":["137","139","140"],"Telematics":["036","047","091"]}
         var ChassisString="";
 		var SafetyString="";
 		var TeleString="";

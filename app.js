@@ -38,9 +38,9 @@ var chaincode 	= null;
 
 
 // Set chaincode source repository
-var chaincode_zip_url 		= "https://github.com/apiBlockchain/GscLabChaincode/archive/master.zip";
-var chaincode_unzip_dir 	= "GscLabChaincode-master";
-var chaincode_git_url 		= "https://github.com/sabrina0713/GscLabChaincode";
+var chaincode_zip_url 		= "https://github.com/sabrina0713/GscLabChaincode-1/archive/master.zip";
+var chaincode_unzip_dir 	= "GscLabChaincode-1-master";
+var chaincode_git_url 		= "https://github.com/sabrina0713/GscLabChaincode-1";
 
 ////// Pathing and Module Setup ////////
 app.set('views', path.join(__dirname, 'views'));
@@ -163,9 +163,9 @@ app.get('/getCompatibility', function(req, res) {
 	
 	console.log("getCompatibility")
 	chaincode.query.getReferenceTables(['getReferenceTables','dummy_argument'], function(e,data){	
-		res.send(data,e)
-		//var jsonObj = "{\"array\":" + data + "}";
-		//cb_received_response(e,jsonObj,res);
+		//res.send(data,e)
+		var jsonObj = "{\"array\":" + data + "}";
+		cb_received_response(e,jsonObj,res);
 
 	});
 	
