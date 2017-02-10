@@ -38,10 +38,13 @@ var chaincode 	= null;
 
 
 // Set chaincode source repository
-var chaincode_zip_url 		= "https://github.com/sabrina0713/GscLabChaincode-1/archive/master.zip";
-var chaincode_unzip_dir 	= "GscLabChaincode-1-master";
-var chaincode_git_url 		= "https://github.com/sabrina0713/GscLabChaincode-1";
-
+//var chaincode_zip_url 		= "https://github.com/sabrina0713/GscLabChaincode-1/archive/master.zip";
+//var chaincode_unzip_dir 	= "GscLabChaincode-1-master";
+//var chaincode_git_url 		= "https://github.com/sabrina0713/GscLabChaincode-1";
+var chaincode_zip_url 		= "https://hub.jazz.net/git/ejbruce/gsc-ind-bclab-autoad/archive"
+var chaincode_unzip_dir 	= "chaincode" 
+var chaincode_git_url 		="https://hub.jazz.net/git/ejbruce/gsc-ind-bclab-autoad/chaincode"
+	
 ////// Pathing and Module Setup ////////
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
