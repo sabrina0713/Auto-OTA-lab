@@ -13,7 +13,7 @@
 	// Variables for passing blockchain REST calls from NODE JS
 	var hostName 		= "#HOSTNAME#";
 	var localUrlStub 	= "http://" + hostName;
-
+  
 	// Open the tabs of the Open Points Website
 	function openTab(evt, tabName) {
 		
@@ -34,8 +34,8 @@
 		}
 
 		// Show the current tab, and add an "active" class to the link that opened the tab
-		document.getElementById(tabName).style.display = "block";
-		document.getElementById(tabName).click();
+		document.getElementById("defaultOpen").style.display = "block";
+		document.getElementById("defaultOpen").click();
 		evt.currentTarget.className += " active";
 
 		// Show/hide the travel offers tab
@@ -47,7 +47,7 @@
 
 	// Make REST calls to the blockchain using the NODE JS REST API
 	function blockchainRestApi(url, parsingFunction) {
-
+		
 		var xmlhttp = null;
 		if (window.XMLHttpRequest) {
 			xmlhttp = new XMLHttpRequest();
@@ -99,7 +99,6 @@
 		}
 		out += "</table>";
 		document.getElementById("configurationTable").innerHTML = out;
-
 	}
 
 	function parseHistory(response) {
@@ -234,8 +233,12 @@
 		//displayUserTransactions();
 
 	}
-
-	// Get a user's account information from the Blockchain service using the NODE JS REST API
+	// Get a user's vehicle information from the blockchain service using the 
+    // function changeVin() { 
+   //		var e = document.getElementBy
+    	 
+     }
+	// Get a car's subsystem information from the Blockchain service using the NODE JS REST API
 	function changeSubsystem() {
 
 		var e = document.getElementById("userAccount");
@@ -251,11 +254,8 @@
 		}*/
 
 	}
-
 	// Submit a new smart contract to the Blockchain service using the NODE JS REST API
 	/*function addSmartContract() {
-
-		
 
 		var contractTerms = "contractid=" + contractId + "&title=" + title
 				+ "&condition1=" + term1 + "&condition2=" + term2
@@ -280,7 +280,6 @@
 		//document.getElementById('TravelOffersMessage').style.display = "block"
 	}*/
 
-	// Parse a user feedback response from the Blockchain service
 	function updateSynchronize(response) {
 
 		document.getElementById('SynchronizePage').style.display = "none"
@@ -305,7 +304,6 @@
 
 	}
 
-	// Refresh the feedback tab after a user submits feedback
 	function displaySynchronize() {
 
 		document.getElementById('SynchronizePage').style.display = "block";
@@ -335,20 +333,27 @@
 <body>
 	<div class="content">
 		<div class="top-header">
-			<div class="col50 main-font">OEM OTA Update management</div>
-			<div class="col50 user">
-				Subsystem: <select id="userAccount"
+			<div class="col50 main-font"> OEM OTA Update Management</div>
+			<div class=" user">
+				Subsystem: <select id="userAccount" 
 					onchange="changeSubsystem()">
-					<option value="U2974034">Telematics</option>
-					<option value="U3151672">Powertrain</option>
-					<option value="B1928564">Chassis</option>
-					<option value="T5940872">Safety</option>
+					<option value="Telematics">Telematics</option>
+					<option value="Powertrain">Powertrain</option>
+					<option value="Chassis">Chassis</option>
+					<option value="Safety">Safety</option>
 				</select>
-
 			</div>
-		</div>
-
-
+			<div class="VIN">
+			   Vin: <select id = "userAccount" 
+			   onchange= changeVin()>
+			   <option value="Value1">1FTYR44VX2PB60564</option>
+			   <option value="Value2">KMHCN46CX9U370929</option>
+			   <option value="Value3">JTDKTUD33DD559195</option>
+			   <option value="Value4">4T1CE30P08U765674</option>
+			   <option value ="Value5">4A4AR3AU6FE004670</option>
+			   </select>
+		    </div>
+		  </div>
 
 		<ul class="tab">
 			<li><a href="#" class="tablinks"
@@ -358,8 +363,7 @@
 			<li><a href="#" class="tablinks"
 				onclick="openTab(event, 'Compatibility')">Compatibility</a></li>
 			<li id="FeedbackTab"><a href="#" class="tablinks"
-				onclick="openTab(event, 'Synchronize')">Synchronize</a></li>
-			
+				onclick="openTab(event, 'Synchronize')">Synchronize</a></li>			
 		</ul>
 
 		<div id="Configuration" class="tabcontent">
@@ -367,10 +371,7 @@
 
 				<h3>Active Configuration</h3>
 				<hr>
-
 				<p id="configurationTable"></p>
-
-
 
 				<h3 class="purchase-header">Configuration History</h3>
 				<p id="historyTable"></p>
@@ -389,16 +390,15 @@
 
 			<select id="userAccount"
 					onchange="changeSubsystem()">
-					<option value="Tele">Telematics</option>
-					<option value="Power">Powertrain</option>
+					<option value="Telematics">Telematics</option>
+					<option value="Powertrain">Powertrain</option>
 					<option value="Chassis">Chassis</option>
 					<option value="Safety">Safety</option>
 				</select>
+				
 			<button onclick="updateOTA()" class="purchase-btn">Submit</button>
 			<span id='updateMessage' style='display: none'>
 				Update completed! </span>
-
-
 
 		</div>
 
@@ -406,14 +406,9 @@
         
 			<span id='CompatibilityPage'>
 			 <p id="compatibilityTable"></p>
-				
-
 			</span>
-			 <!--<span id='TransferPointsMessage'> Transfer completed! </span>-->
-
+		
 		</div>
-
-
 		<div id="Synchronize" class="tabcontent">
 
 			<span id='SynchronizePage'>
@@ -421,13 +416,8 @@
 				
 				<button onclick="submitSynchronize()" class="purchase-btn">Submit
 				</button>
-
 			</span> <span id='SynchronizeMessage'> Synchronize submitted! </span>
 		</div>
-
-		
-
-
 	</div>
 </body>
 </html>
