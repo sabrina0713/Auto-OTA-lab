@@ -179,7 +179,6 @@ app.get('/getHistory', function(req, res) {
 	var ssid		= url.parse(req.url, true).query.ssid;
 	console.log("getHistory")
 	chaincode.query.getOps(['getOps',ssid], function(e,data){	
-		//res.send(data,e)
 		
 		var jsonObj = "{\"array\":" + data + "}";
 		cb_received_response(e,jsonObj,res);

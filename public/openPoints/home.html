@@ -70,7 +70,7 @@
 	function parseConfiguration(response) {
 	
 		var arr = JSON.parse(response);
-         console.log(response); 
+        // console.log(response); 
 		var i, j;
 		var out = "<table border=''><tr><td style='width: 300px;padding:7px; color:#000; background-color:#f1f1f1; text-align: center;'>Subsystem</td>";
 		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Version</td>";
@@ -295,7 +295,7 @@
 
 		var url = localUrlStub + "/getCompatibility";
 		blockchainRestApi(url, parseCompatibility);  
-       // parseCompatibility();
+      
 		document.getElementById('CompatibilityPage').style.display = "block";
 
 	}
