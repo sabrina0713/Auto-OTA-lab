@@ -162,7 +162,6 @@ app.get('/getAllContracts', function(req, res) {
 });
 
 app.get('/getCompatibility', function(req, res) {
-
 	
 	console.log("getCompatibility")
 	chaincode.query.getReferenceTables(['getReferenceTables','dummy_argument'], function(e,data){	
@@ -171,34 +170,24 @@ app.get('/getCompatibility', function(req, res) {
 		cb_received_response(e,jsonObj,res);
 
 	});
-	
-	
-
 });
 
+// Update subsystem 
+app.get('/updateEmbedded', function(req, res) {
 
-// Transfer points in between members of the open points network
-app.get('/transferPoints', function(req, res) {
-
+	console.log("updateEmbedded")
 	var toUser 		= url.parse(req.url, true).query.receiver;
-	var fromUser 	= url.parse(req.url, true).query.sender;
-	var type 		= url.parse(req.url, true).query.type;
 	var description = url.parse(req.url, true).query.description;
-	var contract 	= url.parse(req.url, true).query.contract;
-	var amount 		= url.parse(req.url, true).query.amount;
-	var money 		= url.parse(req.url, true).query.money;
-	var activities 	= url.parse(req.url, true).query.activities;
-
-	console.log('from: ', fromUser);
-	console.log('to: ', toUser);
-	console.log('contract is: ', contract);
+	var version     = url.parse(req.url, true).query.version;
 	
-	chaincode.invoke.transferPoints([ toUser, fromUser, type, description,
-			contract, activities, amount, money ], cb_invoked_api); 
+	console.log('toUser: ', toUser)
+	
+	chaincode.invoke.updateEmbedded([ toUser, description,
+		version], cb_invoked_api); 
 
 	res.send("success");
-
 });
+
 
 // Add a smart contract to the blockchain 
 app.get('/addSmartContract', function(req, res) {
@@ -253,8 +242,6 @@ app.get('/getUserTransactions', function(req, res) {
 
 // Reset all of the data in the blockchain back to the original state 
 app.get('/datareset', function(req, res) {
-
-	
 	chaincode.invoke.init(['99'], cb_invoked_api);
 
 	res.send("Data reset function executed");

@@ -862,9 +862,6 @@ func (t *SimpleChaincode) transferPoints(stub shim.ChaincodeStubInterface, args 
 				tx.Amount = tx.Amount -  (tx.Amount * thisContract.DiscountRate);
 			}
 		}
-	
-	
-	
 	}
 	
 	
