@@ -6,7 +6,7 @@
  * 
  * All rights reserved.
  * 
- * Created by the Financial Services Sector of the IBM Global Solutions Center
+ * Created by the Industrial Sector of the IBM Global Solutions Center
  * Based on the original work of David Huffman
  ******************************************************************************/
 

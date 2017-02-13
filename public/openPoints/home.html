@@ -13,41 +13,34 @@
 	// Variables for passing blockchain REST calls from NODE JS
 	var hostName 		= "#HOSTNAME#";
 	var localUrlStub 	= "http://" + hostName;
-
+  
 	// Open the tabs of the Open Points Website
 	function openTab(evt, tabName) {
 		
 		// Declare all variables
 		var i, tabcontent, tablinks;
 
-		// Get all elements with class="tabcontent" and hide them
+		// Get all elements with class="tabcontent" and display Configuration as deafult
 		tabcontent = document.getElementsByClassName("tabcontent");
 		for (i = 0; i < tabcontent.length; i++) {
-			tabcontent[i].style.display = "none";
+			tabcontent[i].style.display = "Configuration";
 		}
 
 		// Get all elements with class="tablinks" and remove the class "active"
 		tablinks = document.getElementsByClassName("tablinks");
 		for (i = 0; i < tablinks.length; i++) {
 			tablinks[i].className = tablinks[i].className
-					.replace(" active", "");
+					.replace("active", "");
 		}
 
 		// Show the current tab, and add an "active" class to the link that opened the tab
-		document.getElementById(tabName).style.display = "block";
-		document.getElementById(tabName).click();
+		document.getElementById("defaultOpen").style.display = "block";
+		document.getElementById("defaultOpen").click();
 		evt.currentTarget.className += " active";
 
-		// Show/hide the travel offers tab
-		/*if (tabName == "Create Travel Offers") {
-			document.getElementById("CreateOfferPage").style.display = "block";
-			document.getElementById("CreateOfferMessage").style.display = "none";
-		}*/
-	}
-
+		
 	// Make REST calls to the blockchain using the NODE JS REST API
-	function blockchainRestApi(url, parsingFunction) {
-
+	function blockchainRestApi(url, parsingFunction) {	
 		var xmlhttp = null;
 		if (window.XMLHttpRequest) {
 			xmlhttp = new XMLHttpRequest();
@@ -90,6 +83,7 @@
 					+ "</td><td>";
 
 			var numConditions = thisContract.Conditions.length;
+			
 			out += "<ul>";
 			for (j = 0; j < numConditions; j++) {
 				out += "<li>" + thisContract.Conditions[j] + "</li>";
@@ -99,13 +93,11 @@
 		}
 		out += "</table>";
 		document.getElementById("configurationTable").innerHTML = out;
-
 	}
 
 	function parseHistory(response) {
 	
 		var arr = JSON.parse(response);
-
 		var i, j;
 		var out = "<table border=''><tr><td style='width: 300px;padding:7px; color:#000; background-color:#f1f1f1; text-align: center;'>Offer</td>";
 		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Terms</td></tr>";
@@ -127,10 +119,8 @@
 		}
 		out += "</table>";
 		document.getElementById("historyTable").innerHTML = out;
-
 	}
 	
-
 	// Parse a user account response from the Blockchain service into an HTML table
 	function parseCompatibility(response) {
 		console.log(response)
@@ -181,7 +171,6 @@
 		//history Configuration
 		//blockchainRestApi(url, parseHistory);
 	}
-
 	// Get the user transactions from the Blockchain service using the NODE JS REST API
 	/*function displayUserTransactions() {
 		var e = document.getElementById("userAccount");
@@ -189,12 +178,8 @@
 		var url = localUrlStub + "/getusertransactions?userid=" + strUser;
 		blockchainRestApi(url, parseTransactions);
 	}*/
-
 	// Issues a transfer points request to the Blockchain service using the NODE JS REST API
 	function transferPoints() {
-
-		
-
 		transferString = "sender=" + fromUser + "&receiver=" + toUser
 				+ "&amount=" + pointsAmount + "&description=" + description;
 
@@ -205,23 +190,6 @@
 
 	}
 
-	
-
-	// Issues a submit feedback request to the Blockchain service using the NODE JS REST API
-	/*function submitFeedback() {
-
-		
-
-		transferString = "sender=" + fromUser + "&receiver=" + toUser
-				+ "&amount=" + pointsAmount + "&description=" + description;
-
-
-		var url = localUrlStub + "/transferpoints?" + transferString
-				+ "&activities=2&type=Transfer&money=0"
-		blockchainRestApi(url, updateSynchronize);
-
-	}*/
-
 	// Get a user's account information from the Blockchain service using the NODE JS REST API
 	function displayUpdate() {
 
@@ -230,12 +198,14 @@
 		var url 		= localUrlStub + "/getCustomerPoints?userid=" + strUser;
 
 		//blockchainRestApi(url, updateConfiguration);
-
 		//displayUserTransactions();
-
 	}
-
-	// Get a user's account information from the Blockchain service using the NODE JS REST API
+	// Get a user's vehicle information from the blockchain service using the 
+    // function changeVin() { 
+   //		var e = document.getElementBy
+    	 
+     }
+	// Get a car's subsystem information from the Blockchain service using the NODE JS REST API
 	function changeSubsystem() {
 
 		var e = document.getElementById("userAccount");
@@ -251,11 +221,8 @@
 		}*/
 
 	}
-
 	// Submit a new smart contract to the Blockchain service using the NODE JS REST API
 	/*function addSmartContract() {
-
-		
 
 		var contractTerms = "contractid=" + contractId + "&title=" + title
 				+ "&condition1=" + term1 + "&condition2=" + term2
@@ -265,7 +232,6 @@
 		blockchainRestApi(url, parseContract);
 
 	}*/
-
 	/*function parseTransfer(response) {
 
 		document.getElementById('CompatibilityPage').style.display = "none"
@@ -280,7 +246,6 @@
 		//document.getElementById('TravelOffersMessage').style.display = "block"
 	}*/
 
-	// Parse a user feedback response from the Blockchain service
 	function updateSynchronize(response) {
 
 		document.getElementById('SynchronizePage').style.display = "none"
@@ -301,22 +266,18 @@
 		blockchainRestApi(url, parseCompatibility);  
        // parseCompatibility();
 		document.getElementById('CompatibilityPage').style.display = "block";
-		//document.getElementById('TransferPointsMessage').style.display = "none";
 
 	}
-
-	// Refresh the feedback tab after a user submits feedback
+	
 	function displaySynchronize() {
-
 		document.getElementById('SynchronizePage').style.display = "block";
 		document.getElementById('SynchronizeMessage').style.display = "none";
-
 	}
 
 	// Add event listeners to the tabs so they display the relevant content when clicked on
 	$(document).ready(
 			function() {
-
+			
 				document.getElementById("Configuration").addEventListener(
 						"click", displayConfiguration);
 				document.getElementById("Update").addEventListener(
@@ -325,30 +286,34 @@
 						"click", displayCompatibility);
 				document.getElementById("Synchronize").addEventListener(
 						"click", displaySynchronize);
-
 			});
+	
 </script>
-
-
-
 </head>
 <body>
 	<div class="content">
 		<div class="top-header">
-			<div class="col50 main-font">OEM OTA Update management</div>
-			<div class="col50 user">
-				Subsystem: <select id="userAccount"
+			<div class="col50 main-font"> OEM OTA Update Management</div>
+			<div class=" user">
+				Subsystem: <select id="userAccount" 
 					onchange="changeSubsystem()">
-					<option value="U2974034">Telematics</option>
-					<option value="U3151672">Powertrain</option>
-					<option value="B1928564">Chassis</option>
-					<option value="T5940872">Safety</option>
+					<option value="Telematics">Telematics</option>
+					<option value="Powertrain">Powertrain</option>
+					<option value="Chassis">Chassis</option>
+					<option value="Safety">Safety</option>
 				</select>
-
 			</div>
-		</div>
-
-
+			<div class="VIN">
+			   Vin: <select id = "userAccount" 
+			   onchange= changeVin()>
+			   <option value="Value1">1FTYR44VX2PB60564</option>
+			   <option value="Value2">KMHCN46CX9U370929</option>
+			   <option value="Value3">JTDKTUD33DD559195</option>
+			   <option value="Value4">4T1CE30P08U765674</option>
+			   <option value ="Value5">4A4AR3AU6FE004670</option>
+			   </select>
+		    </div>
+		  </div>
 
 		<ul class="tab">
 			<li><a href="#" class="tablinks"
@@ -358,8 +323,7 @@
 			<li><a href="#" class="tablinks"
 				onclick="openTab(event, 'Compatibility')">Compatibility</a></li>
 			<li id="FeedbackTab"><a href="#" class="tablinks"
-				onclick="openTab(event, 'Synchronize')">Synchronize</a></li>
-			
+				onclick="openTab(event, 'Synchronize')">Synchronize</a></li>			
 		</ul>
 
 		<div id="Configuration" class="tabcontent">
@@ -367,10 +331,7 @@
 
 				<h3>Active Configuration</h3>
 				<hr>
-
 				<p id="configurationTable"></p>
-
-
 
 				<h3 class="purchase-header">Configuration History</h3>
 				<p id="historyTable"></p>
@@ -389,16 +350,15 @@
 
 			<select id="userAccount"
 					onchange="changeSubsystem()">
-					<option value="Tele">Telematics</option>
-					<option value="Power">Powertrain</option>
+					<option value="Telematics">Telematics</option>
+					<option value="Powertrain">Powertrain</option>
 					<option value="Chassis">Chassis</option>
 					<option value="Safety">Safety</option>
 				</select>
+				
 			<button onclick="updateOTA()" class="purchase-btn">Submit</button>
 			<span id='updateMessage' style='display: none'>
 				Update completed! </span>
-
-
 
 		</div>
 
@@ -406,14 +366,9 @@
         
 			<span id='CompatibilityPage'>
 			 <p id="compatibilityTable"></p>
-				
-
 			</span>
-			 <!--<span id='TransferPointsMessage'> Transfer completed! </span>-->
-
+		
 		</div>
-
-
 		<div id="Synchronize" class="tabcontent">
 
 			<span id='SynchronizePage'>
@@ -421,13 +376,8 @@
 				
 				<button onclick="submitSynchronize()" class="purchase-btn">Submit
 				</button>
-
 			</span> <span id='SynchronizeMessage'> Synchronize submitted! </span>
 		</div>
-
-		
-
-
 	</div>
 </body>
 </html>
