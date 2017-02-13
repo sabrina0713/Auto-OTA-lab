@@ -1,21 +1,33 @@
 0 info it worked if it ends with ok
+<<<<<<< HEAD
 1 verbose cli [ '/Users/lmarlow/.nvm/versions/node/v6.1.0/bin/node',
 1 verbose cli   '/Users/lmarlow/.nvm/versions/node/v6.1.0/bin/npm',
 1 verbose cli   'start' ]
 2 info using npm@3.8.6
 3 info using node@v6.1.0
+=======
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'start' ]
+2 info using npm@4.1.2
+3 info using node@v7.5.0
+>>>>>>> 184c8b85a0745009bed62bf4ad7adebfdd1b0ab9
 4 verbose run-script [ 'prestart', 'start', 'poststart' ]
 5 info lifecycle OpenPointsBlockchainApp@0.0.1~prestart: OpenPointsBlockchainApp@0.0.1
 6 silly lifecycle OpenPointsBlockchainApp@0.0.1~prestart: no script for prestart, continuing
 7 info lifecycle OpenPointsBlockchainApp@0.0.1~start: OpenPointsBlockchainApp@0.0.1
 8 verbose lifecycle OpenPointsBlockchainApp@0.0.1~start: unsafe-perm in lifecycle true
+<<<<<<< HEAD
 9 verbose lifecycle OpenPointsBlockchainApp@0.0.1~start: PATH: /Users/lmarlow/.nvm/versions/node/v6.1.0/lib/node_modules/npm/bin/node-gyp-bin:/Users/lmarlow/git/GscLabBlockchainApp/node_modules/.bin:/Users/lmarlow/.nvm/versions/node/v6.1.0/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin://anaconda/bin:/Users/lmarlow/.nvm/versions/node/v6.1.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/local/git/bin:/usr/local/go/bin:/Users/lmarlow/Desktop/apache-ant-1.9.6/bin
 10 verbose lifecycle OpenPointsBlockchainApp@0.0.1~start: CWD: /Users/lmarlow/git/GscLabBlockchainApp
+=======
+9 verbose lifecycle OpenPointsBlockchainApp@0.0.1~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/Users/himadriacharya/Auto-OTA-lab/node_modules/.bin:/Users/himadriacharya/anaconda/bin:/Library/Frameworks/Python.framework/Versions/3.5/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/go/bin
+10 verbose lifecycle OpenPointsBlockchainApp@0.0.1~start: CWD: /Users/himadriacharya/Auto-OTA-lab
+>>>>>>> 184c8b85a0745009bed62bf4ad7adebfdd1b0ab9
 11 silly lifecycle OpenPointsBlockchainApp@0.0.1~start: Args: [ '-c', 'node app.js' ]
 12 silly lifecycle OpenPointsBlockchainApp@0.0.1~start: Returned: code: 1  signal: null
 13 info lifecycle OpenPointsBlockchainApp@0.0.1~start: Failed to exec start script
 14 verbose stack Error: OpenPointsBlockchainApp@0.0.1 start: `node app.js`
 14 verbose stack Exit status 1
+<<<<<<< HEAD
 14 verbose stack     at EventEmitter.<anonymous> (/Users/lmarlow/.nvm/versions/node/v6.1.0/lib/node_modules/npm/lib/utils/lifecycle.js:239:16)
 14 verbose stack     at emitTwo (events.js:106:13)
 14 verbose stack     at EventEmitter.emit (events.js:191:7)
@@ -30,6 +42,22 @@
 18 error argv "/Users/lmarlow/.nvm/versions/node/v6.1.0/bin/node" "/Users/lmarlow/.nvm/versions/node/v6.1.0/bin/npm" "start"
 19 error node v6.1.0
 20 error npm  v3.8.6
+=======
+14 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:279:16)
+14 verbose stack     at emitTwo (events.js:106:13)
+14 verbose stack     at EventEmitter.emit (events.js:192:7)
+14 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:40:14)
+14 verbose stack     at emitTwo (events.js:106:13)
+14 verbose stack     at ChildProcess.emit (events.js:192:7)
+14 verbose stack     at maybeClose (internal/child_process.js:890:16)
+14 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
+15 verbose pkgid OpenPointsBlockchainApp@0.0.1
+16 verbose cwd /Users/himadriacharya/Auto-OTA-lab
+17 error Darwin 15.6.0
+18 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "start"
+19 error node v7.5.0
+20 error npm  v4.1.2
+>>>>>>> 184c8b85a0745009bed62bf4ad7adebfdd1b0ab9
 21 error code ELIFECYCLE
 22 error OpenPointsBlockchainApp@0.0.1 start: `node app.js`
 22 error Exit status 1

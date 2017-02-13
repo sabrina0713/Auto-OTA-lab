@@ -234,8 +234,7 @@
 	// Get a user's vehicle information from the blockchain service using the 
     // function changeVin() { 
    //		var e = document.getElementBy
-    	 
-     
+    	      
 	// Get a car's subsystem information from the Blockchain service using the NODE JS REST API
 	function changeSubsystem() {
 
@@ -244,6 +243,7 @@
 		var currentSubSystem = e.options[e.selectedIndex].value;
 		var url 		= localUrlStub + "/getSubsystem?ssid=" + currentSubSystem;
 		blockchainRestApi(url, parseConfiguration);
+
 		var urlHistory = localUrlStub + "/getHistory?ssid=" + currentSubSystem;
 		blockchainRestApi(url, parseHistory);
 
@@ -319,6 +319,15 @@
 						"click", displaySynchronize);
 			});
 	
+	
+	$(document).ready(function(){
+	    $("#userAccount").on("change",function(){
+	        var selectedVal=$( "#userAccount option:selected" ).val();
+	        $("#subcategory > optgroup").attr("disabled","disabled");
+	        $('#subcategory > optgroup[label="'+selectedVal+'"]').removeAttr("disabled");
+	    });  
+	});
+	
 </script>
 </head>
 <body>
@@ -368,9 +377,7 @@
 				<p id="historyTable"></p>
 				<hr>
 				<p></p>
-				
-				<p></p>
-				
+				<p></p>				
 
 			</span> 
 		</div>
@@ -379,7 +386,8 @@
 			<h3>UpdateSystem</h3>
 			<hr>
 
-			<select id="SubSystemUpdate" onchange= selectSubSystem()>
+
+			<!--  <select id="SubSystemUpdate" onchange= selectSubSystem()>
 					<option value="Telematics">Telematics</option>
 					<option value="Powertrain">Powertrain</option>
 					<option value="Chassis">Chassis</option>
@@ -392,11 +400,46 @@
 					<option value="C025">025</option>
 					<option value="C031">031</option>
 			</select>
-			<br>	
+			<br> -->	
+
+      <select name="userAccount" id="userAccount" onchange="changeSubsystem()">
+                 <option value="Telematics" selected>Telematics</option>
+   		        <option value="Powertrain">Powertrain</option>
+           <option value="Chassis">Chassis</option>
+           <option value="Safety">Safety</option>
+         </select>
+         
+     <select name="subcategory" id="subcategory">
+
+     <optgroup label="Telematics">
+        <option value="340">340</option>
+        <option value="350">350</option>
+        <option value="360">360</option>
+    </optgroup>
+    <optgroup id="B" label="Powertrain" disabled>
+        <option value="260">260</option>
+        <option value="280">280</option>
+        <option value="350">350</option>
+    </optgroup>
+    <optgroup id="C" label="Chassis" disabled>
+        <option value="350">350</option>
+        <option value="216">216</option>
+        <option value="227">227</option>
+    </optgroup>
+    <optgroup id="D" label="Safety" disabled>
+        <option value="315">315</option>
+        <option value="206">206</option>
+        <option value="207">207</option>
+    </optgroup>
+</select>							
+		
+		
+
 			<button onclick="updateOTA()" class="purchase-btn">Submit</button>
 			<span id='updateMessage' style='display: none'>
 				Update completed! </span>
-
+								
+			
 		</div>
 
 		<div id="Compatibility" class="tabcontent">
