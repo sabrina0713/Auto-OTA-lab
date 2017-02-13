@@ -70,27 +70,31 @@
 	function parseConfiguration(response) {
 	
 		var arr = JSON.parse(response);
-
+         console.log(response); 
 		var i, j;
-		var out = "<table border=''><tr><td style='width: 300px;padding:7px; color:#000; background-color:#f1f1f1; text-align: center;'>Offer</td>";
-		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Terms</td></tr>";
-		var arrLength = arr.array.length;
+		var out = "<table border=''><tr><td style='width: 300px;padding:7px; color:#000; background-color:#f1f1f1; text-align: center;'>Subsystem</td>";
+		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Version</td>";
+		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Build Date</td></tr>";
+		//var arrLength = arr.array.length;
 
 
-		for (i = 0; i < arrLength; i++) {
-			var thisContract = arr.array[i];
-			out += "<tr><td style='padding-left:10px;'>" + thisContract.Title
-					+ "</td><td>";
-
-			var numConditions = thisContract.Conditions.length;
+		//for (i = 0; i < arrLength; i++) {
+			var thisConfiguration = arr;
+			out += "<tr><td style='padding-left:10px;'>" + thisConfiguration.SsId
+					+ "</td>";
+			out +="<td>" + thisConfiguration.MfgDate
+					+ "</td>";
+            out += "<td style='padding-left:10px;'>" + thisConfiguration.LastModifiedDate
+			+ "</td>";
+			/*var numConditions = thisContract.Conditions.length;
 			
 			out += "<ul>";
 			for (j = 0; j < numConditions; j++) {
 				out += "<li>" + thisContract.Conditions[j] + "</li>";
 			}
-
-			out += "</ul></td></tr>";
-		}
+            */
+			//out += "</td></tr>";
+		//}
 		out += "</table>";
 		document.getElementById("configurationTable").innerHTML = out;
 	}
@@ -164,9 +168,13 @@
 	function displayConfiguration() {
 
 		document.getElementById('ConfigurationPage').style.display = "block"
-		//document.getElementById('TravelOffersMessage').style.display = "none"
+        var e = document.getElementById("SubSystem");
+		
+		var currentSubSystem = e.options[e.selectedIndex].value;
+		var url 		= localUrlStub + "/getSubsystem?ssid=" + currentSubSystem;
+		
 
-		var url = localUrlStub + "/getAllContracts";
+		//var url = localUrlStub + "/getAllContracts";
 		blockchainRestApi(url, parseConfiguration);
 		//history Configuration
 		//blockchainRestApi(url, parseHistory);
@@ -179,7 +187,7 @@
 		blockchainRestApi(url, parseTransactions);
 	}*/
 	// Issues a transfer points request to the Blockchain service using the NODE JS REST API
-	function transferPoints() {
+	/*function transferPoints() {
 		transferString = "sender=" + fromUser + "&receiver=" + toUser
 				+ "&amount=" + pointsAmount + "&description=" + description;
 
@@ -188,7 +196,7 @@
 
 		blockchainRestApi(url, parseTransfer);
 
-	}
+	}*/
 
 	// Get a user's account information from the Blockchain service using the NODE JS REST API
 	function displayUpdate() {
@@ -207,19 +215,18 @@
 	// Get a car's subsystem information from the Blockchain service using the NODE JS REST API
 	function changeSubsystem() {
 
-		var e = document.getElementById("userAccount");
-		var currentIndex = e.selectedIndex;
-		var currentUserId = e.options[e.selectedIndex].value;
-        //update the view for different subsystem
-		// Only show the 'Create Travel Offer' tab for Open Travel
-		/*var contractTab = document.getElementById("CreateOfferListElement");
-		if (currentUserId == "T5940872") {
-			contractTab.style.display = "block";
-		} else {
-			contractTab.style.display = "none";
-		}*/
+		var e = document.getElementById("SubSystem");
+		
+		var currentSubSystem = e.options[e.selectedIndex].value;
+		var url 		= localUrlStub + "/getSubsystem?ssid=" + currentSubSystem;
+		blockchainRestApi(url, parseConfiguration);
+
 
 	}
+   function changeVIN(){
+	   
+   }
+   
 	// Submit a new smart contract to the Blockchain service using the NODE JS REST API
 	/*function addSmartContract() {
 
@@ -261,8 +268,8 @@
 	function displayCompatibility() {
 		
 
-		var url = localUrlStub + "/getCompatibility";
-		blockchainRestApi(url, parseCompatibility);  
+		//var url = localUrlStub + "/getCompatibility";
+		//blockchainRestApi(url, parseCompatibility);  
        // parseCompatibility();
 		document.getElementById('CompatibilityPage').style.display = "block";
 
@@ -287,6 +294,15 @@
 						"click", displaySynchronize);
 			});
 	
+	
+	$(document).ready(function(){
+	    $("#userAccount").on("change",function(){
+	        var selectedVal=$( "#userAccount option:selected" ).val();
+	        $("#subcategory > optgroup").attr("disabled","disabled");
+	        $('#subcategory > optgroup[label="'+selectedVal+'"]').removeAttr("disabled");
+	    });  
+	});
+	
 </script>
 </head>
 <body>
@@ -294,7 +310,7 @@
 		<div class="top-header">
 			<div class="col50 main-font"> OEM OTA Update Management</div>
 			<div class=" user">
-				Subsystem: <select id="userAccount" 
+				Subsystem: <select id="SubSystem" 
 					onchange="changeSubsystem()">
 					<option value="Telematics">Telematics</option>
 					<option value="Powertrain">Powertrain</option>
@@ -303,8 +319,8 @@
 				</select>
 			</div>
 			<div class="VIN">
-			   Vin: <select id = "userAccount" 
-			   onchange= changeVin()>
+			   VIN: <select id = "VIN" 
+			   onchange= changeVIN()>
 			   <option value="Value1">1FTYR44VX2PB60564</option>
 			   <option value="Value2">KMHCN46CX9U370929</option>
 			   <option value="Value3">JTDKTUD33DD559195</option>
@@ -344,19 +360,43 @@
 		<div id="Update" class="tabcontent">
 			<h3>UpdateSystem</h3>
 			<hr>
+      <select name="userAccount" id="userAccount" onchange="changeSubsystem()">
+                 <option value="Telematics" selected>Telematics</option>
+   		        <option value="Powertrain">Powertrain</option>
+           <option value="Chassis">Chassis</option>
+           <option value="Safety">Safety</option>
+         </select>
+         
+     <select name="subcategory" id="subcategory">
 
-			<select id="userAccount"
-					onchange="changeSubsystem()">
-					<option value="Telematics">Telematics</option>
-					<option value="Powertrain">Powertrain</option>
-					<option value="Chassis">Chassis</option>
-					<option value="Safety">Safety</option>
-				</select>
-				
+     <optgroup label="Telematics">
+        <option value="340">340</option>
+        <option value="350">350</option>
+        <option value="360">360</option>
+    </optgroup>
+    <optgroup id="B" label="Powertrain" disabled>
+        <option value="260">260</option>
+        <option value="280">280</option>
+        <option value="350">350</option>
+    </optgroup>
+    <optgroup id="C" label="Chassis" disabled>
+        <option value="350">350</option>
+        <option value="216">216</option>
+        <option value="227">227</option>
+    </optgroup>
+    <optgroup id="D" label="Safety" disabled>
+        <option value="315">315</option>
+        <option value="206">206</option>
+        <option value="207">207</option>
+    </optgroup>
+</select>							
+		
+		
 			<button onclick="updateOTA()" class="purchase-btn">Submit</button>
 			<span id='updateMessage' style='display: none'>
 				Update completed! </span>
-
+								
+			
 		</div>
 
 		<div id="Compatibility" class="tabcontent">

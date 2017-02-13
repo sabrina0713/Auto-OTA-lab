@@ -144,16 +144,9 @@ app.get('/', function(req, res) {
 	});
 });
 
-
 // Get all smart contracts from the blockchain
 app.get('/getAllContracts', function(req, res) {
 
-	//chaincode.query.getAllContracts([ 'getAllContracts', 'dummy_argument' ],
-			//function(e, data) {
-				//cb_received_response(e, data, res);
-			//});
-			
-			
 	chaincode.query.getAllContracts(['getAllContracts', 'dummy_argument'], function(e,data){	
 			var jsonObj = "{\"array\":" + data + "}";
 			cb_received_response(e,jsonObj,res);
@@ -172,22 +165,30 @@ app.get('/getCompatibility', function(req, res) {
 	});
 });
 
-// Update subsystem 
+app.get('/getSubsystem', function(req, res) {
+
+	var ssid = url.parse(req.url, true).query.ssid;
+	console.log("getSubsystem")
+	chaincode.query.getSubsystem(['getSubsystem',ssid], function(e,data){	
+		var jsonObj = data;
+		cb_received_response(e,jsonObj,res);
+	});
+});
+
+// Update the subsystem 
 app.get('/updateEmbedded', function(req, res) {
 
-	console.log("updateEmbedded")
+	console.log("updateEmbedded");
 	var toUser 		= url.parse(req.url, true).query.receiver;
 	var description = url.parse(req.url, true).query.description;
 	var version     = url.parse(req.url, true).query.version;
 	
-	console.log('toUser: ', toUser)
-	
+	console.log('toUser: ', toUser)	
 	chaincode.invoke.updateEmbedded([ toUser, description,
 		version], cb_invoked_api); 
 
 	res.send("success");
 });
-
 
 // Add a smart contract to the blockchain 
 app.get('/addSmartContract', function(req, res) {
@@ -209,7 +210,7 @@ app.get('/addSmartContract', function(req, res) {
 
 	res.send("success");
 
-});
+});  
 
 
 // Get a single participant's account information
@@ -223,7 +224,7 @@ app.get('/getCustomerPoints', function(req, res) {
 		cb_received_response(e, data, res);
 	});
 
-});
+}); 
 
 
 // Get a single participant's transaction history
