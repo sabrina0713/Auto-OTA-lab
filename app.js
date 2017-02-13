@@ -176,6 +176,7 @@ app.get('/getCompatibility', function(req, res) {
 
 });
 
+
 // Transfer points in between members of the open points network
 app.get('/transferPoints', function(req, res) {
 

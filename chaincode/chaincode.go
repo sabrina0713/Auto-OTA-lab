@@ -36,6 +36,7 @@ type SimpleChaincode struct {
 
 // Maximum number of transactions to return
 const NUM_TX_TO_RETURN = 27
+const NUM_OP_TO_RETURN = 27
 
 // Smart Contract Id, Compatibility Reference numbers
 const TRAVEL_CONTRACT   = "Paris"
@@ -60,6 +61,19 @@ type Transaction struct {
 	StatusMsg	string   `json:"StatusMsg"`
 }
 
+// Blockchain operation record
+type Operation struct {
+	RefNumber	string		`json:"RefNumber"`
+	Date 		time.Time	`json:"Date"`
+	From		string		`json:"FromUserid"`
+	FromName	string		`json:"FromName"`
+	To		string		`json:"ToUserid"`
+	ToName		string		`json:"ToName"`
+	Description	string		`json:"description"`
+	Version		string		`json:"Version"`
+	StatusCode	int		`json:"StatusCode"`
+	StatusMsg	string		`json:"StatusMsg"`
+}
 
 // Smart contract metadata record
 type Contract struct {
@@ -83,6 +97,21 @@ type Compatibility struct {
 	Telematics	[]string	`json:"Telematics"`
 }
 
+// Subsystem running version record
+type Subsystem struct {
+	SsId		string		`json:"SsId"`
+	Name   		string		`json:"Name"`
+	osVersion	string		`json:"osVersion"`
+	NumTxs		int		`json:"NumberOfTransactions"`
+	Effectivity	string		`json:"EffectivityDate"`
+	Chassis		[]string	`json:"Chassis"`
+	Powertrain	[]string	`json:"Powertrain"`
+	Safety		[]string	`json:"Safety"`
+	Telematics	[]string	`json:"Telematics"`
+	Manufactured	string		`json:"MfgDate"`
+	Modified	string		`json:"LastModifiedDate"`
+}
+
 // Open Points member record
 type User struct {
 	UserId		string   `json:"UserId"`
@@ -99,6 +128,11 @@ type User struct {
 // Array for storing all open points transactions
 type AllTransactions struct{
 	Transactions []Transaction `json:"transactions"`
+}
+
+// Array for storing all operations
+type AllOperations struct{
+	Operations []Operation `json:"operations"`
 }
 
 // ============================================================================================================================
@@ -267,6 +301,103 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		return nil, err
 	}
 
+	// Create the 'Chassis' subsystem and add it to the blockchain
+	var chassis Subsystem
+	chassis.SsId = "Chassis"
+	chassis.Name = "Chassis Subsystem"
+	chassis.osVersion = "001"
+	chassis.NumTxs  = 0
+	chassis.Powertrain = append(chassis.Powertrain,"120")
+	chassis.Powertrain = append(chassis.Powertrain,"131")
+	chassis.Powertrain = append(chassis.Powertrain,"175")
+	chassis.Powertrain = append(chassis.Powertrain,"192")
+	chassis.Safety = append(chassis.Safety,"137")
+	chassis.Safety = append(chassis.Safety,"139")
+	chassis.Safety = append(chassis.Safety,"140")
+	chassis.Telematics = append(chassis.Telematics,"036")
+	chassis.Telematics = append(chassis.Telematics,"047")
+	chassis.Telematics = append(chassis.Telematics,"091")
+
+	jsonAsBytes, _ = json.Marshal(chassis)
+	err = stub.PutState(chassis.SsId, jsonAsBytes)								
+	if err != nil {
+		fmt.Println("Error Creating Chassis user account")
+		return nil, err
+	}
+
+	// Create the 'Powertrain' subsystem and add it to the blockchain
+	var powertrain Subsystem
+	powertrain.SsId = "Powertrain"
+	powertrain.Name = "Powertrain Subsystem"
+	powertrain.osVersion = "001"
+	powertrain.NumTxs  = 0
+	powertrain.Chassis = append(powertrain.Chassis,"023")
+	powertrain.Chassis = append(powertrain.Chassis,"024")
+	powertrain.Chassis = append(powertrain.Chassis,"025")
+	powertrain.Chassis = append(powertrain.Chassis,"031")
+	powertrain.Safety = append(powertrain.Safety,"137")
+	powertrain.Safety = append(powertrain.Safety,"139")
+	powertrain.Safety = append(powertrain.Safety,"140")
+	powertrain.Telematics = append(powertrain.Telematics,"036")
+	powertrain.Telematics = append(powertrain.Telematics,"047")
+	powertrain.Telematics = append(powertrain.Telematics,"091")
+	
+	jsonAsBytes, _ = json.Marshal(powertrain)
+	err = stub.PutState(powertrain.SsId, jsonAsBytes)								
+	if err != nil {
+		fmt.Println("Error Creating Powertrain user account")
+		return nil, err
+	}
+
+	// Create the 'Safety' subsystem and add it to the blockchain
+	var safety Subsystem
+	safety.SsId = "Safety"
+	safety.Name = "Safety Subsystem"
+	safety.osVersion = "001"
+	safety.NumTxs  = 0
+	safety.Chassis = append(safety.Chassis,"023")
+	safety.Chassis = append(safety.Chassis,"024")
+	safety.Chassis = append(safety.Chassis,"025")
+	safety.Chassis = append(safety.Chassis,"031")
+	safety.Powertrain = append(safety.Powertrain,"120")
+	safety.Powertrain = append(safety.Powertrain,"131")
+	safety.Powertrain = append(safety.Powertrain,"175")
+	safety.Powertrain = append(safety.Powertrain,"192")
+	safety.Telematics = append(safety.Telematics,"036")
+	safety.Telematics = append(safety.Telematics,"047")
+	safety.Telematics = append(safety.Telematics,"091")
+
+	jsonAsBytes, _ = json.Marshal(safety)
+	err = stub.PutState(safety.SsId, jsonAsBytes)								
+	if err != nil {
+		fmt.Println("Error Creating Safety user account")
+		return nil, err
+	}
+
+	// Create the 'Telematics' subsystem and add it to the blockchain
+	var telematics Subsystem
+	telematics.SsId = "Telematics"
+	telematics.Name = "Telematics Subsystem"
+	telematics.osVersion = "001"
+	telematics.NumTxs  = 0
+	telematics.Chassis = append(telematics.Chassis,"023")
+	telematics.Chassis = append(telematics.Chassis,"024")
+	telematics.Chassis = append(telematics.Chassis,"025")
+	telematics.Chassis = append(telematics.Chassis,"031")
+	telematics.Powertrain = append(telematics.Powertrain,"120")
+	telematics.Powertrain = append(telematics.Powertrain,"131")
+	telematics.Powertrain = append(telematics.Powertrain,"175")
+	telematics.Powertrain = append(telematics.Powertrain,"192")
+	telematics.Safety = append(telematics.Safety,"137")
+	telematics.Safety = append(telematics.Safety,"139")
+	telematics.Safety = append(telematics.Safety,"140")
+
+	jsonAsBytes, _ = json.Marshal(telematics)
+	err = stub.PutState(telematics.SsId, jsonAsBytes)								
+	if err != nil {
+		fmt.Println("Error Creating Telematics user account")
+		return nil, err
+	}
 	// Create compatibility reference data and add it to the blockchain
 	var reference Compatibility
 		reference.Chassis = append(reference.Chassis,"023")
@@ -328,6 +459,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.Init(stub, "init", args)
 	} else if function == "transferPoints" {											//create a transaction
 		return t.transferPoints(stub, args)
+	} else if function == "updateEmbedded" {											//create a transaction
+		return t.updateEmbedded(stub, args)
 	} else if function == "addSmartContract" {											//create a transaction
 		return t.addSmartContract(stub, args)
 	} else if function == "incrementReferenceNumber" {											//create a transaction
@@ -347,7 +480,9 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 
 	
 	if function == "getTxs" { return t.getTxs(stub, args[1]) }
+	if function == "getOps" { return t.getOps(stub, args[1]) }
 	if function == "getUserAccount" { return t.getUserAccount(stub, args[1]) }
+	if function == "getSubsystem" { return t.getSubsystem(stub, args[1]) }
 	if function == "getAllContracts" { return t.getAllContracts(stub) }
 	if function == "getReferenceNumber" { return t.getReferenceNumber(stub) }
 	if function == "getReferenceTables" { return t.getReferenceTables(stub) }
@@ -369,6 +504,24 @@ func (t *SimpleChaincode) getUserAccount(stub shim.ChaincodeStubInterface, userI
 	fdAsBytes, err := stub.GetState(userId)
 	if err != nil {
 		return nil, errors.New("Failed to get user account from blockchain")
+	}
+
+	return fdAsBytes, nil
+	
+}
+
+// ============================================================================================================================
+// Get Subsystem 'account' from the blockchain
+// ============================================================================================================================
+func (t *SimpleChaincode) getSubsystem(stub shim.ChaincodeStubInterface, SsId string)([]byte, error){
+	
+	fmt.Println("Start getSubsystem()")
+	fmt.Println("Looking for subsystem with ID " + SsId);
+
+	//get the User index
+	fdAsBytes, err := stub.GetState(SsId)
+	if err != nil {
+		return nil, errors.New("Failed to get subsystem from blockchain")
 	}
 
 	return fdAsBytes, nil
@@ -413,6 +566,43 @@ func (t *SimpleChaincode) getTxs(stub shim.ChaincodeStubInterface, userId string
 	
 }
 
+// ============================================================================================================================
+// Get all operations that involve a particular subsystem
+// ============================================================================================================================
+func (t *SimpleChaincode) getOps(stub shim.ChaincodeStubInterface, SsId string)([]byte, error){
+	
+	var res AllOperations
+
+	fmt.Println("Start getOps")
+	fmt.Println("Looking for " + SsId);
+
+	//get the AllOperations index
+	allOpAsBytes, err := stub.GetState("allOp")
+	if err != nil {
+		return nil, errors.New("Failed to get all Operations")
+	}
+
+	var ops AllOperations
+	json.Unmarshal(allOpAsBytes, &ops)
+	numOps := len(ops.Operations)
+
+	for i := numOps -1; i >= 0; i-- {
+	    if ops.Operations[i].From == SsId{
+			res.Operations = append(res.Operations, ops.Operations[i])
+		}
+
+		if ops.Operations[i].To == SsId{
+			res.Operations = append(res.Operations, ops.Operations[i])
+		}
+		
+		if (len(res.Operations) >= NUM_OP_TO_RETURN) { break }
+	}
+
+	resAsBytes, _ := json.Marshal(res)
+
+	return resAsBytes, nil
+	
+}
 
 // ============================================================================================================================
 // Get the smart contract metadata from the blockchain
@@ -439,18 +629,6 @@ func (t *SimpleChaincode) getAllContracts(stub shim.ChaincodeStubInterface)([]by
 func (t *SimpleChaincode) getReferenceTables(stub shim.ChaincodeStubInterface)([]byte, error)  {
 
 	refTablesAsBytes, _ := stub.GetState(REFERENCE_TABLES)
-//	var theseTables Compatibility
-//	json.Unmarshal(refTablesAsBytes, &theseTables)
-//	
-//	var allContracts []Contract
-//	for i := range contractIds{
-//		contractAsBytes, _ := stub.GetState(contractIds[i])
-//		var thisContract Contract
-//		json.Unmarshal(contractAsBytes, &thisContract)
-//		allContracts = append(allContracts, thisContract)
-//	}
-//
-//	asBytes, _ := json.Marshal(allContracts)
 	return refTablesAsBytes, nil
 
 }
@@ -481,19 +659,6 @@ func (t *SimpleChaincode) getReferenceNumber(stub shim.ChaincodeStubInterface)([
 
 	refNumberBytes, numErr := stub.GetState("refNumber")
 	if numErr != nil {
-		fmt.Println("Error Getting  ref number")
-		return nil, numErr
-	}
-	
-	return refNumberBytes, nil
-
-}
-
-
-func (t *SimpleChaincode) getSubsystem(stub shim.ChaincodeStubInterface)([]byte, error)  {
-
-refNumberBytes, numErr := stub.GetState("refNumber")
-if numErr != nil {
 		fmt.Println("Error Getting  ref number")
 		return nil, numErr
 	}
@@ -760,6 +925,90 @@ func (t *SimpleChaincode) transferPoints(stub shim.ChaincodeStubInterface, args 
 	txs.Transactions = append(txs.Transactions, tx)
 	txsAsBytes, _ = json.Marshal(txs)
 	err = stub.PutState("allTx", txsAsBytes)	
+	if err != nil {
+		return nil, err
+	}
+	
+	
+	return nil, nil
+
+}
+
+// ============================================================================================================================
+// Update subsystem with new embedded operating software
+// ============================================================================================================================
+func (t *SimpleChaincode) updateEmbedded(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+
+	var err error
+
+	fmt.Println("Running updateEmbedded()")
+	currentDateStr := time.Now().Format(time.RFC822)
+	startDate, _  := time.Parse(time.RFC822, currentDateStr)
+
+	
+	var op Operation
+	op.Date		= startDate
+	op.To 		= args[0]
+	op.From 	= args[1]
+	op.Description 	= args[2]
+	op.Version	= args[3]
+	op.StatusCode 	= 1
+	op.StatusMsg 	= "Operation accepted"
+	
+	// Get the current reference number and update it
+	var refNumber int
+	refNumberBytes, numErr := stub.GetState("refNumber")
+	if numErr != nil {
+		fmt.Println("Error Getting  ref number for operation")
+		return nil, err
+	}
+	
+	json.Unmarshal(refNumberBytes, &refNumber)
+	op.RefNumber 	= strconv.Itoa(refNumber)
+	refNumber = refNumber + 1;
+	refNumberBytes, _ = json.Marshal(refNumber)
+	err = stub.PutState("refNumber", refNumberBytes)								
+	if err != nil {
+		fmt.Println("Error updating ref number")
+		return nil, err
+	}
+	
+	// Get Receiver account from BC and update point balance
+	rfidBytes, err := stub.GetState(op.To)
+	if err != nil {
+		return nil, errors.New("updateEmbedded failed to get receiver from BC")
+	}
+
+	var receiver Subsystem
+	fmt.Println("updateEmbedded unmarshalling Subsystem struct");
+	err = json.Unmarshal(rfidBytes, &receiver)
+	receiver.osVersion = op.Version
+	receiver.Modified = currentDateStr
+	receiver.NumTxs = receiver.NumTxs + 1
+	op.ToName = receiver.Name;
+	
+	
+	//Commit Receiver to ledger
+	fmt.Println("updateEmbedded commit updated receiver To ledger");
+	opsAsBytes, _ := json.Marshal(receiver)
+	err = stub.PutState(op.To, opsAsBytes)	
+	if err != nil {
+		return nil, err
+	}
+	
+	//get the AllOperations index
+	allOpAsBytes, err := stub.GetState("allOp")
+	if err != nil {
+		return nil, errors.New("updateEmbedded: Failed to get all Operations")
+	}
+
+	//Update operations array and commit to BC
+	fmt.Println("updateEmbedded commit operation to ledger");
+	var ops AllOperations
+	json.Unmarshal(allOpAsBytes, &ops)
+	ops.Operations = append(ops.Operations,op)
+	opsAsBytes, _ = json.Marshal(ops)
+	err = stub.PutState("allOp", opsAsBytes)	
 	if err != nil {
 		return nil, err
 	}
