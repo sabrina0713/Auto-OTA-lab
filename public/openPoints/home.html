@@ -100,26 +100,31 @@
 	}
 
 	function parseHistory(response) {
-	
-		var arr = JSON.parse(response);
+		var arr = JSON.parse(response).array;
+        console.log(response); 
 		var i, j;
-		var out = "<table border=''><tr><td style='width: 300px;padding:7px; color:#000; background-color:#f1f1f1; text-align: center;'>Offer</td>";
-		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Terms</td></tr>";
-		var arrLength = arr.array.length;
+		var out = "<table border=''><tr><td style='width: 300px;padding:7px; color:#000; background-color:#f1f1f1; text-align: center;'>Subsystem</td>";
+		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Version</td>";
+		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Build Date</td></tr>";
+		var arrLength = arr.length;
 
 
 		for (i = 0; i < arrLength; i++) {
-			var thisContract = arr.array[i];
-			out += "<tr><td style='padding-left:10px;'>" + thisContract.Title
-					+ "</td><td>";
-
-			var numConditions = thisContract.Conditions.length;
+			var thisConfiguration = arr[i];
+			out += "<tr><td style='padding-left:10px;'>" + thisConfiguration.SsId
+					+ "</td>";
+			out +="<td>" + thisConfiguration.MfgDate
+					+ "</td>";
+           out += "<td style='padding-left:10px;'>" + thisConfiguration.LastModifiedDate
+			+ "</td>";
+			/*var numConditions = thisContract.Conditions.length;
+			
 			out += "<ul>";
 			for (j = 0; j < numConditions; j++) {
 				out += "<li>" + thisContract.Conditions[j] + "</li>";
 			}
-
-			out += "</ul></td></tr>";
+           */
+			//out += "</td></tr>";
 		}
 		out += "</table>";
 		document.getElementById("historyTable").innerHTML = out;
@@ -178,7 +183,10 @@
 		blockchainRestApi(url, parseConfiguration);
 		//history Configuration
 		//blockchainRestApi(url, parseHistory);
+		var urlHistory = localUrlStub + "/getHistory?ssid=" + currentSubSystem;
+		blockchainRestApi(url, parseHistory);
 	}
+	
 	// Get the user transactions from the Blockchain service using the NODE JS REST API
 	/*function displayUserTransactions() {
 		var e = document.getElementById("userAccount");
@@ -197,13 +205,28 @@
 		blockchainRestApi(url, parseTransfer);
 
 	}*/
-
+    function updateOTA(){
+        /*var SubSystem = $("#SubSystemUpdate")[0];
+        var version=$("#SubSystemVersion")[0];
+		
+		var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
+		var currentVersion = version.options[SubSystem.selectedIndex].value;
+		var url 		= localUrlStub + "/pushUpdate?ssid=" + currentSubSystem+"&version="+currentVersion;
+		blockchainRestApi(url, updateResult); */
+	}
+	function updateResult(response){
+		
+		console.log(response)
+	}
+	function selectSubSystem(){
+		//change the value in the dropdown list
+	}
 	// Get a user's account information from the Blockchain service using the NODE JS REST API
 	function displayUpdate() {
 
-		var e 			= document.getElementById("userAccount");
+		/*var e 			= document.getElementById("userAccount");
 		var strUser 	= e.options[e.selectedIndex].value;
-		var url 		= localUrlStub + "/getCustomerPoints?userid=" + strUser;
+		var url 		= localUrlStub + "/getCustomerPoints?userid=" + strUser;*/
 
 		//blockchainRestApi(url, updateConfiguration);
 		//displayUserTransactions();
@@ -221,6 +244,8 @@
 		var url 		= localUrlStub + "/getSubsystem?ssid=" + currentSubSystem;
 		blockchainRestApi(url, parseConfiguration);
 
+		var urlHistory = localUrlStub + "/getHistory?ssid=" + currentSubSystem;
+		blockchainRestApi(url, parseHistory);
 
 	}
    function changeCategory() {
@@ -271,8 +296,8 @@
 	function displayCompatibility() {
 		
 
-		//var url = localUrlStub + "/getCompatibility";
-		//blockchainRestApi(url, parseCompatibility);  
+		var url = localUrlStub + "/getCompatibility";
+		blockchainRestApi(url, parseCompatibility);  
        // parseCompatibility();
 		document.getElementById('CompatibilityPage').style.display = "block";
 
@@ -286,9 +311,9 @@
 	// Add event listeners to the tabs so they display the relevant content when clicked on
 	$(document).ready(
 			function() {
-			
-				document.getElementById("Configuration").addEventListener(
-						"click", displayConfiguration);
+				$("#Configuration").click(displayConfiguration);
+				//document.getElementById("Configuration").addEventListener(
+					//	"click", displayConfiguration);
 				document.getElementById("Update").addEventListener(
 						"click", displayUpdate);
 				document.getElementById("Compatibility").addEventListener(
@@ -362,12 +387,13 @@
 		<div id="Update" class="tabcontent">
 			<h3>UpdateSystem</h3>
 			<hr>
+
       <select name="userAccount" id="userAccount" onchange=changeCategory()>
               <option value="Telematics" selected>Telematics</option>
    		      <option value="Powertrain">Powertrain</option>
               <option value="Chassis">Chassis</option>
               <option value="Safety">Safety</option>
-     </select>
+     </select>	
          
      <select name="subcategory" id="subcategory">
 
@@ -382,9 +408,10 @@
         <option value="350">350</option>
     </optgroup>
     <optgroup id="C" label="Chassis" disabled>
-        <option value="350">350</option>
-        <option value="216">216</option>
-        <option value="227">227</option>
+        <option value="350">23</option>
+        <option value="216">24</option>
+        <option value="227">25</option>
+        <option value="227">31</option>
     </optgroup>
     <optgroup id="D" label="Safety" disabled>
         <option value="315">315</option>
@@ -393,9 +420,8 @@
     </optgroup>
     
     </select>							
-		
-	<button onclick="updateOTA()" class="purchase-btn">Submit</button>
-	<span id='updateMessage' style='display: none'>
+    <button onclick="updateOTA()" class="purchase-btn">Submit</button>
+			<span id='updateMessage' style='display: none'>
 				Update completed! </span>
 									
 		</div>

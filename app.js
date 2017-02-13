@@ -174,6 +174,29 @@ app.get('/getSubsystem', function(req, res) {
 		cb_received_response(e,jsonObj,res);
 	});
 });
+app.get('/getHistory', function(req, res) {
+
+	var ssid		= url.parse(req.url, true).query.ssid;
+	console.log("getHistory")
+	chaincode.query.getOps(['getOps',ssid], function(e,data){	
+		//res.send(data,e)
+		
+		var jsonObj = "{\"array\":" + data + "}";
+		cb_received_response(e,jsonObj,res);
+
+	});
+	
+});
+
+app.get('/pushUpdate', function(req, res) {
+	
+	var ssid		= url.parse(req.url, true).query.ssid;
+	var version 	= url.parse(req.url, true).query.version;
+	console.log("getHistory"+ ssid+version);
+	chaincode.invoke.updateEmbedded([ ssid, version], cb_invoked_api); 
+
+     res.send("success");
+});
 
 // Update the subsystem 
 app.get('/updateEmbedded', function(req, res) {
