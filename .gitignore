@@ -6,3 +6,5 @@
 .idea
 .project
 /ServiceCredentials.json
+/cc_summaries/
+/chaincode/
