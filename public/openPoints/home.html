@@ -248,6 +248,9 @@
 		blockchainRestApi(url, parseHistory);
 
 	}
+   function changeCategory() {
+	 
+   }
    function changeVIN(){
 	   
    }
@@ -318,13 +321,13 @@
 				document.getElementById("Synchronize").addEventListener(
 						"click", displaySynchronize);
 			});
-	
-	
+		
 	$(document).ready(function(){
 	    $("#userAccount").on("change",function(){
 	        var selectedVal=$( "#userAccount option:selected" ).val();
 	        $("#subcategory > optgroup").attr("disabled","disabled");
 	        $('#subcategory > optgroup[label="'+selectedVal+'"]').removeAttr("disabled");
+	        
 	    });  
 	});
 	
@@ -378,7 +381,6 @@
 				<hr>
 				<p></p>
 				<p></p>				
-
 			</span> 
 		</div>
 
@@ -386,28 +388,12 @@
 			<h3>UpdateSystem</h3>
 			<hr>
 
-
-			<!--  <select id="SubSystemUpdate" onchange= selectSubSystem()>
-					<option value="Telematics">Telematics</option>
-					<option value="Powertrain">Powertrain</option>
-					<option value="Chassis">Chassis</option>
-					<option value="Safety">Safety</option>
-				</select>
-				<br>
-			<select id="SubSystemVersion" >
-					<option value="C023">023</option>
-					<option value="C024">024</option>
-					<option value="C025">025</option>
-					<option value="C031">031</option>
-			</select>
-			<br> -->	
-
-      <select name="userAccount" id="userAccount" onchange="changeSubsystem()">
-                 <option value="Telematics" selected>Telematics</option>
-   		        <option value="Powertrain">Powertrain</option>
-           <option value="Chassis">Chassis</option>
-           <option value="Safety">Safety</option>
-         </select>
+      <select name="userAccount" id="userAccount" onchange=changeCategory()>
+              <option value="Telematics" selected>Telematics</option>
+   		      <option value="Powertrain">Powertrain</option>
+              <option value="Chassis">Chassis</option>
+              <option value="Safety">Safety</option>
+     </select>	
          
      <select name="subcategory" id="subcategory">
 
@@ -422,24 +408,22 @@
         <option value="350">350</option>
     </optgroup>
     <optgroup id="C" label="Chassis" disabled>
-        <option value="350">350</option>
-        <option value="216">216</option>
-        <option value="227">227</option>
+        <option value="350">23</option>
+        <option value="216">24</option>
+        <option value="227">25</option>
+        <option value="227">31</option>
     </optgroup>
     <optgroup id="D" label="Safety" disabled>
         <option value="315">315</option>
         <option value="206">206</option>
         <option value="207">207</option>
     </optgroup>
-</select>							
-		
-		
-
-			<button onclick="updateOTA()" class="purchase-btn">Submit</button>
+    
+    </select>							
+    <button onclick="updateOTA()" class="purchase-btn">Submit</button>
 			<span id='updateMessage' style='display: none'>
 				Update completed! </span>
-								
-			
+									
 		</div>
 
 		<div id="Compatibility" class="tabcontent">
