@@ -161,7 +161,7 @@ app.get('/getAllContracts', function(req, res) {
 
 });
 
-/*app.get('/getCompatibility', function(req, res) {
+app.get('/getCompatibility', function(req, res) {
 
 	
 	console.log("getCompatibility")
@@ -174,7 +174,7 @@ app.get('/getAllContracts', function(req, res) {
 	
 	
 
-});*/
+});
 
 app.get('/getSubsystem', function(req, res) {
 
@@ -182,7 +182,7 @@ app.get('/getSubsystem', function(req, res) {
 	console.log("getSubsystem")
 	chaincode.query.getSubsystem(['getSubsystem',ssid], function(e,data){	
 		//res.send(data,e)
-		var jsonObj = "{\"array\":" + data + "}";
+		var jsonObj = data;
 		cb_received_response(e,jsonObj,res);
 
 	});
