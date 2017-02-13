@@ -34,11 +34,11 @@
 		}
 
 		// Show the current tab, and add an "active" class to the link that opened the tab
-		document.getElementById("defaultOpen").style.display = "block";
-		document.getElementById("defaultOpen").click();
+		document.getElementById(tabName).style.display = "block";
+		document.getElementById(tabName).click();
 		evt.currentTarget.className += " active";
 
-		
+	}	
 	// Make REST calls to the blockchain using the NODE JS REST API
 	function blockchainRestApi(url, parsingFunction) {	
 		var xmlhttp = null;
@@ -204,7 +204,7 @@
     // function changeVin() { 
    //		var e = document.getElementBy
     	 
-     }
+     
 	// Get a car's subsystem information from the Blockchain service using the NODE JS REST API
 	function changeSubsystem() {
 
