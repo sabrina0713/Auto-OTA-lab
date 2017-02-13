@@ -100,7 +100,7 @@
 	}
 
 	function parseHistory(response) {
-		var arr = JSON.parse(response).array;
+		var arr = JSON.parse(response).operations;
         console.log(response); 
 		var i, j;
 		var out = "<table border=''><tr><td style='width: 300px;padding:7px; color:#000; background-color:#f1f1f1; text-align: center;'>Subsystem</td>";
@@ -184,7 +184,7 @@
 		//history Configuration
 		//blockchainRestApi(url, parseHistory);
 		var urlHistory = localUrlStub + "/getHistory?ssid=" + currentSubSystem;
-		blockchainRestApi(url, parseHistory);
+		blockchainRestApi(urlHistory, parseHistory);
 	}
 	
 	// Get the user transactions from the Blockchain service using the NODE JS REST API
@@ -206,13 +206,16 @@
 
 	}*/
     function updateOTA(){
-        /*var SubSystem = $("#SubSystemUpdate")[0];
+       /* var SubSystem = $("#SubSystemUpdate")[0];
         var version=$("#SubSystemVersion")[0];
+        var fromSystem = $("#SubSystem")[0];
 		
+		var fromSubSystem = fromSystem.options[fromSystem.selectedIndex].value;
+		var desc="customer update"
 		var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
-		var currentVersion = version.options[SubSystem.selectedIndex].value;
-		var url 		= localUrlStub + "/pushUpdate?ssid=" + currentSubSystem+"&version="+currentVersion;
-		blockchainRestApi(url, updateResult); */
+		var currentVersion = version.options[version.selectedIndex].value;
+		var url 		= localUrlStub + "/pushUpdate?ssid=" + currentSubSystem+"&from="+fromSubSystem+"&desc="+desc+"&version="+currentVersion;
+		blockchainRestApi(url, updateResult);  */
 	}
 	function updateResult(response){
 		
@@ -387,8 +390,25 @@
 		<div id="Update" class="tabcontent">
 			<h3>UpdateSystem</h3>
 			<hr>
-
-      <select name="userAccount" id="userAccount" onchange=changeCategory()>
+            <!--  div >
+				Subsystem: <select id="SubSystemUpdate" 
+					onchange="selectSubSystem()">
+					<option value="Telematics">Telematics</option>
+					<option value="Powertrain">Powertrain</option>
+					<option value="Chassis">Chassis</option>
+					<option value="Safety">Safety</option>
+				</select>
+			</div>
+			<div >
+				Version: <select id="SubSystemVersion" 
+					>
+					<option value="023">023</option>
+					<option value="024">024</option>
+					<option value="025">025</option>
+					<option value="Safety">031</option>
+				</select>
+			</div-->
+       <select name="userAccount" id="userAccount" onchange=changeCategory()>
               <option value="Telematics" selected>Telematics</option>
    		      <option value="Powertrain">Powertrain</option>
               <option value="Chassis">Chassis</option>
@@ -418,7 +438,7 @@
         <option value="206">206</option>
         <option value="207">207</option>
     </optgroup>
-    
+   
     </select>							
     <button onclick="updateOTA()" class="purchase-btn">Submit</button>
 			<span id='updateMessage' style='display: none'>
