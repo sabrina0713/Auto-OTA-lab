@@ -23,6 +23,7 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 	"encoding/json"
 	"time"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
@@ -104,10 +105,6 @@ type Subsystem struct {
 	osVersion	string		`json:"osVersion"`
 	NumTxs		int		`json:"NumberOfTransactions"`
 	Effectivity	string		`json:"EffectivityDate"`
-	Chassis		[]string	`json:"Chassis"`
-	Powertrain	[]string	`json:"Powertrain"`
-	Safety		[]string	`json:"Safety"`
-	Telematics	[]string	`json:"Telematics"`
 	Manufactured	string		`json:"MfgDate"`
 	Modified	string		`json:"LastModifiedDate"`
 }
@@ -306,17 +303,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	chassis.SsId = "Chassis"
 	chassis.Name = "Chassis Subsystem"
 	chassis.osVersion = "001"
-	chassis.NumTxs  = 0
-	chassis.Powertrain = append(chassis.Powertrain,"120")
-	chassis.Powertrain = append(chassis.Powertrain,"131")
-	chassis.Powertrain = append(chassis.Powertrain,"175")
-	chassis.Powertrain = append(chassis.Powertrain,"192")
-	chassis.Safety = append(chassis.Safety,"137")
-	chassis.Safety = append(chassis.Safety,"139")
-	chassis.Safety = append(chassis.Safety,"140")
-	chassis.Telematics = append(chassis.Telematics,"036")
-	chassis.Telematics = append(chassis.Telematics,"047")
-	chassis.Telematics = append(chassis.Telematics,"091")
+	chassis.NumTxs = 0
 
 	jsonAsBytes, _ = json.Marshal(chassis)
 	err = stub.PutState(chassis.SsId, jsonAsBytes)								
@@ -331,16 +318,6 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	powertrain.Name = "Powertrain Subsystem"
 	powertrain.osVersion = "001"
 	powertrain.NumTxs  = 0
-	powertrain.Chassis = append(powertrain.Chassis,"023")
-	powertrain.Chassis = append(powertrain.Chassis,"024")
-	powertrain.Chassis = append(powertrain.Chassis,"025")
-	powertrain.Chassis = append(powertrain.Chassis,"031")
-	powertrain.Safety = append(powertrain.Safety,"137")
-	powertrain.Safety = append(powertrain.Safety,"139")
-	powertrain.Safety = append(powertrain.Safety,"140")
-	powertrain.Telematics = append(powertrain.Telematics,"036")
-	powertrain.Telematics = append(powertrain.Telematics,"047")
-	powertrain.Telematics = append(powertrain.Telematics,"091")
 	
 	jsonAsBytes, _ = json.Marshal(powertrain)
 	err = stub.PutState(powertrain.SsId, jsonAsBytes)								
@@ -355,17 +332,6 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	safety.Name = "Safety Subsystem"
 	safety.osVersion = "001"
 	safety.NumTxs  = 0
-	safety.Chassis = append(safety.Chassis,"023")
-	safety.Chassis = append(safety.Chassis,"024")
-	safety.Chassis = append(safety.Chassis,"025")
-	safety.Chassis = append(safety.Chassis,"031")
-	safety.Powertrain = append(safety.Powertrain,"120")
-	safety.Powertrain = append(safety.Powertrain,"131")
-	safety.Powertrain = append(safety.Powertrain,"175")
-	safety.Powertrain = append(safety.Powertrain,"192")
-	safety.Telematics = append(safety.Telematics,"036")
-	safety.Telematics = append(safety.Telematics,"047")
-	safety.Telematics = append(safety.Telematics,"091")
 
 	jsonAsBytes, _ = json.Marshal(safety)
 	err = stub.PutState(safety.SsId, jsonAsBytes)								
@@ -380,17 +346,6 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	telematics.Name = "Telematics Subsystem"
 	telematics.osVersion = "001"
 	telematics.NumTxs  = 0
-	telematics.Chassis = append(telematics.Chassis,"023")
-	telematics.Chassis = append(telematics.Chassis,"024")
-	telematics.Chassis = append(telematics.Chassis,"025")
-	telematics.Chassis = append(telematics.Chassis,"031")
-	telematics.Powertrain = append(telematics.Powertrain,"120")
-	telematics.Powertrain = append(telematics.Powertrain,"131")
-	telematics.Powertrain = append(telematics.Powertrain,"175")
-	telematics.Powertrain = append(telematics.Powertrain,"192")
-	telematics.Safety = append(telematics.Safety,"137")
-	telematics.Safety = append(telematics.Safety,"139")
-	telematics.Safety = append(telematics.Safety,"140")
 
 	jsonAsBytes, _ = json.Marshal(telematics)
 	err = stub.PutState(telematics.SsId, jsonAsBytes)								
@@ -398,6 +353,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		fmt.Println("Error Creating Telematics user account")
 		return nil, err
 	}
+
 	// Create compatibility reference data and add it to the blockchain
 	var reference Compatibility
 		reference.Chassis = append(reference.Chassis,"023")
@@ -973,6 +929,13 @@ func (t *SimpleChaincode) updateEmbedded(stub shim.ChaincodeStubInterface, args 
 		return nil, err
 	}
 	
+	fmt.Printf("We're here...")
+	refTablesAsBytes, _ := stub.GetState(REFERENCE_TABLES)
+	refTables := fmt.Sprintf("%s",refTablesAsBytes)
+	if (strings.Contains(refTables,op.Version)) {
+		fmt.Printf("Hit")
+	}
+
 	// Get Receiver account from BC and update point balance
 	rfidBytes, err := stub.GetState(op.To)
 	if err != nil {

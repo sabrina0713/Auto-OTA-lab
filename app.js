@@ -161,7 +161,7 @@ app.get('/getAllContracts', function(req, res) {
 
 });
 
-app.get('/getCompatibility', function(req, res) {
+/*app.get('/getCompatibility', function(req, res) {
 
 	
 	console.log("getCompatibility")
@@ -174,11 +174,25 @@ app.get('/getCompatibility', function(req, res) {
 	
 	
 
+});*/
+
+app.get('/getSubsystem', function(req, res) {
+
+	var ssid		= url.parse(req.url, true).query.ssid;
+	console.log("getSubsystem")
+	chaincode.query.getSubsystem(['getSubsystem',ssid], function(e,data){	
+		//res.send(data,e)
+		var jsonObj = "{\"array\":" + data + "}";
+		cb_received_response(e,jsonObj,res);
+
+	});
+	
+	
+
 });
 
-
 // Transfer points in between members of the open points network
-app.get('/transferPoints', function(req, res) {
+/*app.get('/transferPoints', function(req, res) {
 
 	var toUser 		= url.parse(req.url, true).query.receiver;
 	var fromUser 	= url.parse(req.url, true).query.sender;
@@ -198,10 +212,10 @@ app.get('/transferPoints', function(req, res) {
 
 	res.send("success");
 
-});
+}); */
 
 // Add a smart contract to the blockchain 
-app.get('/addSmartContract', function(req, res) {
+/*app.get('/addSmartContract', function(req, res) {
 
 	var contractId 		= url.parse(req.url, true).query.contractid;
 	var title 			= url.parse(req.url, true).query.title;
@@ -220,11 +234,11 @@ app.get('/addSmartContract', function(req, res) {
 
 	res.send("success");
 
-});
+});  */
 
 
 // Get a single participant's account information
-app.get('/getCustomerPoints', function(req, res) {
+/*app.get('/getCustomerPoints', function(req, res) {
 
 	var userId = url.parse(req.url, true).query.userid;
 
@@ -234,7 +248,7 @@ app.get('/getCustomerPoints', function(req, res) {
 		cb_received_response(e, data, res);
 	});
 
-});
+}); */
 
 
 // Get a single participant's transaction history
