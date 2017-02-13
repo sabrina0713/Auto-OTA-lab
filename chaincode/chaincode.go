@@ -899,7 +899,7 @@ func (t *SimpleChaincode) transferPoints(stub shim.ChaincodeStubInterface, args 
 	sender.Balance   = sender.Balance  - tx.Amount
 	sender.Modified = currentDateStr
 	sender.NumTxs = sender.NumTxs + 1
-	tx.FromName = sender.Name;
+	tx.FromName =  sender.Name;
 	
 	//Commit Sender to ledger
 	fmt.Println("transferPoints Commit Updated Sender To Ledger");

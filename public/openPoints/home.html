@@ -223,6 +223,9 @@
 
 
 	}
+   function changeCategory() {
+	 
+   }
    function changeVIN(){
 	   
    }
@@ -293,13 +296,13 @@
 				document.getElementById("Synchronize").addEventListener(
 						"click", displaySynchronize);
 			});
-	
-	
+		
 	$(document).ready(function(){
 	    $("#userAccount").on("change",function(){
 	        var selectedVal=$( "#userAccount option:selected" ).val();
 	        $("#subcategory > optgroup").attr("disabled","disabled");
 	        $('#subcategory > optgroup[label="'+selectedVal+'"]').removeAttr("disabled");
+	        
 	    });  
 	});
 	
@@ -353,19 +356,18 @@
 				<hr>
 				<p></p>
 				<p></p>				
-
 			</span> 
 		</div>
 
 		<div id="Update" class="tabcontent">
 			<h3>UpdateSystem</h3>
 			<hr>
-      <select name="userAccount" id="userAccount" onchange="changeSubsystem()">
-                 <option value="Telematics" selected>Telematics</option>
-   		        <option value="Powertrain">Powertrain</option>
-           <option value="Chassis">Chassis</option>
-           <option value="Safety">Safety</option>
-         </select>
+      <select name="userAccount" id="userAccount" onchange=changeCategory()>
+              <option value="Telematics" selected>Telematics</option>
+   		      <option value="Powertrain">Powertrain</option>
+              <option value="Chassis">Chassis</option>
+              <option value="Safety">Safety</option>
+     </select>
          
      <select name="subcategory" id="subcategory">
 
@@ -389,14 +391,13 @@
         <option value="206">206</option>
         <option value="207">207</option>
     </optgroup>
-</select>							
+    
+    </select>							
 		
-		
-			<button onclick="updateOTA()" class="purchase-btn">Submit</button>
-			<span id='updateMessage' style='display: none'>
+	<button onclick="updateOTA()" class="purchase-btn">Submit</button>
+	<span id='updateMessage' style='display: none'>
 				Update completed! </span>
-								
-			
+									
 		</div>
 
 		<div id="Compatibility" class="tabcontent">
