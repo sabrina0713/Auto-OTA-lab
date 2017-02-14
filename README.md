@@ -92,7 +92,7 @@ You may be asked to login again. After login, you will land on the <b>Bluemix Da
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/sabrina0713/Auto-OTA-lab.git # [required])
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/sabrina0713/Auto-OTA-lab.git )
 
 <b>2. Log in with your Bluemix account.</b>
 
