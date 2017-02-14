@@ -6,7 +6,7 @@ prepared to participate on the day of the lab.
 <b>IMPORTANT NOTICE: This lab relies on Bluemix and services such as Blockchain and Node JS. It may not work exactly as documented when Bluemix and/or the underlying services are updated. Please contact us if you experience problems with the lab. The lab documents were last updated on September 9th of 2016, and the Bluemix service functionality was last validated on December 5th of 2016. 
 </b>
 
-[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/sabrina0713/Auto-OTA-lab.git # [required])
+
 
 ## Prepare your Bluemix account
 
@@ -90,7 +90,9 @@ You may be asked to login again. After login, you will land on the <b>Bluemix Da
 
 <b>1. Click on the 'Deploy to Bluemix' button shown below (The button is located on this very webpage right below this bullet item - do NOT look for it within your bluemix account!).</b>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/apiBlockchain/GscLabBlockchainApp.git)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+[![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy?repository=https://github.com/sabrina0713/Auto-OTA-lab.git # [required])
 
 <b>2. Log in with your Bluemix account.</b>
 
