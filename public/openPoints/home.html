@@ -193,25 +193,10 @@
 		var urlHistory = localUrlStub + "/getHistory?ssid=" + currentSubSystem;
 		blockchainRestApi(urlHistory, parseHistory);
 	}
+	function submitSynchronize(){
+		
+	}
 	
-	// Get the user transactions from the Blockchain service using the NODE JS REST API
-	/*function displayUserTransactions() {
-		var e = document.getElementById("userAccount");
-		var strUser = e.options[e.selectedIndex].value;
-		var url = localUrlStub + "/getusertransactions?userid=" + strUser;
-		blockchainRestApi(url, parseTransactions);
-	}*/
-	// Issues a transfer points request to the Blockchain service using the NODE JS REST API
-	/*function transferPoints() {
-		transferString = "sender=" + fromUser + "&receiver=" + toUser
-				+ "&amount=" + pointsAmount + "&description=" + description;
-
-		var url = localUrlStub + "/transferpoints?" + transferString
-				+ "&activities=2&type=Transfer&money=0"
-
-		blockchainRestApi(url, parseTransfer);
-
-	}*/
     function updateOTA(){
         var SubSystem = $("#SubSystemUpdate")[0];
         var version=$("#SubSystemVersion")[0];
@@ -265,42 +250,21 @@
 	   
    }
    
-	// Submit a new smart contract to the Blockchain service using the NODE JS REST API
-	/*function addSmartContract() {
-
-		var contractTerms = "contractid=" + contractId + "&title=" + title
-				+ "&condition1=" + term1 + "&condition2=" + term2
-				+ "&discountrate=" + discountRate;
-
-		var url = localUrlStub + "/addSmartContract?" + contractTerms;
-		blockchainRestApi(url, parseContract);
-
-	}*/
-	/*function parseTransfer(response) {
-
-		document.getElementById('CompatibilityPage').style.display = "none"
-		document.getElementById('CompatibilityMessage').style.display = "block"
-
-	}*/
-
-	// Parse a travel purchase response from Blockchain service
-	/*function parseTravelPurchase(response) {
-
-		document.getElementById('ConfigurationPage').style.display = "none"
-		//document.getElementById('TravelOffersMessage').style.display = "block"
-	}*/
-
-	function updateSynchronize(response) {
+	
+    function submitSynchronize() {
+		var url = localUrlStub + "/loadMatrix";
+		blockchainRestApi(url, syncResult);  
+	
+	}
+	function syncResult(response){
+		console.log(response)
+	}
+	/*function updateSynchronize(response) {
 
 		document.getElementById('SynchronizePage').style.display = "none"
 		document.getElementById('SynchronizeMessage').style.display = "block"
-	}
-	// Parse an 'add contract' response from the Blockchain service
-	/*function parseContract(response) {
-
-		document.getElementById('CreateOfferPage').style.display = "none";
-		//document.getElementById('CreateOfferMessage').style.display = "block";
 	}*/
+	
 
 	// Refresh the 'Transfer Points' tab after a user submits a points transfer
 	function displayCompatibility() {

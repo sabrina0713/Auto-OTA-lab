@@ -26,6 +26,7 @@ var url 				= require('url');
 var setup 				= require('./setup');
 var fs 					= require('fs');
 var cors 				= require('cors');
+//var compatibility		= require('./public/openPoints/matrix.json')
 
 // Set Server Parameters
 var host = setup.SERVER.HOST;
@@ -143,6 +144,31 @@ app.get('/', function(req, res) {
 
 	});
 });
+app.get('/loadMatrix',function(req,res){
+	var options = {
+		    host: 'google.com',
+		    path: '/'
+		}
+		var request = http.request(options, function (res) {
+		    var data = '';
+		    res.on('data', function (chunk) {
+		        data += chunk;
+		    });
+		    res.on('end', function () {
+		        console.log(data);
+
+		    });
+		});
+		request.on('error', function (e) {
+		    console.log(e.message);
+		});
+		request.end();
+		  
+	
+	var json = JSON.parse(fs.readFileSync('./public/openPoints/matrix.json', 'utf8'));
+	//var json = JSON.parse(fs.readFileSync('https://raw.githubusercontent.com/sabrina0713/Auto-OTA-lab/master/public/openPoints/matrix.json', 'utf8'));
+	res.send(json)
+})
 
 // Get all smart contracts from the blockchain
 app.get('/getAllContracts', function(req, res) {
@@ -308,9 +334,10 @@ app.use(function(err, req, res, next) {
 	};
 	if (req.bag.error.status == 404)
 		req.bag.error.msg = 'Sorry, I cannot locate that file';
-	res.render('template/error', {
+	/*res.render('template/error', {
 		bag : req.bag
-	});
+	}); */
+	res.send(req.bag)
 });
 
 // ============================================================================================================================
