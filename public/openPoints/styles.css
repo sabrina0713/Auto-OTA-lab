@@ -29,8 +29,16 @@ padding-top:17px;
 }
 input[type=radio]{margin-top:20cm;}
 
-.purchase-btn{width: 200px;text-align: center; color: #fff; background: #e2564f; border-radius: 5px; border: none; padding: 7px 0px;font-size: 11pt;font-weight: lighter;}
-
+.submit {
+    background-color: #006699;
+    color: white;
+    padding: 10px 24px;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
 .transaction-btn{width: 200px;text-align: center; color: #fff; background: #808685; border-radius: 5px; border: none; padding: 7px 0px;font-size: 11pt;font-weight: lighter;}
 
 td{padding:5px;}

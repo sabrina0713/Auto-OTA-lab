@@ -205,7 +205,7 @@
 		var fromSubSystem = fromSystem.options[fromSystem.selectedIndex].value;
 		var desc="customer update"
 		var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
-		var currentVersion = version.options[version.selectedIndex].value;
+		var currentVersion = document.getElementById("subcategory").value;
 		var url 		= localUrlStub + "/pushUpdate?ssid=" + currentSubSystem+"&from="+fromSubSystem+"&desc="+desc+"&version="+currentVersion;
 		blockchainRestApi(url, updateResult);  
 	}
@@ -298,16 +298,6 @@
 						"click", displaySynchronize);
 			});
 	
-		// jQuery for selecting appropriate version for updating subsystems. 
-	$(document).ready(function(){
-	    $("#userAccount").on("change",function(){
-	        var selectedVal=$( "#userAccount option:selected" ).val();
-	        $("#subcategory > optgroup").attr("disabled","disabled");
-	        $('#subcategory > optgroup[label="'+selectedVal+'"]').removeAttr("disabled");
-	        
-	    });  
-	});
-	
 </script>
 </head>
 <body>
@@ -368,35 +358,13 @@
    		      <option value="Powertrain">Powertrain</option>
               <option value="Chassis">Chassis</option>
               <option value="Safety">Safety</option>
-     </select>	        
-     <select name="subcategory" id="subcategory">
-
-     <optgroup label="Telematics">
-        <option value="340">340</option>
-        <option value="350">350</option>
-        <option value="360">360</option>
-    </optgroup>
-    <optgroup id="B" label="Powertrain" disabled>
-        <option value="260">260</option>
-        <option value="280">280</option>
-        <option value="350">350</option>
-    </optgroup>
-    <optgroup id="C" label="Chassis" disabled>
-        <option value="350">23</option>
-        <option value="216">24</option>
-        <option value="227">25</option>
-        <option value="227">31</option>
-    </optgroup>
-    <optgroup id="D" label="Safety" disabled>
-        <option value="315">315</option>
-        <option value="206">206</option>
-        <option value="207">207</option>
-    </optgroup>
-   
-    </select>							
-    <button onclick="updateOTA()" class="purchase-btn">Submit</button>
+       </select>	
+      Version: <input type="text" name="version" id="subcategory">	
+    
+    <br><br><br><br>					
+    <button type="button" onclick="updateOTA()" class="submit">Submit</button>
 			<span id='updateMessage' style='display: none'>
-				Update completed! </span>
+				Update completed! </span>		
 									
 		</div>
 
@@ -412,7 +380,7 @@
 			<span id='SynchronizePage'>
             <h3>Install Current Compatibility Master Segment</h3>
 				
-				<button onclick="submitSynchronize()" class="purchase-btn">Submit
+				<button onclick="submitSynchronize()" class="submit">Submit
 				</button>
 			</span> <span id='SynchronizeMessage'> Synchronize submitted! </span>
 		</div>
