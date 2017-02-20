@@ -148,7 +148,7 @@
 		obj["Telematics"].forEach(function(e){
 			TeleString=TeleString+e+"</br>"
 		});
-		
+		console.log(ChassisString)
 		var out = "<table border='1'><tr><td style='width: 80%; text-align: center; color: black; background-color:#f1f1f1;'>Subsystem</td>";
 		out += "<td style='width: 80%; color: black; text-align: center; background-color:#f1f1f1;'>Compatibility Versions</td>";
 		out += "</tr>"
@@ -201,6 +201,7 @@
 		blockchainRestApi(url, updateResult);  
 
 	}
+    /*
 	function updateResult(response){
 		
 		var arr = JSON.parse(response);		
@@ -223,7 +224,7 @@
 		document.getElementById("updateTable").innerHTML = out;
 	}
 	
-    	      
+    	*/      
 	// Get a car's subsystem information from the Blockchain service using the NODE JS REST API
 	function changeSubsystem() {
 
@@ -267,6 +268,7 @@
 		document.getElementById('CompatibilityPage').style.display = "block";
 
 	}
+	/*
 	function displayUpdate() {
 		
 		var url = localUrlStub + "/updateEmbedded";
@@ -274,6 +276,7 @@
 		document.getElementById('UpdatePage').style.display = "block";
 
 	}
+	*/
 	
 	function displaySynchronize() {
 		//$('#SynchronizePage').style.display = "block";
@@ -304,8 +307,9 @@
 <body>
 	<div class="content">
 		<div class="top-header">
+		<div class ="flex-container">
 			<div class="col50 main-font"> OEM OTA Update Management</div>
-			<div class="user">
+			<div class ="subsystem">
 				Subsystem: <select id="SubSystem" 
 					onchange="changeSubsystem()">
 					<option value="Telematics">Telematics</option>
@@ -314,7 +318,7 @@
 					<option value="Safety">Safety</option>
 				</select>
 			</div>
-			<div class="user">
+			<div class= "vin">
 			   VIN: <select id = "VIN" 
 			   onchange= changeVIN()>
 			   <option value="Value1">1FTYR44VX2PB60564</option>
@@ -325,7 +329,7 @@
 			   </select>
 		    </div>
 		  </div>
-
+		</div>
 		<ul class="tab">
 			<li><a href="#" class="tablinks"
 				onclick="openTab(event, 'Configuration')">Configuration</a></li>
@@ -353,7 +357,7 @@
 
 		<div id="Update" class="tabcontent">
 		<span id='UpdatePage'>
-			<h3>UpdateSystem</h3>
+			<h3>Update System</h3>
 			<hr>
         <select name="userAccount" id="userAccount" onchange=changeCategory()>
               <option value="Telematics" selected>Telematics</option>

@@ -12,7 +12,7 @@ hr {margin-bottom;10px;}
 
 .top-header{height:40px;padding:10px 15px 0px 15px;}
 
-.top-header:after {content: "";	display: table;	clear: both; width: 100%;}
+.top-header:after {content:"";	display: table;	clear: both; width: 100%;}
 
 .col50{width:50%; position: relative; float:left;}
 
@@ -21,10 +21,12 @@ hr {margin-bottom;10px;}
 font-size:20pt;
 font-family:Arial;
 }
-.user{
-	display:inline-block;
-	float:right;
-	margin:0.6em;
+.flex-container {
+	display:flex; 
+	padding: 9px;	
+}
+.vin {
+	margin-left:auto;	
 }
 
 input[type=radio]{margin-top:20cm;}
