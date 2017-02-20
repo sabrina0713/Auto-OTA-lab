@@ -171,20 +171,22 @@ app.get('/loadMatrix',function(req,res){
 })
 
 // Get all smart contracts from the blockchain
-app.get('/getAllContracts', function(req, res) {
+/*app.get('/getAllContracts', function(req, res) {
 
 	chaincode.query.getAllContracts(['getAllContracts', 'dummy_argument'], function(e,data){	
 			var jsonObj = "{\"array\":" + data + "}";
 			cb_received_response(e,jsonObj,res);
 		});
 
-});
+}); */
 
 app.get('/getCompatibility', function(req, res) {
 	
 	console.log("getCompatibility")
-	chaincode.query.getReferenceTables(['getReferenceTables','dummy_argument'], function(e,data){	
+	var VIN = url.parse(req.url, true).query.VIN;
+	
 	//chaincode.query.getReferenceTables(['getReferenceTables','dummy_argument'], function(e,data){	
+	chaincode.query.getCompatibility([VIN], function(e,data){	
 		var jsonObj = "{\"array\":" + data + "}";
 		cb_received_response(e,jsonObj,res);
 
@@ -192,10 +194,10 @@ app.get('/getCompatibility', function(req, res) {
 });
 
 app.get('/getSubsystem', function(req, res) {
-
+	var VIN = url.parse(req.url, true).query.VIN;
 	var ssid = url.parse(req.url, true).query.ssid;
 	console.log("getSubsystem")
-	chaincode.query.getSubsystem(['getSubsystem',ssid], function(e,data){	
+	chaincode.query.getSubsystem([VIN,ssid], function(e,data){	
 		var jsonObj = data;
 		cb_received_response(e,jsonObj,res);
 	});
@@ -241,7 +243,7 @@ app.get('/updateEmbedded', function(req, res) {
 });
 
 // Add a smart contract to the blockchain 
-app.get('/addSmartContract', function(req, res) {
+/*app.get('/addSmartContract', function(req, res) {
 
 	var contractId 		= url.parse(req.url, true).query.contractid;
 	var title 			= url.parse(req.url, true).query.title;
@@ -261,7 +263,7 @@ app.get('/addSmartContract', function(req, res) {
 	res.send("success");
 
 });  
-
+*/
 
 // Get a single participant's account information
 app.get('/getCustomerPoints', function(req, res) {
@@ -278,7 +280,7 @@ app.get('/getCustomerPoints', function(req, res) {
 
 
 // Get a single participant's transaction history
-app.get('/getUserTransactions', function(req, res) {
+/*app.get('/getUserTransactions', function(req, res) {
 
 	var userid = url.parse(req.url, true).query.userid;
 
@@ -288,7 +290,7 @@ app.get('/getUserTransactions', function(req, res) {
 		cb_received_response(e, data, res);
 	});
 
-});
+});*/
 
 
 // Reset all of the data in the blockchain back to the original state 

@@ -66,9 +66,9 @@ type Transaction struct {
 type Operation struct {
 	RefNumber	string		`json:"RefNumber"`
 	Date 		time.Time	`json:"Date"`
-	From		string		`json:"FromUserid"`
-	To		string		`json:"ToUserid"`
-	Description	string		`json:"description"`
+	VIN		string		`json:"VIN"`
+	Subsystem	string		`json:"Subsystem"`
+	Description	string		`json:"Description"`
 	Version		string		`json:"Version"`
 	StatusCode	int		`json:"StatusCode"`
 	StatusMsg	string		`json:"StatusMsg"`
@@ -96,13 +96,26 @@ type Compatibility struct {
 	Telematics	[]string	`json:"Telematics"`
 }
 
+type Version struct {
+	Build		string		`json:"Build"`
+	Date		string		`json:"Date"`
+}
+
 // Subsystem running version record
 type Subsystem struct {
-	SsId		string		`json:"SsId"`
-	Version		string		`json:"Version"`
-	BuildDate	string		`json:"BuildDate"`
+	Id		string		`json:"Id"`
+	Version		Version		`json:"Version"`
 	ModifiedDate	string		`json:"ModifiedDate"`
 	NumTxs		int		`json:"NumberOfTransactions"`
+}
+
+type Vehicle struct {
+	Id		string		`json:"VIN"`
+	Chassis		Subsystem	`json:"Chassis"`
+	Powertrain	Subsystem	`json:"Powertrain"`
+	Safety		Subsystem	`json:"Safety"`
+	Telematics	Subsystem	`json:"Telematics"`
+	Compat		Compatibility	`json:"Compatibility"`
 }
 
 // Open Points member record
@@ -294,58 +307,6 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		return nil, err
 	}
 
-	// Create the 'Chassis' subsystem and add it to the blockchain
-	var chassis Subsystem
-	chassis.SsId = "Chassis"
-	chassis.Version = "001"
-	chassis.NumTxs = 0
-
-	jsonAsBytes, _ = json.Marshal(chassis)
-	err = stub.PutState(chassis.SsId, jsonAsBytes)								
-	if err != nil {
-		fmt.Println("Error Creating Chassis subsystem")
-		return nil, err
-	}
-
-	// Create the 'Powertrain' subsystem and add it to the blockchain
-	var powertrain Subsystem
-	powertrain.SsId = "Powertrain"
-	powertrain.Version = "001"
-	powertrain.NumTxs  = 0
-	
-	jsonAsBytes, _ = json.Marshal(powertrain)
-	err = stub.PutState(powertrain.SsId, jsonAsBytes)								
-	if err != nil {
-		fmt.Println("Error Creating Powertrain subsystem")
-		return nil, err
-	}
-
-	// Create the 'Safety' subsystem and add it to the blockchain
-	var safety Subsystem
-	safety.SsId = "Safety"
-	safety.Version = "001"
-	safety.NumTxs  = 0
-
-	jsonAsBytes, _ = json.Marshal(safety)
-	err = stub.PutState(safety.SsId, jsonAsBytes)								
-	if err != nil {
-		fmt.Println("Error Creating Safety subsystem")
-		return nil, err
-	}
-
-	// Create the 'Telematics' subsystem and add it to the blockchain
-	var telematics Subsystem
-	telematics.SsId = "Telematics"
-	telematics.Version = "001"
-	telematics.NumTxs  = 0
-
-	jsonAsBytes, _ = json.Marshal(telematics)
-	err = stub.PutState(telematics.SsId, jsonAsBytes)								
-	if err != nil {
-		fmt.Println("Error Creating Telematics subsystem")
-		return nil, err
-	}
-
 	// Create compatibility reference data and add it to the blockchain
 	var reference Compatibility
 		reference.Chassis = append(reference.Chassis,"023")
@@ -380,6 +341,177 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		referenceDate.Telematics = append(referenceDate.Telematics,"2017-02-13 15:03:07")
 		referenceDate.Telematics = append(referenceDate.Telematics,"2017-02-13 15:03:07")
 	
+	var cars [5]Vehicle
+
+	cars[0].Id = "1FTYR44VX2PB60564"
+	cars[0].Chassis.Id = "Chassis"
+	cars[0].Chassis.Version.Build = "1"
+	cars[0].Chassis.Version.Date = "2017-01-07 13:20:09"
+	cars[0].Chassis.NumTxs = 0
+	cars[0].Powertrain.Id = "Powertrain"
+	cars[0].Powertrain.Version.Build = "1"
+	cars[0].Powertrain.Version.Date = "2017-01-08 13:20:09"
+	cars[0].Powertrain.NumTxs = 0
+	cars[0].Safety.Id = "Safety"
+	cars[0].Safety.Version.Build = "1"
+	cars[0].Safety.Version.Date = "2017-01-09 13:20:09"
+	cars[0].Safety.NumTxs = 0
+	cars[0].Telematics.Id = "Telematics"
+	cars[0].Telematics.Version.Build = "1"
+	cars[0].Telematics.Version.Date = "2017-01-10 13:20:09"
+	cars[0].Telematics.NumTxs = 0
+	cars[0].Compat.Chassis = append(cars[0].Compat.Chassis,"023")
+	cars[0].Compat.Chassis = append(cars[0].Compat.Chassis,"024")
+	cars[0].Compat.Chassis = append(cars[0].Compat.Chassis,"025")
+	cars[0].Compat.Chassis = append(cars[0].Compat.Chassis,"031")
+	cars[0].Compat.Powertrain = append(cars[0].Compat.Powertrain,"120")
+	cars[0].Compat.Powertrain = append(cars[0].Compat.Powertrain,"131")
+	cars[0].Compat.Powertrain = append(cars[0].Compat.Powertrain,"175")
+	cars[0].Compat.Powertrain = append(cars[0].Compat.Powertrain,"192")
+	cars[0].Compat.Safety = append(cars[0].Compat.Safety,"137")
+	cars[0].Compat.Safety = append(cars[0].Compat.Safety,"139")
+	cars[0].Compat.Safety = append(cars[0].Compat.Safety,"140")
+	cars[0].Compat.Telematics = append(cars[0].Compat.Telematics,"036")
+	cars[0].Compat.Telematics = append(cars[0].Compat.Telematics,"037")
+	cars[0].Compat.Telematics = append(cars[0].Compat.Telematics,"091")
+
+	cars[1].Id = "KMHCN46CX9U370929"
+	cars[1].Chassis.Id = "Chassis"
+	cars[1].Chassis.Version.Build = "1"
+	cars[1].Chassis.Version.Date = "2017-01-07 13:20:09"
+	cars[1].Chassis.NumTxs = 0
+	cars[1].Powertrain.Id = "Powertrain"
+	cars[1].Powertrain.Version.Build = "1"
+	cars[1].Powertrain.Version.Date = "2017-01-08 13:20:09"
+	cars[1].Powertrain.NumTxs = 0
+	cars[1].Safety.Id = "Safety"
+	cars[1].Safety.Version.Build = "1"
+	cars[1].Safety.Version.Date = "2017-01-09 13:20:09"
+	cars[1].Safety.NumTxs = 0
+	cars[1].Telematics.Id = "Telematics"
+	cars[1].Telematics.Version.Build = "1"
+	cars[1].Telematics.Version.Date = "2017-01-10 13:20:09"
+	cars[1].Telematics.NumTxs = 0
+	cars[1].Compat.Chassis = append(cars[1].Compat.Chassis,"023")
+	cars[1].Compat.Chassis = append(cars[1].Compat.Chassis,"024")
+	cars[1].Compat.Chassis = append(cars[1].Compat.Chassis,"025")
+	cars[1].Compat.Chassis = append(cars[1].Compat.Chassis,"031")
+	cars[1].Compat.Powertrain = append(cars[1].Compat.Powertrain,"120")
+	cars[1].Compat.Powertrain = append(cars[1].Compat.Powertrain,"131")
+	cars[1].Compat.Powertrain = append(cars[1].Compat.Powertrain,"175")
+	cars[1].Compat.Powertrain = append(cars[1].Compat.Powertrain,"192")
+	cars[1].Compat.Safety = append(cars[1].Compat.Safety,"137")
+	cars[1].Compat.Safety = append(cars[1].Compat.Safety,"139")
+	cars[1].Compat.Safety = append(cars[1].Compat.Safety,"140")
+	cars[1].Compat.Telematics = append(cars[1].Compat.Telematics,"036")
+	cars[1].Compat.Telematics = append(cars[1].Compat.Telematics,"037")
+	cars[1].Compat.Telematics = append(cars[1].Compat.Telematics,"091")
+
+	cars[2].Id = "JTDKTUD33DD559195"
+	cars[2].Chassis.Id = "Chassis"
+	cars[2].Chassis.Version.Build = "1"
+	cars[2].Chassis.Version.Date = "2017-01-07 13:20:09"
+	cars[2].Chassis.NumTxs = 0
+	cars[2].Powertrain.Id = "Powertrain"
+	cars[2].Powertrain.Version.Build = "1"
+	cars[2].Powertrain.Version.Date = "2017-01-08 13:20:09"
+	cars[2].Powertrain.NumTxs = 0
+	cars[2].Safety.Id = "Safety"
+	cars[2].Safety.Version.Build = "1"
+	cars[2].Safety.Version.Date = "2017-01-09 13:20:09"
+	cars[2].Safety.NumTxs = 0
+	cars[2].Telematics.Id = "Telematics"
+	cars[2].Telematics.Version.Build = "1"
+	cars[2].Telematics.Version.Date = "2017-01-10 13:20:09"
+	cars[2].Telematics.NumTxs = 0
+	cars[2].Compat.Chassis = append(cars[2].Compat.Chassis,"023")
+	cars[2].Compat.Chassis = append(cars[2].Compat.Chassis,"024")
+	cars[2].Compat.Chassis = append(cars[2].Compat.Chassis,"025")
+	cars[2].Compat.Chassis = append(cars[2].Compat.Chassis,"031")
+	cars[2].Compat.Powertrain = append(cars[2].Compat.Powertrain,"120")
+	cars[2].Compat.Powertrain = append(cars[2].Compat.Powertrain,"131")
+	cars[2].Compat.Powertrain = append(cars[2].Compat.Powertrain,"175")
+	cars[2].Compat.Powertrain = append(cars[2].Compat.Powertrain,"192")
+	cars[2].Compat.Safety = append(cars[2].Compat.Safety,"137")
+	cars[2].Compat.Safety = append(cars[2].Compat.Safety,"139")
+	cars[2].Compat.Safety = append(cars[2].Compat.Safety,"140")
+	cars[2].Compat.Telematics = append(cars[2].Compat.Telematics,"036")
+	cars[2].Compat.Telematics = append(cars[2].Compat.Telematics,"037")
+	cars[2].Compat.Telematics = append(cars[2].Compat.Telematics,"091")
+
+	cars[3].Id = "4T1CE30P08U765674"
+	cars[3].Chassis.Id = "Chassis"
+	cars[3].Chassis.Version.Build = "1"
+	cars[3].Chassis.Version.Date = "2017-01-07 13:20:09"
+	cars[3].Chassis.NumTxs = 0
+	cars[3].Powertrain.Id = "Powertrain"
+	cars[3].Powertrain.Version.Build = "1"
+	cars[3].Powertrain.Version.Date = "2017-01-08 13:20:09"
+	cars[3].Powertrain.NumTxs = 0
+	cars[3].Safety.Id = "Safety"
+	cars[3].Safety.Version.Build = "1"
+	cars[3].Safety.Version.Date = "2017-01-09 13:20:09"
+	cars[3].Safety.NumTxs = 0
+	cars[3].Telematics.Id = "Telematics"
+	cars[3].Telematics.Version.Build = "1"
+	cars[3].Telematics.Version.Date = "2017-01-10 13:20:09"
+	cars[3].Telematics.NumTxs = 0
+	cars[3].Compat.Chassis = append(cars[3].Compat.Chassis,"023")
+	cars[3].Compat.Chassis = append(cars[3].Compat.Chassis,"024")
+	cars[3].Compat.Chassis = append(cars[3].Compat.Chassis,"025")
+	cars[3].Compat.Chassis = append(cars[3].Compat.Chassis,"031")
+	cars[3].Compat.Powertrain = append(cars[3].Compat.Powertrain,"120")
+	cars[3].Compat.Powertrain = append(cars[3].Compat.Powertrain,"131")
+	cars[3].Compat.Powertrain = append(cars[3].Compat.Powertrain,"175")
+	cars[3].Compat.Powertrain = append(cars[3].Compat.Powertrain,"192")
+	cars[3].Compat.Safety = append(cars[3].Compat.Safety,"137")
+	cars[3].Compat.Safety = append(cars[3].Compat.Safety,"139")
+	cars[3].Compat.Safety = append(cars[3].Compat.Safety,"140")
+	cars[3].Compat.Telematics = append(cars[3].Compat.Telematics,"036")
+	cars[3].Compat.Telematics = append(cars[3].Compat.Telematics,"037")
+	cars[3].Compat.Telematics = append(cars[3].Compat.Telematics,"091")
+
+	cars[4].Id = "4A4AR3AU6FE004670"
+	cars[4].Chassis.Id = "Chassis"
+	cars[4].Chassis.Version.Build = "1"
+	cars[4].Chassis.Version.Date = "2017-01-07 13:20:09"
+	cars[4].Chassis.NumTxs = 0
+	cars[4].Powertrain.Id = "Powertrain"
+	cars[4].Powertrain.Version.Build = "1"
+	cars[4].Powertrain.Version.Date = "2017-01-08 13:20:09"
+	cars[4].Powertrain.NumTxs = 0
+	cars[4].Compat.Chassis = append(cars[4].Compat.Chassis,"023")
+	cars[4].Safety.Id = "Safety"
+	cars[4].Safety.Version.Build = "1"
+	cars[4].Safety.Version.Date = "2017-01-09 13:20:09"
+	cars[4].Safety.NumTxs = 0
+	cars[4].Telematics.Id = "Telematics"
+	cars[4].Telematics.Version.Build = "1"
+	cars[4].Telematics.Version.Date = "2017-01-10 13:20:09"
+	cars[4].Telematics.NumTxs = 0
+	cars[4].Compat.Chassis = append(cars[4].Compat.Chassis,"024")
+	cars[4].Compat.Chassis = append(cars[4].Compat.Chassis,"025")
+	cars[4].Compat.Chassis = append(cars[4].Compat.Chassis,"031")
+	cars[4].Compat.Powertrain = append(cars[4].Compat.Powertrain,"120")
+	cars[4].Compat.Powertrain = append(cars[4].Compat.Powertrain,"131")
+	cars[4].Compat.Powertrain = append(cars[4].Compat.Powertrain,"175")
+	cars[4].Compat.Powertrain = append(cars[4].Compat.Powertrain,"192")
+	cars[4].Compat.Safety = append(cars[4].Compat.Safety,"137")
+	cars[4].Compat.Safety = append(cars[4].Compat.Safety,"139")
+	cars[4].Compat.Safety = append(cars[4].Compat.Safety,"140")
+	cars[4].Compat.Telematics = append(cars[4].Compat.Telematics,"036")
+	cars[4].Compat.Telematics = append(cars[4].Compat.Telematics,"037")
+	cars[4].Compat.Telematics = append(cars[4].Compat.Telematics,"091")
+
+	for i:=0;i<len(cars);i++ {
+		jsonAsBytes, _ = json.Marshal(cars[i])
+		err = stub.PutState(cars[i].Id, jsonAsBytes)								
+		if err != nil {
+			fmt.Println("Error creating vehicles")
+			return nil, err
+		}
+	}
+
 	jsonAsBytes, _ = json.Marshal(reference)
 	err = stub.PutState(REFERENCE_TABLES, jsonAsBytes)								
 	if err != nil {
@@ -393,6 +525,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		fmt.Println("Error creating reference date tables")
 		return nil, err
 	}
+
 
 	// Create an array of contract ids to keep track of all contracts
 	var contractIds []string
@@ -452,12 +585,13 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 
 	
 	if function == "getTxs" { return t.getTxs(stub, args[1]) }
-	if function == "getOps" { return t.getOps(stub, args[1]) }
+	if function == "getOps" { return t.getOps(stub, args[0],args[1]) }
 	if function == "getUserAccount" { return t.getUserAccount(stub, args[1]) }
-	if function == "getSubsystem" { return t.getSubsystem(stub, args[1]) }
+	if function == "getSubsystem" { return t.getSubsystem(stub,args[0],args[1]) }
 	if function == "getAllContracts" { return t.getAllContracts(stub) }
 	if function == "getReferenceNumber" { return t.getReferenceNumber(stub) }
 	if function == "getReferenceTables" { return t.getReferenceTables(stub) }
+	if function == "getCompatibility" { return t.getCompatibility(stub,args[0]) }
 	
 	fmt.Println("query did not find func: " + function)						//error
 
@@ -485,19 +619,29 @@ func (t *SimpleChaincode) getUserAccount(stub shim.ChaincodeStubInterface, userI
 // ============================================================================================================================
 // Get Subsystem 'account' from the blockchain
 // ============================================================================================================================
-func (t *SimpleChaincode) getSubsystem(stub shim.ChaincodeStubInterface, SsId string)([]byte, error){
+func (t *SimpleChaincode) getSubsystem(stub shim.ChaincodeStubInterface,VIN string,ssId string)([]byte, error){
 	
 	fmt.Println("Start getSubsystem()")
-	fmt.Println("Looking for subsystem with ID " + SsId);
+	fmt.Println("Looking for subsystem with VIN " + VIN + " and SSID " + ssId);
 
-	//get the User index
-	fdAsBytes, err := stub.GetState(SsId)
-	if err != nil {
-		return nil, errors.New("Failed to get subsystem from blockchain")
+	vehicleAsBytes, _ := stub.GetState(VIN) 
+	var vehicle Vehicle
+	json.Unmarshal(vehicleAsBytes,&vehicle)
+
+	var subsystem Subsystem
+	switch ssId {
+		case "Chassis":
+			subsystem = vehicle.Chassis
+		case "Powertrain":
+			subsystem = vehicle.Powertrain
+		case "Safety":
+			subsystem = vehicle.Safety
+		case "Telematics":
+			subsystem = vehicle.Telematics
 	}
+	subsystemAsBytes, _ := json.Marshal(subsystem)
 
-	return fdAsBytes, nil
-	
+	return subsystemAsBytes, nil
 }
 
 // ============================================================================================================================
@@ -541,12 +685,12 @@ func (t *SimpleChaincode) getTxs(stub shim.ChaincodeStubInterface, userId string
 // ============================================================================================================================
 // Get all operations that involve a particular subsystem
 // ============================================================================================================================
-func (t *SimpleChaincode) getOps(stub shim.ChaincodeStubInterface, SsId string)([]byte, error){
+func (t *SimpleChaincode) getOps(stub shim.ChaincodeStubInterface,VIN string,SsId string)([]byte, error){
 	
 	var res AllOperations
 
 	fmt.Println("Start getOps")
-	fmt.Println("Looking for " + SsId);
+	fmt.Println("Looking for " + VIN + SsId);
 
 	//get the AllOperations index
 	allOpAsBytes, err := stub.GetState("allOp")
@@ -559,15 +703,11 @@ func (t *SimpleChaincode) getOps(stub shim.ChaincodeStubInterface, SsId string)(
 	numOps := len(ops.Operations)
 
 	for i := numOps -1; i >= 0; i-- {
-	    if ops.Operations[i].From == SsId{
-			res.Operations = append(res.Operations, ops.Operations[i])
-		}
-
-		if ops.Operations[i].To == SsId{
+	    if (ops.Operations[i].VIN == VIN && ops.Operations[i].Subsystem == SsId) {
 			res.Operations = append(res.Operations, ops.Operations[i])
 		}
 		
-		if (len(res.Operations) >= NUM_OP_TO_RETURN) { break }
+	    if (len(res.Operations) >= NUM_OP_TO_RETURN) { break }
 	}
 
 	resAsBytes, _ := json.Marshal(res)
@@ -602,6 +742,21 @@ func (t *SimpleChaincode) getReferenceTables(stub shim.ChaincodeStubInterface)([
 
 	refTablesAsBytes, _ := stub.GetState(REFERENCE_TABLES)
 	return refTablesAsBytes, nil
+
+}
+
+func (t *SimpleChaincode) getCompatibility(stub shim.ChaincodeStubInterface, VIN string)([]byte, error)  {
+
+	fmt.Println("VIN is " + VIN)
+	vehicleAsBytes, _ := stub.GetState(VIN) 
+	var vehicle Vehicle
+	json.Unmarshal(vehicleAsBytes,&vehicle)
+
+	var tables Compatibility
+	tables = vehicle.Compat
+	compatibilityAsBytes, _ := json.Marshal(tables)
+
+	return compatibilityAsBytes, nil
 
 }
 
@@ -920,8 +1075,8 @@ func (t *SimpleChaincode) updateEmbedded(stub shim.ChaincodeStubInterface, args 
 	
 	var op Operation
 	op.Date		= startDate
-	op.To 		= args[0]
-	op.From 	= args[1]
+	op.VIN		= args[0]
+	op.Subsystem	= args[1]
 	op.Description 	= args[2]
 	op.Version	= args[3]
 	op.StatusCode 	= 1
@@ -954,7 +1109,7 @@ func (t *SimpleChaincode) updateEmbedded(stub shim.ChaincodeStubInterface, args 
 	//refTables := fmt.Sprintf("%s",refTablesAsBytes)
 	var i int
 	var bDate string
-	switch op.To {
+	switch op.Subsystem {
 		case "Chassis":
 			for i=0;i<len(refTables.Chassis);i++ {
 				if(refTables.Chassis[i] == op.Version) {
@@ -998,23 +1153,32 @@ func (t *SimpleChaincode) updateEmbedded(stub shim.ChaincodeStubInterface, args 
 	}
 
 	// Get subsystem from BC and update version
-	rfidBytes, err := stub.GetState(op.To)
-	if err != nil {
-		return nil, errors.New("updateEmbedded failed to get receiver from BC")
+	fmt.Println("VIN is " + op.VIN)
+	vehicleAsBytes, _ := stub.GetState(op.VIN) 
+	var vehicle Vehicle
+	json.Unmarshal(vehicleAsBytes,&vehicle)
+
+	var receiver *Subsystem
+	switch op.Subsystem {
+		case "Chassis":
+			receiver = &vehicle.Chassis
+		case "Powertrain":
+			receiver = &vehicle.Powertrain
+		case "Safety":
+			receiver = &vehicle.Safety
+		case "Telematics":
+			receiver = &vehicle.Telematics
 	}
 
-	var receiver Subsystem
-	fmt.Println("updateEmbedded unmarshalling Subsystem struct");
-	err = json.Unmarshal(rfidBytes, &receiver)
-	receiver.Version = op.Version
-	receiver.BuildDate = bDate
+	receiver.Version.Build = op.Version
+	receiver.Version.Date = bDate
 	receiver.ModifiedDate = currentDateStr
-	receiver.NumTxs = receiver.NumTxs + 1
-	
+	receiver.NumTxs++
+
 	//Commit Receiver to ledger
-	fmt.Println("updateEmbedded commit updated receiver To ledger");
-	opsAsBytes, _ := json.Marshal(receiver)
-	err = stub.PutState(op.To, opsAsBytes)	
+	fmt.Println("updateEmbedded commit updated vehicle To ledger");
+	opsAsBytes, _ := json.Marshal(vehicle)
+	err = stub.PutState(op.VIN,opsAsBytes)	
 	if err != nil {
 		return nil, err
 	}
@@ -1035,8 +1199,5 @@ func (t *SimpleChaincode) updateEmbedded(stub shim.ChaincodeStubInterface, args 
 	if err != nil {
 		return nil, err
 	}
-	
-	
 	return nil, nil
-
 }
