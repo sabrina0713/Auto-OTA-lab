@@ -146,17 +146,17 @@ app.get('/', function(req, res) {
 });
 app.get('/loadMatrix',function(req,res){
 	var options = {
-		    host: 'google.com',
-		    path: '/'
+		    host: 'gsclabblockchainapp.mybluemix.net',
+		    path: '/openPoints/matrix.json'
 		}
-		var request = http.request(options, function (res) {
+		var request = http.request(options, function (resdata) {
 		    var data = '';
-		    res.on('data', function (chunk) {
+		    resdata.on('data', function (chunk) {
 		        data += chunk;
 		    });
-		    res.on('end', function () {
+		    resdata.on('end', function () {
 		        console.log(data);
-
+		        res.send(data)
 		    });
 		});
 		request.on('error', function (e) {
@@ -167,7 +167,7 @@ app.get('/loadMatrix',function(req,res){
 	
 	var json = JSON.parse(fs.readFileSync('./public/openPoints/matrix.json', 'utf8'));
 	//var json = JSON.parse(fs.readFileSync('https://raw.githubusercontent.com/sabrina0713/Auto-OTA-lab/master/public/openPoints/matrix.json', 'utf8'));
-	res.send(json)
+	
 })
 
 // Get all smart contracts from the blockchain
@@ -184,7 +184,7 @@ app.get('/getCompatibility', function(req, res) {
 	
 	console.log("getCompatibility")
 	chaincode.query.getReferenceTables(['getReferenceTables','dummy_argument'], function(e,data){	
-		//res.send(data,e)
+	//chaincode.query.getReferenceTables(['getReferenceTables','dummy_argument'], function(e,data){	
 		var jsonObj = "{\"array\":" + data + "}";
 		cb_received_response(e,jsonObj,res);
 

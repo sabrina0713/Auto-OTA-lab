@@ -255,13 +255,10 @@
    
 	
     function submitSynchronize() {
-		var url = localUrlStub + "/loadMatrix";
-		blockchainRestApi(url, syncResult);  
+		
 	
 	}
-	function syncResult(response){
-		console.log(response)
-	}
+	
 	/*function updateSynchronize(response) {
 
 		document.getElementById('SynchronizePage').style.display = "none"
@@ -281,8 +278,17 @@
 	}
 	
 	function displaySynchronize() {
-		document.getElementById('SynchronizePage').style.display = "block";
-		document.getElementById('SynchronizeMessage').style.display = "none";
+		//$('#SynchronizePage').style.display = "block";
+		//document.getElementById('SynchronizeMessage').style.display = "none";
+		var url = localUrlStub + "/loadMatrix";
+		blockchainRestApi(url, syncReady);  
+	}
+	function syncReady(response){
+		console.log(response)
+		$('#SynchronizeMessage').text(response)
+		
+		
+		
 	}
 
 	// Add event listeners to the tabs so they display the relevant content when clicked on
@@ -414,7 +420,9 @@
 				
 				<button onclick="submitSynchronize()" class="purchase-btn">Submit
 				</button>
-			</span> <span id='SynchronizeMessage'> Synchronize submitted! </span>
+			</span>
+			</br>
+			 <span id='SynchronizeMessage'> New </span>
 		</div>
 	</div>
 </body>
