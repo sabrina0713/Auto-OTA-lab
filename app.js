@@ -203,10 +203,10 @@ app.get('/getSubsystem', function(req, res) {
 	});
 });
 app.get('/getHistory', function(req, res) {
-
+	var VIN = url.parse(req.url, true).query.VIN;
 	var ssid		= url.parse(req.url, true).query.ssid;
 	console.log("getHistory")
-	chaincode.query.getOps(['getOps',ssid], function(e,data){	
+	chaincode.query.getOps([VIN,ssid], function(e,data){	
 		
 		var jsonObj =  data;
 		cb_received_response(e,jsonObj,res);
@@ -221,7 +221,7 @@ app.get('/pushUpdate', function(req, res) {
 	var from      	= url.parse(req.url, true).query.from;
 	var desc		= url.parse(req.url, true).query.desc;
 	var version 	= url.parse(req.url, true).query.version;
-	console.log("getHistory"+ ssid+from+desc+version);
+	
 	chaincode.invoke.updateEmbedded([ ssid, from, desc,version], cb_invoked_api); 
 
      res.send("success");

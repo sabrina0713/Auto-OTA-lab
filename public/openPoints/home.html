@@ -78,11 +78,11 @@
 
 			var thisConfiguration = arr;
 		
-			out += "<tr><td style='padding-left:10px;'>" + thisConfiguration.SsId
+			out += "<tr><td style='padding-left:10px;'>" + thisConfiguration.Id
 					+ "</td>";
-			out +="<td>" + thisConfiguration.Version
+			out +="<td>" + thisConfiguration.Version.Build
 					+ "</td>";
-            out += "<td style='padding-left:10px;'>" + thisConfiguration.ModifiedDate
+            out += "<td style='padding-left:10px;'>" + thisConfiguration.Version.Date
 			+ "</td>";
 
 		out += "</table>";
@@ -175,16 +175,9 @@
 	function displayConfiguration() {
 
 		document.getElementById('ConfigurationPage').style.display = "block"
-		//changeSubsystem()
-        var e = document.getElementById("SubSystem");
 		
-		var currentSubSystem = e.options[e.selectedIndex].value;
-		var url 		= localUrlStub + "/getSubsystem?ssid=" + currentSubSystem;
-		
-		blockchainRestApi(url, parseConfiguration);
-		
-		var urlHistory = localUrlStub + "/getHistory?ssid=" + currentSubSystem;
-		blockchainRestApi(urlHistory, parseHistory);
+		retrieveConfiguration()
+        retrieveHistory()
 	}
 	function submitSynchronize(){
 		
@@ -203,7 +196,7 @@
 		blockchainRestApi(url, updateResult);  
 
 	}
-    /*
+    
 	function updateResult(response){
 		
 
@@ -211,45 +204,45 @@
 	}
 	
 	
-	// Get a user's vehicle information from the blockchain service using the 
-    function changeSubsystem() {
-		
-
-	}
 	
-    	*/      
 	// Get a car's subsystem information from the Blockchain service using the NODE JS REST API
 	function changeSubsystem() {
 
-		var e=$("#VIN")[0]
-		var subSystem=$("#SubSystem")[0]
-    	var currentVIN =  e.options[e.selectedIndex].value;
-		var currentSubSystem = subSystem.options[subSystem.selectedIndex].value;
-		var url 		= localUrlStub + "/getSubsystem?ssid=" + currentSubSystem+"&VIN="+currentVIN;
-		
-		
-
-		blockchainRestApi(url, parseConfiguration);
-
-		var urlHistory = localUrlStub + "/getHistory?ssid=" + currentSubSystem;
-		blockchainRestApi(urlHistory, parseHistory);
-
+		retrieveConfiguration()
+		retrieveHistory()
 	}
+   function changeVIN(){
+
+	  retrieveCompatibility()
+      retrieveHistory()
+      retrieveConfiguration()
+	   }
    function changeCategory() {
 	 
    }
-   function changeVIN(){
+   function retrieveHistory(){
+	   var e=$("#VIN")[0]
+		var subSystem=$("#SubSystem")[0]
+    	var currentVIN =  e.options[e.selectedIndex].text;
+		var currentSubSystem = subSystem.options[subSystem.selectedIndex].value;
+	   var urlHistory = localUrlStub + "/getHistory?ssid=" + currentSubSystem+"&VIN="+currentVIN;
+		blockchainRestApi(urlHistory, parseHistory);
 
+   }
+   function retrieveConfiguration(){
+	    var e=$("#VIN")[0]
+		var subSystem=$("#SubSystem")[0]
+     	var currentVIN =  e.options[e.selectedIndex].text;
+		var currentSubSystem = subSystem.options[subSystem.selectedIndex].value;
+		var url 		= localUrlStub + "/getSubsystem?ssid=" + currentSubSystem+"&VIN="+currentVIN;
+		blockchainRestApi(url, parseConfiguration);
+   }
+   
+   function retrieveCompatibility(){
 	   var e=$("#VIN")[0];
 	   var currentVIN =  e.options[e.selectedIndex].text;
 	   var url = localUrlStub + "/getCompatibility?VIN="+currentVIN;
 		blockchainRestApi(url, parseCompatibility);  
-
-	 //  var e = document.getElementById("VIN");
-	   
-	 //  var currentSystem = e.options.[e.selectedIndex].value; 
-	  // var url = localUrlStub + "/get"
-
    }
    	
     function submitSynchronize() {		
@@ -257,17 +250,11 @@
 	}
 	
 	
-
 	// Refresh the 'Transfer Points' tab after a user submits a points transfer
 	function displayCompatibility() {
-
-		e=$("#VIN")[0];
-		var currentVIN =  e.options[e.selectedIndex].text;
-		var url = localUrlStub + "/getCompatibility?VIN="+currentVIN;
-
-		blockchainRestApi(url, parseCompatibility);  
       
 		document.getElementById('CompatibilityPage').style.display = "block";
+		retrieveCompatibility()
 
 	}
 	
@@ -275,7 +262,7 @@
 		
 		//var url = localUrlStub + "/updateEmbedded";
 		//blockchainRestApi(url, updateResult);       
-		document.getElementById('UpdatePage').style.display = "block";
+		//document.getElementById('UpdatePage').style.display = "block";
 
 	}
 	
