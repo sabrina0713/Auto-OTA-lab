@@ -14,7 +14,7 @@ hr {margin-bottom;10px;}
 
 .top-header:after {content: "";	display: table;	clear: both; width: 100%;}
 
-.col50{width:50%; /*position: relative;*/ float:left;}
+.col50{width:50%; position: relative; float:left;}
 
 .main-font
 {
@@ -22,11 +22,11 @@ font-size:20pt;
 font-family:Arial;
 }
 .user{
-margin-left: 727px;
-padding-top:17px;
+	display:inline-block;
+	float:right;
+	margin:0.6em;
 }
-.VIN{ margin-left:480px; margin-top: -0.67cm; 
-}
+
 input[type=radio]{margin-top:20cm;}
 
 .submit {
