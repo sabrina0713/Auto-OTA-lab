@@ -94,39 +94,41 @@
         console.log(response); 
 		var i, j;
 		var out = "<table border=''><tr><td style='width: 300px;padding:7px; color:#000; background-color:#f1f1f1; text-align: center;'>Date</td>";
-		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>From</td>";
+		//out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>From</td>";
 		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>To</td>";
 		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Desc</td>";
 		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Version</td>";
 		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Status</td></tr>";
-		var arrLength = arr.length;
-
-
-		for (i = 0; i < arrLength; i++) {
-			var thisConfiguration = arr[i];
-			out += "<tr><td style='padding-left:10px;'>" + thisConfiguration.Date
-					+ "</td>";
-			out +="<td>" + thisConfiguration.FromUserid
-					+ "</td>";
-           out += "<td>" + thisConfiguration.ToUserid
-			+ "</td>";
-			out += "<td>" + thisConfiguration.description
-			+ "</td>";
-			out += "<td>" + thisConfiguration.Version
-			+ "</td>";
-			out += "<td>" + thisConfiguration.StatusMsg
-			+ "</td>";
-			/*var numConditions = thisContract.Conditions.length;
-			
-			out += "<ul>";
-			for (j = 0; j < numConditions; j++) {
-				out += "<li>" + thisContract.Conditions[j] + "</li>";
+		if(arr!=null)
+			{
+			var arrLength = arr.length;
+			for (i = 0; i < arrLength; i++) {
+				var thisConfiguration = arr[i];
+				out += "<tr><td style='padding-left:10px;'>" + thisConfiguration.Date
+						+ "</td>";
+				//out +="<td>" + thisConfiguration.FromUserid
+				//		+ "</td>";
+	           out += "<td>" + thisConfiguration.Subsystem
+				+ "</td>";
+				out += "<td>" + thisConfiguration.Description
+				+ "</td>";
+				out += "<td>" + thisConfiguration.Version
+				+ "</td>";
+				out += "<td>" + thisConfiguration.StatusMsg
+				+ "</td>";
+				/*var numConditions = thisContract.Conditions.length;
+				
+				out += "<ul>";
+				for (j = 0; j < numConditions; j++) {
+					out += "<li>" + thisContract.Conditions[j] + "</li>";
+				}
+	           */
+				out += "</tr>";
+			 }
 			}
-           */
-			out += "</tr>";
-		}
-		out += "</table>";
-		document.getElementById("historyTable").innerHTML = out;
+			out += "</table>";
+			document.getElementById("historyTable").innerHTML = out;
+			
 	}
 	
 	// Parse a user account response from the Blockchain service into an HTML table
@@ -138,6 +140,7 @@
         var ChassisString="";
 		var SafetyString="";
 		var TeleString="";
+		var PowerString="";
 		if(obj["Chassis"]!=null)
 		obj["Chassis"].forEach(function(e){
 			ChassisString=ChassisString+e+"</br>"
@@ -150,6 +153,10 @@
 		obj["Telematics"].forEach(function(e){
 			TeleString=TeleString+e+"</br>"
 		});
+		if(obj["Powertrain"]!=null)
+			obj["Powertrain"].forEach(function(e){
+				PowerString=PowerString+e+"</br>"
+			});
 		console.log(ChassisString)
 		var out = "<table border='1'><tr><td style='width: 80%; text-align: center; color: black; background-color:#f1f1f1;'>Subsystem</td>";
 		out += "<td style='width: 80%; color: black; text-align: center; background-color:#f1f1f1;'>Compatibility Versions</td>";
@@ -163,6 +170,9 @@
 				+ "</td></tr>"
 				+"<tr><td style='text-align:center;'>" + "Telemetrics"
 				+ "</td><td style='text-align: center;'>" + TeleString
+				+ "</td></tr>"
+				+"<tr><td style='text-align:center;'>" + "Powertrain"
+				+ "</td><td style='text-align: center;'>" + PowerString
 				+ "</td></tr>";
 				
 
@@ -186,13 +196,15 @@
     function updateOTA(){
         var SubSystem = $("#userAccount")[0];
         var version=$("#subcategory")[0];
-        var fromSystem = $("#SubSystem")[0];
+        
+        var VIN=$("#VIN")[0]
 		
-		var fromSubSystem = fromSystem.options[fromSystem.selectedIndex].value;
+    	var currentVIN =  VIN.options[VIN.selectedIndex].text;
+		
 		var desc="customer update"
 		var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
 		var currentVersion = document.getElementById("subcategory").value;
-		var url 		= localUrlStub + "/pushUpdate?ssid=" + currentSubSystem+"&from="+fromSubSystem+"&desc="+desc+"&version="+currentVersion;
+		var url 		= localUrlStub + "/pushUpdate?ssid=" + currentSubSystem+"&VIN="+currentVIN+"&desc="+desc+"&version="+currentVersion;
 		blockchainRestApi(url, updateResult);  
 
 	}
@@ -298,7 +310,7 @@
 		<div class="top-header">
 		<div class ="flex-container">
 			<div class="col50 main-font"> OEM OTA Update Management</div>
-			<div class ="subsystem">
+			
 				Subsystem: <select id="SubSystem" 
 					onchange="changeSubsystem()">
 					<option value="Telematics">Telematics</option>
@@ -306,17 +318,17 @@
 					<option value="Chassis">Chassis</option>
 					<option value="Safety">Safety</option>
 				</select>
-			</div>
-			<div class= "vin">
+			
+			
 			   VIN: <select id = "VIN" 
 			   onchange= changeVIN()>
 			   <option value="Value1">1FTYR44VX2PB60564</option>
 			   <option value="Value2">KMHCN46CX9U370929</option>
 			   <option value="Value3">JTDKTUD33DD559195</option>
 			   <option value="Value4">4T1CE30P08U765674</option>
-			   <option value ="Value5">4A4AR3AU6FE004670</option>
+			   <option value ="Value5">4A4AR3AU6FE004670</option> 
 			   </select>
-		    </div>
+		
 		  </div>
 		</div>
 		<ul class="tab">

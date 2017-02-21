@@ -1,6 +1,6 @@
 html{width:100%; font-family:Helvetica, sans-serif;}
 
-body{width:960px; margin:0 auto; background-color:#ccc;}
+body{margin:0 auto; background-color:#ccc;}
 
 .content{width:100%; background:#fff;min-height:700px;}
 
@@ -22,11 +22,16 @@ font-size:20pt;
 font-family:Arial;
 }
 .flex-container {
-	display:flex; 
-	padding: 9px;	
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: row;
+	flex-wrap: nowrap;	
 }
 .vin {
 	margin-left:auto;	
+}
+.item{
+	flex-shrink:0.6;
 }
 
 input[type=radio]{margin-top:20cm;}
