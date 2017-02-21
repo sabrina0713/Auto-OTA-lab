@@ -23,16 +23,15 @@ font-family:Arial;
 }
 .flex-container {
 	display: flex;
-	justify-content: flex-start;
+	
 	flex-direction: row;
 	flex-wrap: nowrap;	
+	justify-content:space-between;
 }
 .vin {
 	margin-left:auto;	
 }
-.item{
-	flex-shrink:0.6;
-}
+
 
 input[type=radio]{margin-top:20cm;}
 

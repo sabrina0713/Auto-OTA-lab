@@ -7,7 +7,8 @@
 
 <link rel="stylesheet" type="text/css" href="/openPoints/tabs.css">
 <link rel="stylesheet" type="text/css" href="/openPoints/styles.css">
-
+<link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="bootstrap-3.3.7/css/bootstrap.min.css">
 <script type="text/javascript">
 
 	// Variables for passing blockchain REST calls from NODE JS
@@ -194,7 +195,7 @@
 	}
 	
     function updateOTA(){
-        var SubSystem = $("#userAccount")[0];
+        var SubSystem = $("#SubSystem")[0];
         var version=$("#subcategory")[0];
         
         var VIN=$("#VIN")[0]
@@ -219,7 +220,9 @@
 	
 	// Get a car's subsystem information from the Blockchain service using the NODE JS REST API
 	function changeSubsystem() {
-
+		var subSystem=$("#SubSystem")[0]
+		var currentSubSystem = subSystem.options[subSystem.selectedIndex].value;
+        $('#UpdateLabel').text('Update '+currentSubSystem)
 		retrieveConfiguration()
 		retrieveHistory()
 	}
@@ -275,7 +278,9 @@
 		//var url = localUrlStub + "/updateEmbedded";
 		//blockchainRestApi(url, updateResult);       
 		//document.getElementById('UpdatePage').style.display = "block";
-
+       var subSystem=$("#SubSystem")[0]
+		var currentSubSystem = subSystem.options[subSystem.selectedIndex].value;
+        $('#UpdateLabel').text('Update '+currentSubSystem)
 	}
 	
 	
@@ -287,7 +292,51 @@
 	}
 	function syncReady(response){
 		console.log(response)
-		$('#SynchronizeMessage').text(response)	
+		var obj=JSON.parse(response).matrix;
+		//will replace this with response
+		//var obj={"Chassis":["023","024","025","031"],"Safety":["137","139","140"],"Telematics":["036","047","091"]}
+        var ChassisString="";
+		var SafetyString="";
+		var TeleString="";
+		var PowerString="";
+		if(obj["Chassis"]!=null)
+		obj["Chassis"].forEach(function(e){
+			ChassisString=ChassisString+e+"</br>"
+		});
+		if(obj["Safety"]!=null)
+		obj["Safety"].forEach(function(e){
+			SafetyString=SafetyString+e+"</br>"
+		});
+		if(obj["Telematics"]!=null)
+		obj["Telematics"].forEach(function(e){
+			TeleString=TeleString+e+"</br>"
+		});
+		if(obj["Powertrain"]!=null)
+			obj["Powertrain"].forEach(function(e){
+				PowerString=PowerString+e+"</br>"
+			});
+		console.log(ChassisString)
+		var out = "<table border='1'><tr><td style='width: 80%; text-align: center; color: black; background-color:#f1f1f1;'>Subsystem</td>";
+		out += "<td style='width: 100%; color: black; text-align: center; background-color:#f1f1f1;'>Compatibility Versions</td>";
+		out += "</tr>"
+
+		out += "<tr><td style='text-align:center;'>" + "Chassis"
+				+ "</td><td style='text-align: center;'>" + ChassisString
+				+ "</td></tr>"
+				+"<tr><td style='text-align:center;'>" + "Safety"
+				+ "</td><td style='text-align: center;'>" + SafetyString
+				+ "</td></tr>"
+				+"<tr><td style='text-align:center;'>" + "Telemetrics"
+				+ "</td><td style='text-align: center;'>" + TeleString
+				+ "</td></tr>"
+				+"<tr><td style='text-align:center;'>" + "Powertrain"
+				+ "</td><td style='text-align: center;'>" + PowerString
+				+ "</td></tr>";
+				
+
+		out += "</table>";
+		
+		$('#SynchronizeMessage').html(out)	
 		
 	}
 
@@ -307,31 +356,28 @@
 </head>
 <body>
 	<div class="content">
-		<div class="top-header">
-		<div class ="flex-container">
-			<div class="col50 main-font"> OEM OTA Update Management</div>
-			
-				Subsystem: <select id="SubSystem" 
-					onchange="changeSubsystem()">
-					<option value="Telematics">Telematics</option>
-					<option value="Powertrain">Powertrain</option>
-					<option value="Chassis">Chassis</option>
-					<option value="Safety">Safety</option>
-				</select>
-			
-			
-			   VIN: <select id = "VIN" 
+		
+		<div class="row">
+			  <div class="col-md-5"><h4>OEM OTA Update Management</h4></div>
+			  <div class="col-md-4"><h4>VIN<select id = "VIN" 
 			   onchange= changeVIN()>
 			   <option value="Value1">1FTYR44VX2PB60564</option>
 			   <option value="Value2">KMHCN46CX9U370929</option>
 			   <option value="Value3">JTDKTUD33DD559195</option>
 			   <option value="Value4">4T1CE30P08U765674</option>
 			   <option value ="Value5">4A4AR3AU6FE004670</option> 
-			   </select>
-		
-		  </div>
+			   </select></h4></div>
+			  <div class="col-md-3"><h4>Subsystem <select id="SubSystem" 
+					onchange="changeSubsystem()">
+					<option value="Telematics">Telematics</option>
+					<option value="Powertrain">Powertrain</option>
+					<option value="Chassis">Chassis</option>
+					<option value="Safety">Safety</option>
+				</select></h4></div>
+			
 		</div>
-		<ul class="tab">
+
+		<ul class="nav nav-tabs">
 			<li><a href="#" class="tablinks"
 				onclick="openTab(event, 'Configuration')">Configuration</a></li>
 			<li><a href="#" class="tablinks"
@@ -349,8 +395,9 @@
 				<hr>
 				<p id="configurationTable"></p>
 				<h3 class="purchase-header">Configuration History</h3>
-				<p id="historyTable"></p>
 				<hr>
+				<p id="historyTable"></p>
+			
 				<p></p>
 				<p></p>				
 			</span> 
@@ -358,18 +405,18 @@
 
 		<div id="Update" class="tabcontent">
 		<span id='UpdatePage'>
-			<h3>Update System</h3>
+			<h3><div id='UpdateLabel'>Update System</div></h3>
 			<hr>
-        <select name="userAccount" id="userAccount" onchange=changeCategory()>
+        <!--  <select name="userAccount" id="userAccount" onchange=changeCategory()>
               <option value="Telematics" selected>Telematics</option>
    		      <option value="Powertrain">Powertrain</option>
               <option value="Chassis">Chassis</option>
               <option value="Safety">Safety</option>
-       </select>	
+       </select>	-->
        Version: <input type="text" name="version" id="subcategory">	
     
        <br><br><br><br>					
-       <button type="button" onclick="updateOTA()" class="submit">Submit</button> 				
+       <button type="button" class="btn btn-default" onclick="updateOTA()" >Submit</button> 				
 	     <h3> Update Status</h3>
 	      <p id="updateTable"></p> 	
 	     <hr>
@@ -388,12 +435,12 @@
 
 			<span id='SynchronizePage'>
             <h3>Install Current Compatibility Master Segment</h3>
-				
-				<button onclick="submitSynchronize()" class="submit">Submit
+				 <span id='SynchronizeMessage'> New </span>
+				<button onclick="submitSynchronize()" class="btn btn-default">Submit
 				</button>
 			</span>
 			</br>
-			 <span id='SynchronizeMessage'> New </span>
+			
 		</div>
 	</div>
 </body>
