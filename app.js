@@ -144,6 +144,18 @@ app.get('/', function(req, res) {
 
 	});
 });
+app.get('/syncCompatibility',function(req,res){
+	console.log("syncCompatibility")
+	var VIN = url.parse(req.url, true).query.VIN;
+	var ssid = url.parse(req.url, true).query.ssid;
+	//chaincode.query.getReferenceTables(['getReferenceTables','dummy_argument'], function(e,data){	
+	chaincode.invoke.syncCompatibility([VIN,ssid], function(e,data){	
+		var jsonObj = data;
+		cb_received_response(e,jsonObj,res);
+
+	});
+	
+})
 app.get('/loadMatrix',function(req,res){
 	var options = {
 		    host: 'gsclabblockchainapp.mybluemix.net',
@@ -225,10 +237,10 @@ app.get('/pushUpdate', function(req, res) {
 	chaincode.invoke.updateEmbedded([ VIN, ssid, desc,version], cb_invoked_api); 
 
      res.send("success");
-});
+}); 
 
 // Update the subsystem 
-app.get('/updateEmbedded', function(req, res) {
+/*app.get('/updateEmbedded', function(req, res) {
 
 	console.log("updateEmbedded");
 	var toUser 		= url.parse(req.url, true).query.receiver;
@@ -240,7 +252,7 @@ app.get('/updateEmbedded', function(req, res) {
 		version], cb_invoked_api); 
 
 	res.send("success");
-});
+}); */
 
 // Add a smart contract to the blockchain 
 /*app.get('/addSmartContract', function(req, res) {

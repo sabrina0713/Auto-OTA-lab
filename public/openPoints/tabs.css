@@ -5,7 +5,7 @@ ul.tab {
     padding: 0;
     overflow: hidden;
     /*border: 1px solid #ccc;*/
-    background-color: #006699;
+   /* background-color: #006699;*/
 }
 
 /* Float the list items side by side */
@@ -24,7 +24,7 @@ ul.tab li a {
 }
 
 /* Change background color of links on hover */
-ul.tab li a:hover {background-color: #a4cab7;}
+/*ul.tab li a:hover {background-color: #a4cab7;}*/
 
 /* Create an active/current tablink class */
 /*ul.tab li a:focus, .active {background-color: #67917c;}*/

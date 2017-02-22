@@ -160,7 +160,7 @@
 			});
 		console.log(ChassisString)
 		var out = "<table border='1'><tr><td style='width: 80%; text-align: center; color: black; background-color:#f1f1f1;'>Subsystem</td>";
-		out += "<td style='width: 80%; color: black; text-align: center; background-color:#f1f1f1;'>Compatibility Versions</td>";
+		out += "<td style='color: black; text-align: center; background-color:#f1f1f1;'>Compatibility Versions</td>";
 		out += "</tr>"
 
 		out += "<tr><td style='text-align:center;'>" + "Chassis"
@@ -191,17 +191,24 @@
         retrieveHistory()
 	}
 	function submitSynchronize(){
-		
+		 var SubSystem = $("#SubSystem")[0];
+		var VIN=$("#VIN")[0]		
+    	var currentVIN =  VIN.options[VIN.selectedIndex].text;
+		var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
+		var url 		= localUrlStub + "/syncCompatibility?ssid=" + currentSubSystem+"&VIN="+currentVIN;
+		blockchainRestApi(url, syncResult);  
 	}
-	
+	function syncResult(response){
+		if(JSON.parse(response).result.status=="OK")
+		$('#SynchronizeMessage').text("Success")
+		else
+		$('#SynchronizeMessage').text("There is some issue, try again")	
+	}
     function updateOTA(){
         var SubSystem = $("#SubSystem")[0];
-        var version=$("#subcategory")[0];
-        
-        var VIN=$("#VIN")[0]
-		
-    	var currentVIN =  VIN.options[VIN.selectedIndex].text;
-		
+        var version=$("#subcategory")[0];        
+        var VIN=$("#VIN")[0]		
+    	var currentVIN =  VIN.options[VIN.selectedIndex].text;		
 		var desc="customer update"
 		var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
 		var currentVersion = document.getElementById("subcategory").value;
@@ -212,7 +219,7 @@
     
 	function updateResult(response){
 		
-
+       $('#updateTable').html(response)
 		console.log(response)
 	}
 	
@@ -232,9 +239,7 @@
       retrieveHistory()
       retrieveConfiguration()
 	   }
-   function changeCategory() {
-	 
-   }
+   
    function retrieveHistory(){
 	   var e=$("#VIN")[0]
 		var subSystem=$("#SubSystem")[0]
@@ -260,9 +265,7 @@
 		blockchainRestApi(url, parseCompatibility);  
    }
    	
-    function submitSynchronize() {		
-	
-	}
+    
 	
 	
 	// Refresh the 'Transfer Points' tab after a user submits a points transfer
@@ -287,15 +290,13 @@
 	function displaySynchronize() {
 		//$('#SynchronizePage').style.display = "block";
 		//document.getElementById('SynchronizeMessage').style.display = "none";
-		var url = localUrlStub + "/loadMatrix";
-		blockchainRestApi(url, syncReady);  
+		//var url = localUrlStub + "/loadMatrix";
+		//blockchainRestApi(url, syncReady);  
 	}
-	function syncReady(response){
+	/*function syncReady(response){
 		console.log(response)
 		var obj=JSON.parse(response).matrix;
-		//will replace this with response
-		//var obj={"Chassis":["023","024","025","031"],"Safety":["137","139","140"],"Telematics":["036","047","091"]}
-        var ChassisString="";
+	    var ChassisString="";
 		var SafetyString="";
 		var TeleString="";
 		var PowerString="";
@@ -338,7 +339,7 @@
 		
 		$('#SynchronizeMessage').html(out)	
 		
-	}
+	} */
 
 	// Add event listeners to the tabs so they display the relevant content when clicked on
 	$(document).ready(
@@ -378,13 +379,13 @@
 		</div>
 
 		<ul class="nav nav-tabs">
-			<li><a href="#" class="tablinks"
+			<li><a href="#" class=""
 				onclick="openTab(event, 'Configuration')">Configuration</a></li>
-			<li><a href="#" class="tablinks"
+			<li><a href="#" class=""
 				onclick="openTab(event, 'Update')">Update</a></li>
-			<li><a href="#" class="tablinks"
+			<li><a href="#" class=""
 				onclick="openTab(event, 'Compatibility')">Compatibility</a></li>
-			<li id="FeedbackTab"><a href="#" class="tablinks"
+			<li id=""><a href="#" class=""
 				onclick="openTab(event, 'Synchronize')">Synchronize</a></li>			
 		</ul>
 
@@ -394,7 +395,7 @@
 				<h3>Active Configuration</h3>
 				<hr>
 				<p id="configurationTable"></p>
-				<h3 class="purchase-header">Configuration History</h3>
+				<h3 >Configuration History</h3>
 				<hr>
 				<p id="historyTable"></p>
 			
@@ -418,8 +419,9 @@
        <br><br><br><br>					
        <button type="button" class="btn btn-default" onclick="updateOTA()" >Submit</button> 				
 	     <h3> Update Status</h3>
+	         <hr>
 	      <p id="updateTable"></p> 	
-	     <hr>
+	 
 	   </span>	
 	     	    
 		</div>
@@ -435,9 +437,11 @@
 
 			<span id='SynchronizePage'>
             <h3>Install Current Compatibility Master Segment</h3>
-				 <span id='SynchronizeMessage'> New </span>
+				
 				<button onclick="submitSynchronize()" class="btn btn-default">Submit
 				</button>
+				<br>
+				 <span id='SynchronizeMessage'>  </span>
 			</span>
 			</br>
 			
