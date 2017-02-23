@@ -234,9 +234,12 @@ app.get('/pushUpdate', function(req, res) {
 	var desc		= url.parse(req.url, true).query.desc;
 	var version 	= url.parse(req.url, true).query.version;
 	
-	chaincode.invoke.updateEmbedded([ VIN, ssid, desc,version], cb_invoked_api); 
+	chaincode.invoke.updateEmbedded([ VIN, ssid, desc,version],function(e,data){	
+		
+		var jsonObj =  data;
+		cb_received_response(e,jsonObj,res);
 
-     res.send("success");
+	});
 }); 
 
 // Update the subsystem 

@@ -24,12 +24,12 @@ import (
 	"fmt"
 	"strconv"
 	"encoding/json"
+	"strings"
 	"time"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 
 )
 
-// Test comment
 // SimpleChaincode example simple Chaincode implementation
 type SimpleChaincode struct {
 }
@@ -41,8 +41,6 @@ const NUM_OP_TO_RETURN = 27
 // Smart Contract Id, Compatibility Reference numbers
 const TRAVEL_CONTRACT   = "Paris"
 const FEEDBACK_CONTRACT = "Feedback"
-const REFERENCE_TABLES = "Compatibility"
-const REFERENCE_TABLES_DATES = "CompatibilityDates"
 
 // Blockchain point transaction record
 type Transaction struct {
@@ -115,7 +113,7 @@ type Vehicle struct {
 	Powertrain	Subsystem	`json:"Powertrain"`
 	Safety		Subsystem	`json:"Safety"`
 	Telematics	Subsystem	`json:"Telematics"`
-	Compat		Compatibility	`json:"Compatibility"`
+	Compatibles	Compatibility	`json:"Compatibility"`
 }
 
 // Open Points member record
@@ -129,7 +127,6 @@ type User struct {
 	Join		string   `json:"JoinDate"`
 	Modified	string   `json:"LastModifiedDate"`
 }
-
 
 // Array for storing all open points transactions
 type AllTransactions struct{
@@ -306,40 +303,6 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		fmt.Println("Error creating feedback contract")
 		return nil, err
 	}
-
-	// Create compatibility reference data and add it to the blockchain
-	var reference Compatibility
-		reference.Chassis = append(reference.Chassis,"023")
-		reference.Chassis = append(reference.Chassis,"024")
-		reference.Chassis = append(reference.Chassis,"025")
-		reference.Chassis = append(reference.Chassis,"031")
-		reference.Powertrain = append(reference.Powertrain,"120")
-		reference.Powertrain = append(reference.Powertrain,"131")
-		reference.Powertrain = append(reference.Powertrain,"175")
-		reference.Powertrain = append(reference.Powertrain,"192")
-		reference.Safety = append(reference.Safety,"137")
-		reference.Safety = append(reference.Safety,"139")
-		reference.Safety = append(reference.Safety,"140")
-		reference.Telematics = append(reference.Telematics,"036")
-		reference.Telematics = append(reference.Telematics,"047")
-		reference.Telematics = append(reference.Telematics,"091")
-	
-	// Create compatibility reference date data and add it to the blockchain
-	var referenceDate Compatibility
-		referenceDate.Chassis = append(referenceDate.Chassis,"2017-02-13 15:03:07")
-		referenceDate.Chassis = append(referenceDate.Chassis,"2017-02-13 15:03:07")
-		referenceDate.Chassis = append(referenceDate.Chassis,"2017-02-13 15:03:07")
-		referenceDate.Chassis = append(referenceDate.Chassis,"2017-02-13 15:03:07")
-		referenceDate.Powertrain = append(referenceDate.Powertrain,"2017-02-13 15:03:07")
-		referenceDate.Powertrain = append(referenceDate.Powertrain,"2017-02-13 15:03:07")
-		referenceDate.Powertrain = append(referenceDate.Powertrain,"2017-02-13 15:03:07")
-		referenceDate.Powertrain = append(referenceDate.Powertrain,"2017-02-13 15:03:07")
-		referenceDate.Safety = append(referenceDate.Safety,"2017-02-13 15:03:07")
-		referenceDate.Safety = append(referenceDate.Safety,"2017-02-13 15:03:07")
-		referenceDate.Safety = append(referenceDate.Safety,"2017-02-13 15:03:07")
-		referenceDate.Telematics = append(referenceDate.Telematics,"2017-02-13 15:03:07")
-		referenceDate.Telematics = append(referenceDate.Telematics,"2017-02-13 15:03:07")
-		referenceDate.Telematics = append(referenceDate.Telematics,"2017-02-13 15:03:07")
 	
 	var cars [5]Vehicle
 
@@ -360,20 +323,20 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	cars[0].Telematics.Version.Build = "1"
 	cars[0].Telematics.Version.Date = "2017-01-10 13:20:09"
 	cars[0].Telematics.NumTxs = 0
-	cars[0].Compat.Chassis = append(cars[0].Compat.Chassis,"023")
-	cars[0].Compat.Chassis = append(cars[0].Compat.Chassis,"024")
-	cars[0].Compat.Chassis = append(cars[0].Compat.Chassis,"025")
-	cars[0].Compat.Chassis = append(cars[0].Compat.Chassis,"031")
-	cars[0].Compat.Powertrain = append(cars[0].Compat.Powertrain,"120")
-	cars[0].Compat.Powertrain = append(cars[0].Compat.Powertrain,"131")
-	cars[0].Compat.Powertrain = append(cars[0].Compat.Powertrain,"175")
-	cars[0].Compat.Powertrain = append(cars[0].Compat.Powertrain,"192")
-	cars[0].Compat.Safety = append(cars[0].Compat.Safety,"137")
-	cars[0].Compat.Safety = append(cars[0].Compat.Safety,"139")
-	cars[0].Compat.Safety = append(cars[0].Compat.Safety,"140")
-	cars[0].Compat.Telematics = append(cars[0].Compat.Telematics,"036")
-	cars[0].Compat.Telematics = append(cars[0].Compat.Telematics,"037")
-	cars[0].Compat.Telematics = append(cars[0].Compat.Telematics,"091")
+	cars[0].Compatibles.Chassis = append(cars[0].Compatibles.Chassis,"023 (2017-02-20 14:57)")
+	cars[0].Compatibles.Chassis = append(cars[0].Compatibles.Chassis,"024 (2017-02-20 14:57)")
+	cars[0].Compatibles.Chassis = append(cars[0].Compatibles.Chassis,"025 (2017-02-20 14:57)")
+	cars[0].Compatibles.Chassis = append(cars[0].Compatibles.Chassis,"031 (2017-02-20 14:57)")
+	cars[0].Compatibles.Powertrain = append(cars[0].Compatibles.Powertrain,"120 (2017-02-20 14:57)")
+	cars[0].Compatibles.Powertrain = append(cars[0].Compatibles.Powertrain,"131 (2017-02-20 14:57)")
+	cars[0].Compatibles.Powertrain = append(cars[0].Compatibles.Powertrain,"175 (2017-02-20 14:57)")
+	cars[0].Compatibles.Powertrain = append(cars[0].Compatibles.Powertrain,"192 (2017-02-20 14:57)")
+	cars[0].Compatibles.Safety = append(cars[0].Compatibles.Safety,"137 (2017-02-20 14:57)")
+	cars[0].Compatibles.Safety = append(cars[0].Compatibles.Safety,"139 (2017-02-20 14:57)")
+	cars[0].Compatibles.Safety = append(cars[0].Compatibles.Safety,"140 (2017-02-20 14:57)")
+	cars[0].Compatibles.Telematics = append(cars[0].Compatibles.Telematics,"036 (2017-02-20 14:57)")
+	cars[0].Compatibles.Telematics = append(cars[0].Compatibles.Telematics,"037 (2017-02-20 14:57)")
+	cars[0].Compatibles.Telematics = append(cars[0].Compatibles.Telematics,"091 (2017-02-20 14:57)")
 
 	cars[1].Id = "KMHCN46CX9U370929"
 	cars[1].Chassis.Id = "Chassis"
@@ -392,20 +355,20 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	cars[1].Telematics.Version.Build = "1"
 	cars[1].Telematics.Version.Date = "2017-01-10 13:20:09"
 	cars[1].Telematics.NumTxs = 0
-	cars[1].Compat.Chassis = append(cars[1].Compat.Chassis,"023")
-	cars[1].Compat.Chassis = append(cars[1].Compat.Chassis,"024")
-	cars[1].Compat.Chassis = append(cars[1].Compat.Chassis,"025")
-	cars[1].Compat.Chassis = append(cars[1].Compat.Chassis,"031")
-	cars[1].Compat.Powertrain = append(cars[1].Compat.Powertrain,"120")
-	cars[1].Compat.Powertrain = append(cars[1].Compat.Powertrain,"131")
-	cars[1].Compat.Powertrain = append(cars[1].Compat.Powertrain,"175")
-	cars[1].Compat.Powertrain = append(cars[1].Compat.Powertrain,"192")
-	cars[1].Compat.Safety = append(cars[1].Compat.Safety,"137")
-	cars[1].Compat.Safety = append(cars[1].Compat.Safety,"139")
-	cars[1].Compat.Safety = append(cars[1].Compat.Safety,"140")
-	cars[1].Compat.Telematics = append(cars[1].Compat.Telematics,"036")
-	cars[1].Compat.Telematics = append(cars[1].Compat.Telematics,"037")
-	cars[1].Compat.Telematics = append(cars[1].Compat.Telematics,"091")
+	cars[1].Compatibles.Chassis = append(cars[1].Compatibles.Chassis,"023 (2017-02-20 14:57)")
+	cars[1].Compatibles.Chassis = append(cars[1].Compatibles.Chassis,"024 (2017-02-20 14:57)")
+	cars[1].Compatibles.Chassis = append(cars[1].Compatibles.Chassis,"025 (2017-02-20 14:57)")
+	cars[1].Compatibles.Chassis = append(cars[1].Compatibles.Chassis,"031 (2017-02-20 14:57)")
+	cars[1].Compatibles.Powertrain = append(cars[1].Compatibles.Powertrain,"120 (2017-02-20 14:57)")
+	cars[1].Compatibles.Powertrain = append(cars[1].Compatibles.Powertrain,"131 (2017-02-20 14:57)")
+	cars[1].Compatibles.Powertrain = append(cars[1].Compatibles.Powertrain,"175 (2017-02-20 14:57)")
+	cars[1].Compatibles.Powertrain = append(cars[1].Compatibles.Powertrain,"192 (2017-02-20 14:57)")
+	cars[1].Compatibles.Safety = append(cars[1].Compatibles.Safety,"137 (2017-02-20 14:57)")
+	cars[1].Compatibles.Safety = append(cars[1].Compatibles.Safety,"139 (2017-02-20 14:57)")
+	cars[1].Compatibles.Safety = append(cars[1].Compatibles.Safety,"140 (2017-02-20 14:57)")
+	cars[1].Compatibles.Telematics = append(cars[1].Compatibles.Telematics,"036 (2017-02-20 14:57)")
+	cars[1].Compatibles.Telematics = append(cars[1].Compatibles.Telematics,"037 (2017-02-20 14:57)")
+	cars[1].Compatibles.Telematics = append(cars[1].Compatibles.Telematics,"091 (2017-02-20 14:57)")
 
 	cars[2].Id = "JTDKTUD33DD559195"
 	cars[2].Chassis.Id = "Chassis"
@@ -424,20 +387,20 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	cars[2].Telematics.Version.Build = "1"
 	cars[2].Telematics.Version.Date = "2017-01-10 13:20:09"
 	cars[2].Telematics.NumTxs = 0
-	cars[2].Compat.Chassis = append(cars[2].Compat.Chassis,"023")
-	cars[2].Compat.Chassis = append(cars[2].Compat.Chassis,"024")
-	cars[2].Compat.Chassis = append(cars[2].Compat.Chassis,"025")
-	cars[2].Compat.Chassis = append(cars[2].Compat.Chassis,"031")
-	cars[2].Compat.Powertrain = append(cars[2].Compat.Powertrain,"120")
-	cars[2].Compat.Powertrain = append(cars[2].Compat.Powertrain,"131")
-	cars[2].Compat.Powertrain = append(cars[2].Compat.Powertrain,"175")
-	cars[2].Compat.Powertrain = append(cars[2].Compat.Powertrain,"192")
-	cars[2].Compat.Safety = append(cars[2].Compat.Safety,"137")
-	cars[2].Compat.Safety = append(cars[2].Compat.Safety,"139")
-	cars[2].Compat.Safety = append(cars[2].Compat.Safety,"140")
-	cars[2].Compat.Telematics = append(cars[2].Compat.Telematics,"036")
-	cars[2].Compat.Telematics = append(cars[2].Compat.Telematics,"037")
-	cars[2].Compat.Telematics = append(cars[2].Compat.Telematics,"091")
+	cars[2].Compatibles.Chassis = append(cars[2].Compatibles.Chassis,"023 (2017-02-20 14:57)")
+	cars[2].Compatibles.Chassis = append(cars[2].Compatibles.Chassis,"024 (2017-02-20 14:57)")
+	cars[2].Compatibles.Chassis = append(cars[2].Compatibles.Chassis,"025 (2017-02-20 14:57)")
+	cars[2].Compatibles.Chassis = append(cars[2].Compatibles.Chassis,"031 (2017-02-20 14:57)")
+	cars[2].Compatibles.Powertrain = append(cars[2].Compatibles.Powertrain,"120 (2017-02-20 14:57)")
+	cars[2].Compatibles.Powertrain = append(cars[2].Compatibles.Powertrain,"131 (2017-02-20 14:57)")
+	cars[2].Compatibles.Powertrain = append(cars[2].Compatibles.Powertrain,"175 (2017-02-20 14:57)")
+	cars[2].Compatibles.Powertrain = append(cars[2].Compatibles.Powertrain,"192 (2017-02-20 14:57)")
+	cars[2].Compatibles.Safety = append(cars[2].Compatibles.Safety,"137 (2017-02-20 14:57)")
+	cars[2].Compatibles.Safety = append(cars[2].Compatibles.Safety,"139 (2017-02-20 14:57)")
+	cars[2].Compatibles.Safety = append(cars[2].Compatibles.Safety,"140 (2017-02-20 14:57)")
+	cars[2].Compatibles.Telematics = append(cars[2].Compatibles.Telematics,"036 (2017-02-20 14:57)")
+	cars[2].Compatibles.Telematics = append(cars[2].Compatibles.Telematics,"037 (2017-02-20 14:57)")
+	cars[2].Compatibles.Telematics = append(cars[2].Compatibles.Telematics,"091 (2017-02-20 14:57)")
 
 	cars[3].Id = "4T1CE30P08U765674"
 	cars[3].Chassis.Id = "Chassis"
@@ -456,20 +419,20 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	cars[3].Telematics.Version.Build = "1"
 	cars[3].Telematics.Version.Date = "2017-01-10 13:20:09"
 	cars[3].Telematics.NumTxs = 0
-	cars[3].Compat.Chassis = append(cars[3].Compat.Chassis,"023")
-	cars[3].Compat.Chassis = append(cars[3].Compat.Chassis,"024")
-	cars[3].Compat.Chassis = append(cars[3].Compat.Chassis,"025")
-	cars[3].Compat.Chassis = append(cars[3].Compat.Chassis,"031")
-	cars[3].Compat.Powertrain = append(cars[3].Compat.Powertrain,"120")
-	cars[3].Compat.Powertrain = append(cars[3].Compat.Powertrain,"131")
-	cars[3].Compat.Powertrain = append(cars[3].Compat.Powertrain,"175")
-	cars[3].Compat.Powertrain = append(cars[3].Compat.Powertrain,"192")
-	cars[3].Compat.Safety = append(cars[3].Compat.Safety,"137")
-	cars[3].Compat.Safety = append(cars[3].Compat.Safety,"139")
-	cars[3].Compat.Safety = append(cars[3].Compat.Safety,"140")
-	cars[3].Compat.Telematics = append(cars[3].Compat.Telematics,"036")
-	cars[3].Compat.Telematics = append(cars[3].Compat.Telematics,"037")
-	cars[3].Compat.Telematics = append(cars[3].Compat.Telematics,"091")
+	cars[3].Compatibles.Chassis = append(cars[3].Compatibles.Chassis,"023 (2017-02-20 14:57)")
+	cars[3].Compatibles.Chassis = append(cars[3].Compatibles.Chassis,"024 (2017-02-20 14:57)")
+	cars[3].Compatibles.Chassis = append(cars[3].Compatibles.Chassis,"025 (2017-02-20 14:57)")
+	cars[3].Compatibles.Chassis = append(cars[3].Compatibles.Chassis,"031 (2017-02-20 14:57)")
+	cars[3].Compatibles.Powertrain = append(cars[3].Compatibles.Powertrain,"120 (2017-02-20 14:57)")
+	cars[3].Compatibles.Powertrain = append(cars[3].Compatibles.Powertrain,"131 (2017-02-20 14:57)")
+	cars[3].Compatibles.Powertrain = append(cars[3].Compatibles.Powertrain,"175 (2017-02-20 14:57)")
+	cars[3].Compatibles.Powertrain = append(cars[3].Compatibles.Powertrain,"192 (2017-02-20 14:57)")
+	cars[3].Compatibles.Safety = append(cars[3].Compatibles.Safety,"137 (2017-02-20 14:57)")
+	cars[3].Compatibles.Safety = append(cars[3].Compatibles.Safety,"139 (2017-02-20 14:57)")
+	cars[3].Compatibles.Safety = append(cars[3].Compatibles.Safety,"140 (2017-02-20 14:57)")
+	cars[3].Compatibles.Telematics = append(cars[3].Compatibles.Telematics,"036 (2017-02-20 14:57)")
+	cars[3].Compatibles.Telematics = append(cars[3].Compatibles.Telematics,"037 (2017-02-20 14:57)")
+	cars[3].Compatibles.Telematics = append(cars[3].Compatibles.Telematics,"091 (2017-02-20 14:57)")
 
 	cars[4].Id = "4A4AR3AU6FE004670"
 	cars[4].Chassis.Id = "Chassis"
@@ -480,7 +443,7 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	cars[4].Powertrain.Version.Build = "1"
 	cars[4].Powertrain.Version.Date = "2017-01-08 13:20:09"
 	cars[4].Powertrain.NumTxs = 0
-	cars[4].Compat.Chassis = append(cars[4].Compat.Chassis,"023")
+	cars[4].Compatibles.Chassis = append(cars[4].Compatibles.Chassis,"023")
 	cars[4].Safety.Id = "Safety"
 	cars[4].Safety.Version.Build = "1"
 	cars[4].Safety.Version.Date = "2017-01-09 13:20:09"
@@ -489,19 +452,20 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	cars[4].Telematics.Version.Build = "1"
 	cars[4].Telematics.Version.Date = "2017-01-10 13:20:09"
 	cars[4].Telematics.NumTxs = 0
-	cars[4].Compat.Chassis = append(cars[4].Compat.Chassis,"024")
-	cars[4].Compat.Chassis = append(cars[4].Compat.Chassis,"025")
-	cars[4].Compat.Chassis = append(cars[4].Compat.Chassis,"031")
-	cars[4].Compat.Powertrain = append(cars[4].Compat.Powertrain,"120")
-	cars[4].Compat.Powertrain = append(cars[4].Compat.Powertrain,"131")
-	cars[4].Compat.Powertrain = append(cars[4].Compat.Powertrain,"175")
-	cars[4].Compat.Powertrain = append(cars[4].Compat.Powertrain,"192")
-	cars[4].Compat.Safety = append(cars[4].Compat.Safety,"137")
-	cars[4].Compat.Safety = append(cars[4].Compat.Safety,"139")
-	cars[4].Compat.Safety = append(cars[4].Compat.Safety,"140")
-	cars[4].Compat.Telematics = append(cars[4].Compat.Telematics,"036")
-	cars[4].Compat.Telematics = append(cars[4].Compat.Telematics,"037")
-	cars[4].Compat.Telematics = append(cars[4].Compat.Telematics,"091")
+	cars[4].Compatibles.Chassis = append(cars[4].Compatibles.Chassis,"023 (2017-02-20 14:57)")
+	cars[4].Compatibles.Chassis = append(cars[4].Compatibles.Chassis,"024 (2017-02-20 14:57)")
+	cars[4].Compatibles.Chassis = append(cars[4].Compatibles.Chassis,"025 (2017-02-20 14:57)")
+	cars[4].Compatibles.Chassis = append(cars[4].Compatibles.Chassis,"031 (2017-02-20 14:57)")
+	cars[4].Compatibles.Powertrain = append(cars[4].Compatibles.Powertrain,"120 (2017-02-20 14:57)")
+	cars[4].Compatibles.Powertrain = append(cars[4].Compatibles.Powertrain,"131 (2017-02-20 14:57)")
+	cars[4].Compatibles.Powertrain = append(cars[4].Compatibles.Powertrain,"175 (2017-02-20 14:57)")
+	cars[4].Compatibles.Powertrain = append(cars[4].Compatibles.Powertrain,"192 (2017-02-20 14:57)")
+	cars[4].Compatibles.Safety = append(cars[4].Compatibles.Safety,"137 (2017-02-20 14:57)")
+	cars[4].Compatibles.Safety = append(cars[4].Compatibles.Safety,"139 (2017-02-20 14:57)")
+	cars[4].Compatibles.Safety = append(cars[4].Compatibles.Safety,"140 (2017-02-20 14:57)")
+	cars[4].Compatibles.Telematics = append(cars[4].Compatibles.Telematics,"036 (2017-02-20 14:57)")
+	cars[4].Compatibles.Telematics = append(cars[4].Compatibles.Telematics,"037 (2017-02-20 14:57)")
+	cars[4].Compatibles.Telematics = append(cars[4].Compatibles.Telematics,"091 (2017-02-20 14:57)")
 
 	for i:=0;i<len(cars);i++ {
 		jsonAsBytes, _ = json.Marshal(cars[i])
@@ -512,26 +476,10 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 		}
 	}
 
-	jsonAsBytes, _ = json.Marshal(reference)
-	err = stub.PutState(REFERENCE_TABLES, jsonAsBytes)								
-	if err != nil {
-		fmt.Println("Error creating reference tables")
-		return nil, err
-	}
-
-	jsonAsBytes, _ = json.Marshal(referenceDate)
-	err = stub.PutState(REFERENCE_TABLES_DATES, jsonAsBytes)								
-	if err != nil {
-		fmt.Println("Error creating reference date tables")
-		return nil, err
-	}
-
-
 	// Create an array of contract ids to keep track of all contracts
 	var contractIds []string
 	contractIds = append(contractIds, TRAVEL_CONTRACT);
 	contractIds = append(contractIds, FEEDBACK_CONTRACT);
-	//contractIds = append(contractIds, REFERENCE_TABLES);
 	
 	jsonAsBytes, _ = json.Marshal(contractIds)
 	err = stub.PutState("contractIds", jsonAsBytes)								
@@ -566,6 +514,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		return t.transferPoints(stub, args)
 	} else if function == "updateEmbedded" {											//create a transaction
 		return t.updateEmbedded(stub, args)
+	} else if function == "syncCompatibility" {											//create a transaction
+		return t.syncCompatibility(stub, args)
 	} else if function == "addSmartContract" {											//create a transaction
 		return t.addSmartContract(stub, args)
 	} else if function == "incrementReferenceNumber" {											//create a transaction
@@ -590,7 +540,6 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	if function == "getSubsystem" { return t.getSubsystem(stub,args[0],args[1]) }
 	if function == "getAllContracts" { return t.getAllContracts(stub) }
 	if function == "getReferenceNumber" { return t.getReferenceNumber(stub) }
-	if function == "getReferenceTables" { return t.getReferenceTables(stub) }
 	if function == "getCompatibility" { return t.getCompatibility(stub,args[0]) }
 	
 	fmt.Println("query did not find func: " + function)						//error
@@ -738,13 +687,6 @@ func (t *SimpleChaincode) getAllContracts(stub shim.ChaincodeStubInterface)([]by
 
 }
 
-func (t *SimpleChaincode) getReferenceTables(stub shim.ChaincodeStubInterface)([]byte, error)  {
-
-	refTablesAsBytes, _ := stub.GetState(REFERENCE_TABLES)
-	return refTablesAsBytes, nil
-
-}
-
 func (t *SimpleChaincode) getCompatibility(stub shim.ChaincodeStubInterface, VIN string)([]byte, error)  {
 
 	fmt.Println("VIN is " + VIN)
@@ -753,7 +695,7 @@ func (t *SimpleChaincode) getCompatibility(stub shim.ChaincodeStubInterface, VIN
 	json.Unmarshal(vehicleAsBytes,&vehicle)
 
 	var tables Compatibility
-	tables = vehicle.Compat
+	tables = vehicle.Compatibles
 	compatibilityAsBytes, _ := json.Marshal(tables)
 
 	return compatibilityAsBytes, nil
@@ -1100,74 +1042,76 @@ func (t *SimpleChaincode) updateEmbedded(stub shim.ChaincodeStubInterface, args 
 		return nil, err
 	}
 
-	refTablesAsBytes, _ := t.getReferenceTables(stub)
-	var refTables Compatibility
-	json.Unmarshal(refTablesAsBytes,&refTables)
-	refTablesAsBytes, _ = stub.GetState(REFERENCE_TABLES_DATES)
-	var refTablesDates Compatibility
-	json.Unmarshal(refTablesAsBytes,&refTablesDates)
-	//refTables := fmt.Sprintf("%s",refTablesAsBytes)
-	var i int
-	var bDate string
-	switch op.Subsystem {
-		case "Chassis":
-			for i=0;i<len(refTables.Chassis);i++ {
-				if(refTables.Chassis[i] == op.Version) {
-					fmt.Printf("Hit in Chassis")
-					bDate = refTablesDates.Chassis[i]
-					break
-				} else	{
-					fmt.Printf("Missed in Chassis\n")
-					}
-			}
-		case "Powertrain":
-			for i=0;i<len(refTables.Powertrain);i++ {
-				if(refTables.Powertrain[i] == op.Version) {
-					fmt.Printf("Hit in Powertrain")
-					bDate = refTablesDates.Powertrain[i]
-					break
-				} else	{
-					fmt.Printf("Missed in Powertrain\n")
-					}
-			}
-		case "Safety":
-			for i=0;i<len(refTables.Safety);i++ {
-				if(refTables.Safety[i] == op.Version) {
-					fmt.Printf("Hit in Safety")
-					bDate = refTablesDates.Safety[i]
-					break
-				} else	{
-					fmt.Printf("Missed in Safety\n")
-					}
-			}
-		case "Telematics":
-			for i=0;i<len(refTables.Telematics);i++ {
-				if(refTables.Telematics[i] == op.Version) {
-					fmt.Printf("Hit in Telematics")
-					bDate = refTablesDates.Telematics[i]
-					break
-				} else	{
-					fmt.Printf("Missed in Telematics\n")
-					}
-			}
-	}
-
 	// Get subsystem from BC and update version
 	fmt.Println("VIN is " + op.VIN)
 	vehicleAsBytes, _ := stub.GetState(op.VIN) 
 	var vehicle Vehicle
 	json.Unmarshal(vehicleAsBytes,&vehicle)
 
+	var compat []string
+	var tokens []string
+	var ver []string
+	var bdate []string
+	var bDate string
+	var found bool = false
 	var receiver *Subsystem
 	switch op.Subsystem {
 		case "Chassis":
-			receiver = &vehicle.Chassis
+			compat = vehicle.Compatibles.Chassis
+			for i:=0;i<len(compat);i++ {
+				tokens = strings.Split(compat[i],"(")
+				ver = strings.Split(tokens[0]," ")
+				bdate = strings.Split(tokens[1],")")
+				if ver[0] == op.Version {
+					found = true
+					bDate = bdate[0]
+					receiver = &vehicle.Chassis
+					break
+				}
+			}
 		case "Powertrain":
-			receiver = &vehicle.Powertrain
+			compat = vehicle.Compatibles.Powertrain
+			for i:=0;i<len(compat);i++ {
+				tokens = strings.Split(compat[i],"(")
+				ver = strings.Split(tokens[0]," ")
+				bdate = strings.Split(tokens[1],")")
+				if ver[0] == op.Version {
+					found = true
+					bDate = bdate[0]
+					receiver = &vehicle.Powertrain
+					break
+				}
+			}
 		case "Safety":
-			receiver = &vehicle.Safety
+			compat = vehicle.Compatibles.Safety
+			for i:=0;i<len(compat);i++ {
+				tokens = strings.Split(compat[i],"(")
+				ver = strings.Split(tokens[0]," ")
+				bdate = strings.Split(tokens[1],")")
+				if ver[0] == op.Version {
+					found = true
+					bDate = bdate[0]
+					receiver = &vehicle.Safety
+					break
+				}
+			}
 		case "Telematics":
-			receiver = &vehicle.Telematics
+			compat = vehicle.Compatibles.Telematics
+			for i:=0;i<len(compat);i++ {
+				tokens = strings.Split(compat[i],"(")
+				ver = strings.Split(tokens[0]," ")
+				bdate = strings.Split(tokens[1],")")
+				if ver[0]== op.Version {
+					found = true
+					bDate = bdate[0]
+					receiver = &vehicle.Telematics
+					break
+				}
+			}
+	}
+
+	if !found {
+		return nil, errors.New("updateEmbedded: Candidate version not found compatible")
 	}
 
 	receiver.Version.Build = op.Version
@@ -1196,6 +1140,44 @@ func (t *SimpleChaincode) updateEmbedded(stub shim.ChaincodeStubInterface, args 
 	ops.Operations = append(ops.Operations,op)
 	opsAsBytes, _ = json.Marshal(ops)
 	err = stub.PutState("allOp", opsAsBytes)	
+	if err != nil {
+		return nil, err
+	}
+	return nil, nil
+}
+
+func (t *SimpleChaincode) syncCompatibility(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+
+	var err error
+
+	VIN := args[0]
+	Subsystem := args[1]
+
+	// Get subsystem from BC and update version
+	fmt.Println("VIN is " + VIN)
+	vehicleAsBytes, _ := stub.GetState(VIN) 
+	var vehicle Vehicle
+	json.Unmarshal(vehicleAsBytes,&vehicle)
+
+	switch Subsystem {
+		case "Chassis":
+			vehicle.Compatibles.Chassis = nil
+			vehicle.Compatibles.Chassis = append(vehicle.Compatibles.Chassis,"026 (2017-02-21 15:35)")
+		case "Powertrain":
+			vehicle.Compatibles.Powertrain = nil
+			vehicle.Compatibles.Powertrain = append(vehicle.Compatibles.Powertrain,"166 (2017-02-21 15:35)")
+		case "Safety":
+			vehicle.Compatibles.Safety = nil
+			vehicle.Compatibles.Safety = append(vehicle.Compatibles.Safety,"457 (2017-02-21 15:35)")
+		case "Telematics":
+			vehicle.Compatibles.Telematics = nil
+			vehicle.Compatibles.Telematics = append(vehicle.Compatibles.Telematics,"661 (2017-02-21 15:35)")
+	}
+
+	//Commit Receiver to ledger
+	fmt.Println("updateEmbedded commit updated vehicle To ledger");
+	opsAsBytes, _ := json.Marshal(vehicle)
+	err = stub.PutState(VIN,opsAsBytes)	
 	if err != nil {
 		return nil, err
 	}

@@ -10,10 +10,7 @@
 <link rel="stylesheet" href="/font-awesome-4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="bootstrap-3.3.7/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
 
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
 <script type="text/javascript">
 
 	// Variables for passing blockchain REST calls from NODE JS
@@ -174,7 +171,7 @@
 				+"<tr><td style='text-align:center;'>" + "Safety"
 				+ "</td><td style='text-align: center;'>" + SafetyString
 				+ "</td></tr>"
-				+"<tr><td style='text-align:center;'>" + "Telemetrics"
+				+"<tr><td style='text-align:center;'>" + "Telematics"
 				+ "</td><td style='text-align: center;'>" + TeleString
 				+ "</td></tr>"
 				+"<tr><td style='text-align:center;'>" + "Powertrain"
@@ -232,8 +229,9 @@
 	
 	// Get a car's subsystem information from the Blockchain service using the NODE JS REST API
 	function changeSubsystem() {
-		
-		var subSystem=$("#SubSystem")[0]
+		//$('#titleSubsystem').text($(this).text())
+		//var currentSubSystem=$(this).text();
+		var SubSystem=$("#SubSystem")[0]
 		var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
         $('#UpdateLabel').text('Update '+currentSubSystem)
 		retrieveConfiguration()
@@ -248,7 +246,7 @@
    
    function retrieveHistory(){
 	   var e=$("#VIN")[0]
-		var subSystem=$("#SubSystem")[0]
+		var SubSystem=$("#SubSystem")[0]
     	var currentVIN =  e.options[e.selectedIndex].text;
 	   var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
 	   var urlHistory = localUrlStub + "/getHistory?ssid=" + currentSubSystem+"&VIN="+currentVIN;
@@ -257,7 +255,7 @@
    }
    function retrieveConfiguration(){
 	    var e=$("#VIN")[0]
-		var subSystem=$("#SubSystem")[0]
+		var SubSystem=$("#SubSystem")[0]
      	var currentVIN =  e.options[e.selectedIndex].text;
 	    var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
 		var url 		= localUrlStub + "/getSubsystem?ssid=" + currentSubSystem+"&VIN="+currentVIN;
@@ -357,6 +355,7 @@
 						"click", displayCompatibility);
 				document.getElementById("Synchronize").addEventListener(
 						"click", displaySynchronize);
+				//$('#SubSystem li').click(changeSubsystem)
 			});
 	
 </script>
@@ -366,20 +365,29 @@
 		
 		<div class="row">
 			  <div class="col-md-5"><h4>OEM OTA Update Management</h4></div>
-			  <div class="col-md-4"><h4><select id = "VIN" class="selectpicker"
+			  <div class="col-md-4"><h4></h4>VIN<select id = "VIN" class="selectpicker"
 			   onchange= changeVIN()>
-			   <option value="Value1">VIN</option>
+			   
 			   <option value="Value1">1FTYR44VX2PB60564</option>
 			   <option value="Value2">KMHCN46CX9U370929</option>
 			   <option value="Value3">JTDKTUD33DD559195</option>
 			   <option value="Value4">4T1CE30P08U765674</option>
 			   <option value ="Value5">4A4AR3AU6FE004670</option> 
-			   </select></h4></div>
+			   </select></div>
 			  <div class="col-md-3">
 			   <h4>
-				
+				<!--  <div class="dropdown">
+				  <button class="btn btn-primary dropdown-toggle" id="titleSubsystem" type="button" data-toggle="dropdown">Subsystem
+				  <span class="caret"></span></button>
+				  <ul class="dropdown-menu" id='SubSystem'>
+				    <li><a href="#">Telematics</a></li>
+				    <li><a href="#">Powertrain</a></li>
+				    <li><a href="#">Chassis</a></li>
+				    <li><a href="#">safey</a></li>
+				  </ul>
+				</div>-->
 				</h4>
-					 <select class="selectpicker" id="SubSystem">
+					  SubSystem <select class="selectpicker" id="SubSystem" onchange= changeSubsystem()>
 					 
 					 <option value="Telematics">Telematics</option>
 					<option value="Powertrain">Powertrain</option>
