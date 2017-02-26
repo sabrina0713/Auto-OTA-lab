@@ -11,6 +11,10 @@
 <link rel="stylesheet" href="bootstrap-3.3.7/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+
+
+<link rel="stylesheet" type="text/css" href="css/custom.css">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="text/javascript">
 
 	// Variables for passing blockchain REST calls from NODE JS
@@ -223,16 +227,14 @@
 		
        $('#updateTable').html(response)
 		console.log(response)
-	}
-	
-	
+	}	
 	
 	// Get a car's subsystem information from the Blockchain service using the NODE JS REST API
 	function changeSubsystem() {
-		//$('#titleSubsystem').text($(this).text())
-		//var currentSubSystem=$(this).text();
-		var SubSystem=$("#SubSystem")[0]
-		var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
+		$('#titleSubsystem').text($(this).text())
+		var currentSubSystem=$(this).text();
+		//var SubSystem=$("#SubSystem")[0]
+		//var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
         $('#UpdateLabel').text('Update '+currentSubSystem)
 		retrieveConfiguration()
 		retrieveHistory()
@@ -355,19 +357,16 @@
 						"click", displayCompatibility);
 				document.getElementById("Synchronize").addEventListener(
 						"click", displaySynchronize);
-				//$('#SubSystem li').click(changeSubsystem)
-			});
-	
+				$('#SubSystem li').click(changeSubsystem)
+			});	
 </script>
 </head>
 <body>
-	<div class="content">
-		
+	<div class="content">		
 		<div class="row">
 			  <div class="col-md-5"><h4>OEM OTA Update Management</h4></div>
 			  <div class="col-md-4"><h4></h4>VIN<select id = "VIN" class="selectpicker"
-			   onchange= changeVIN()>
-			   
+			   onchange= changeVIN()>			   
 			   <option value="Value1">1FTYR44VX2PB60564</option>
 			   <option value="Value2">KMHCN46CX9U370929</option>
 			   <option value="Value3">JTDKTUD33DD559195</option>
@@ -375,39 +374,48 @@
 			   <option value ="Value5">4A4AR3AU6FE004670</option> 
 			   </select></div>
 			  <div class="col-md-3">
-			   <h4>
-				<!--  <div class="dropdown">
-				  <button class="btn btn-primary dropdown-toggle" id="titleSubsystem" type="button" data-toggle="dropdown">Subsystem
-				  <span class="caret"></span></button>
-				  <ul class="dropdown-menu" id='SubSystem'>
-				    <li><a href="#">Telematics</a></li>
-				    <li><a href="#">Powertrain</a></li>
-				    <li><a href="#">Chassis</a></li>
-				    <li><a href="#">safey</a></li>
-				  </ul>
-				</div>-->
+			   <h4>			  		  
 				</h4>
-					  SubSystem <select class="selectpicker" id="SubSystem" onchange= changeSubsystem()>
-					 
-					 <option value="Telematics">Telematics</option>
+		   SubSystem <select class="selectpicker" id="SubSystem" onchange= changeSubsystem()>					 
+					<option value="Telematics">Telematics</option>
 					<option value="Powertrain">Powertrain</option>
 					<option value="Chassis">Chassis</option>
 					<option value="Safety">Safety</option>
-				</select>
-			
+				</select>			
 			</div>
-		</div>
+		</div>		
 
-		<ul class="nav nav-tabs">
-			<li class="active"><a href="#" class=""
-				onclick="openTab(event, 'Configuration')">Configuration</a></li>
-			<li><a href="#" class=""
-				onclick="openTab(event, 'Update')">Update</a></li>
-			<li><a href="#" class=""
-				onclick="openTab(event, 'Compatibility')">Compatibility</a></li>
-			<li id=""><a href="#" class=""
-				onclick="openTab(event, 'Synchronize')">Synchronize</a></li>			
-		</ul>
+		<nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+           <ul class="nav navbar-nav">
+           <li class=""><a href="#" class="" onclick ="openTab(event,'Configuration')">Configuration</a></li>
+           <li class=""><a href="#"class="" onclick="openTab(event, 'Update')">Update</a></li>
+           <li class=""><a href="#"class="" onclick="openTab(event,'Compatibility')">Compatibility</a></li>
+           <li class=""><a href="#"class="" onclick="openTab(event,'Synchronize')">Synchronize</a></li>                
+           </ul>
+                    
+           <!--ul class="nav navbar-nav navbar-right">       
+           <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#" > Vin <span class="caret"></span></a>
+           <ul class="dropdown-menu">
+             <li><a href="#">1FTYR44VX2PB60564</a></li>
+             <li><a href="#">KMHCN46CX9U370929</a></li>
+             <li><a href="#">JTDKTUD33DD559195</a></li>
+             <li><a href="#">4T1CE30P08U765674</a></li>
+             <li><a href="#">4A4AR3AU6FE004670</a></li>
+           </ul>
+           </li>      
+           <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Subsystem <span class="caret"></span></a>
+           <ul class="dropdown-menu">
+             <li><a href="#">Chassis</a></li>
+             <li><a href="#">Telematics</a></li>
+             <li><a href="#">Safety</a></li>
+             <li><a href="#">Powertrain</a></li>
+           </ul>
+           </li>  
+        
+        </ul-->
+        </div>
+        </nav>      				
 
 		<div id="Configuration" class="tabcontent">
 			<span id='ConfigurationPage'>
@@ -428,12 +436,7 @@
 		<span id='UpdatePage'>
 			<h3><div id='UpdateLabel'>Update System</div></h3>
 			<hr>
-        <!--  <select name="userAccount" id="userAccount" onchange=changeCategory()>
-              <option value="Telematics" selected>Telematics</option>
-   		      <option value="Powertrain">Powertrain</option>
-              <option value="Chassis">Chassis</option>
-              <option value="Safety">Safety</option>
-       </select>	-->
+
        Version: <input type="text" name="version" id="subcategory">	
     
        <br><br><br><br>					
@@ -467,5 +470,6 @@
 			
 		</div>
 	</div>
+
 </body>
 </html>
