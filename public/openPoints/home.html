@@ -279,13 +279,16 @@
 	
 	// Refresh the 'Transfer Points' tab after a user submits a points transfer
 	function displayCompatibility() {
-	
+	    $('#SubSystem').prop('disabled',true);
+	    $('#SubSystem').fadeTo(500, 0.2);
 		//document.getElementById('CompatibilityPage').style.display = "block";
 		retrieveCompatibility()
 
 	}
 	
 	function displayUpdate() {
+		$('#SubSystem').prop('disabled',false);
+	    $('#SubSystem').fadeTo(500, 1);
 		$('#updateMessage').html('')
 		
        var subSystem=$("#SubSystem")[0]
@@ -295,6 +298,8 @@
 	
 	
 	function displaySynchronize() {
+		  $('#SubSystem').prop('disabled',true);
+		    $('#SubSystem').fadeTo(500, 0.2);
 		$('#SynchronizeMessage').text('')	
 		
 	}
@@ -327,7 +332,7 @@
 		
 		<div class="row">
 			  <div class="col-md-5"><h3>OEM OTA Update Management</h3></div>
-			  <div class="col-md-4"><h3></h3>VIN<select id = "VIN" class="selectpicker"
+			  <div class="col-md-4"><h3></h3>VIN <select id = "VIN" class="selectpicker"
 			   onchange= changeVIN()>
 			   
 			   <option value="Value1">1FTYR44VX2PB60564</option>
@@ -338,41 +343,41 @@
 			   </select></div>
 			  <div class="col-md-3">
 			   <h3>
-				 <!--   <div class="dropdown">
+				<!--      <div class="dropdown">
 				  <button class="btn btn-primary dropdown-toggle" id="titleSubsystem" type="button" data-toggle="dropdown">Subsystem
 				  <span class="caret"></span></button>
 				  <ul class="dropdown-menu">
-				    <li><a href="#">Telematics</a></li>
-				    <li><a href="#">Powertrain</a></li>
-				    <li><a href="#">Chassis</a></li>
+				    <li><a href="#">Chassis</a></li>				    
+				    <li><a href="#">Powertrain</a></li>				  
 				    <li><a href="#">safey</a></li>
+				    <li><a href="#">Telematics</a></li>
 				  </ul>
 				</div>-->
 				</h3>
-				  	    SubSystem <select class="selectpicker" id="SubSystem" onchange= changeSubsystem()>
-					 
-					 <option value="Telematics">Telematics</option>
-					<option value="Powertrain">Powertrain</option>
-					<option value="Chassis">Chassis</option>
+				       SubSystem <select class="selectpicker" id="SubSystem" onchange= changeSubsystem()>
+					 <option value="Chassis">Chassis</option>					
+					<option value="Powertrain">Powertrain</option>					
 					<option value="Safety">Safety</option>
+					 <option value="Telematics">Telematics</option>
 				</select> 
 			
 			</div>
 		</div>
-       <nav class="navbar navbar-inverse">
+       <!--<nav class="navbar navbar-inverse">
         <div class="container-fluid">
-           <ul class="nav navbar-nav">
-		<!--<ul class="nav nav-tabs">  -->
+           <ul class="nav navbar-nav">  </div></nav>-->
+		<ul class="nav nav-tabs"> 
 			<li><a href="#" class=""
 				onclick="openTab(event, 'Configuration')">Configuration</a></li>
 			<li><a href="#" class=""
 				onclick="openTab(event, 'Update')">Update</a></li>
 			<li><a href="#" class=""
 				onclick="openTab(event, 'Compatibility')">Compatibility</a></li>
-			<li id=""><a href="#" class=""
-				onclick="openTab(event, 'Synchronize')">Synchronize</a></li>			
+			<li><a href="#" class=""
+				onclick="openTab(event, 'Synchronize')">Synchronize</a></li>	
+				
 		</ul>
-       </div></nav>
+     
 		<div id="Configuration" class="tabcontent">
 			<span id='ConfigurationPage'>
 
@@ -390,7 +395,7 @@
 
 		<div id="Update" class="tabcontent">
 		<span id='UpdatePage'>
-			<h3><div id='UpdateLabel'>Update System</div></h3>
+			<h3><div id='UpdateLabel'>Update System </div></h3>
 			<hr>
         <!--  <select name="userAccount" id="userAccount" onchange=changeCategory()>
               <option value="Telematics" selected>Telematics</option>
@@ -413,7 +418,7 @@
 		<div id="Compatibility" class="tabcontent">
             
 			<span id='CompatibilityPage'>
-			<i id="compatibilityStatus" class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+			  <i id="compatibilityStatus" class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
 			 <p id="compatibilityTable"></p>
 			</span>
 		
@@ -421,7 +426,7 @@
 		<div id="Synchronize" class="tabcontent">
 
 			<span id='SynchronizePage'>
-            <h3>Install Current Compatibility Master Segment</h3>
+            <h3>Install Current Compatibility Master</h3>
 				
 				<button onclick="submitSynchronize()" class="btn btn-default">Submit
 				</button>
