@@ -229,7 +229,8 @@
 	
 	// Get a car's subsystem information from the Blockchain service using the NODE JS REST API
 	function changeSubsystem() {
-		//$('#titleSubsystem').text($(this).text())
+		// $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+		// $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
 		//var currentSubSystem=$(this).text();
 		var SubSystem=$("#SubSystem")[0]
 		var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
@@ -238,7 +239,7 @@
 		retrieveHistory()
 	}
    function changeVIN(){
-
+	  
 	  retrieveCompatibility()
       retrieveHistory()
       retrieveConfiguration()
@@ -355,7 +356,7 @@
 						"click", displayCompatibility);
 				document.getElementById("Synchronize").addEventListener(
 						"click", displaySynchronize);
-				//$('#SubSystem li').click(changeSubsystem)
+				//$('.dropdown-menu li a').click(changeSubsystem)
 			});
 	
 </script>
@@ -364,8 +365,8 @@
 	<div class="content">
 		
 		<div class="row">
-			  <div class="col-md-5"><h4>OEM OTA Update Management</h4></div>
-			  <div class="col-md-4"><h4></h4>VIN<select id = "VIN" class="selectpicker"
+			  <div class="col-md-5"><h3>OEM OTA Update Management</h3></div>
+			  <div class="col-md-4"><h3></h3>VIN<select id = "VIN" class="selectpicker"
 			   onchange= changeVIN()>
 			   
 			   <option value="Value1">1FTYR44VX2PB60564</option>
@@ -375,25 +376,25 @@
 			   <option value ="Value5">4A4AR3AU6FE004670</option> 
 			   </select></div>
 			  <div class="col-md-3">
-			   <h4>
-				<!--  <div class="dropdown">
+			   <h3>
+				  <!--  <div class="dropdown">
 				  <button class="btn btn-primary dropdown-toggle" id="titleSubsystem" type="button" data-toggle="dropdown">Subsystem
 				  <span class="caret"></span></button>
-				  <ul class="dropdown-menu" id='SubSystem'>
+				  <ul class="dropdown-menu">
 				    <li><a href="#">Telematics</a></li>
 				    <li><a href="#">Powertrain</a></li>
 				    <li><a href="#">Chassis</a></li>
 				    <li><a href="#">safey</a></li>
 				  </ul>
 				</div>-->
-				</h4>
-					  SubSystem <select class="selectpicker" id="SubSystem" onchange= changeSubsystem()>
+				</h3>
+					    SubSystem <select class="selectpicker" id="SubSystem" onchange= changeSubsystem()>
 					 
 					 <option value="Telematics">Telematics</option>
 					<option value="Powertrain">Powertrain</option>
 					<option value="Chassis">Chassis</option>
 					<option value="Safety">Safety</option>
-				</select>
+				</select> 
 			
 			</div>
 		</div>

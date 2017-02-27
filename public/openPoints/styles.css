@@ -21,6 +21,10 @@ hr {margin-bottom;10px;}
 font-size:20pt;
 font-family:Arial;
 }
+.row{
+	margin-left:15px;
+	
+}
 .flex-container {
 	display: flex;
 	
