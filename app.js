@@ -144,7 +144,7 @@ app.get('/', function(req, res) {
 
 	});
 });
-app.get('/syncCompatibility',function(req,res){
+/*app.get('/syncCompatibility',function(req,res){
 	console.log("syncCompatibility")
 	var VIN = url.parse(req.url, true).query.VIN;
 	var ssid = url.parse(req.url, true).query.ssid;
@@ -155,8 +155,9 @@ app.get('/syncCompatibility',function(req,res){
 
 	});
 	
-})
+})*/
 app.get('/loadMatrix',function(req,res){
+	var VIN = url.parse(req.url, true).query.VIN;
 	var options = {
 		    host: 'gsclabblockchainapp.mybluemix.net',
 		    path: '/openPoints/matrix.json'
@@ -170,7 +171,7 @@ app.get('/loadMatrix',function(req,res){
 		        console.log(data);
 		        chaincode.invoke.setCompatibility([VIN,data],cb_invoked_api); 
 			
-		        res.send("success")
+		       res.send("success")
 		    });
 		});
 		request.on('error', function (e) {

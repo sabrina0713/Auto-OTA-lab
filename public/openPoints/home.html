@@ -193,18 +193,18 @@
         retrieveHistory()
 	}
 	function submitSynchronize(){
-		 var SubSystem = $("#SubSystem")[0];
+		//var SubSystem = $("#SubSystem")[0];
 		var VIN=$("#VIN")[0]		
     	var currentVIN =  VIN.options[VIN.selectedIndex].text;
-		var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
-		var url 		= localUrlStub + "/syncCompatibility?ssid=" + currentSubSystem+"&VIN="+currentVIN;
+		//var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
+		var url 		= localUrlStub + "/loadMatrix?VIN="+currentVIN;
 		blockchainRestApi(url, syncResult);  
 	}
 	function syncResult(response){
-		if(JSON.parse(response).result.status=="OK")
-		$('#SynchronizeMessage').text("Success")
-		else
-		$('#SynchronizeMessage').text("There is some issue, try again")	
+		//if(JSON.parse(response).result.status=="OK")
+		$('#SynchronizeMessage').text(response)
+		//else
+		//$('#SynchronizeMessage').text("There is some issue, try again")	
 	}
     function updateOTA(){
         var SubSystem = $("#SubSystem")[0];
@@ -295,10 +295,10 @@
 	function displaySynchronize() {
 		//$('#SynchronizePage').style.display = "block";
 		//document.getElementById('SynchronizeMessage').style.display = "none";
-		var e=$("#VIN")[0];
-	    var currentVIN =  e.options[e.selectedIndex].text;
-		var url = localUrlStub + "/loadMatrix?VIN="+currentVIN;
-		blockchainRestApi(url, syncReady);  
+		//var e=$("#VIN")[0];
+	    //var currentVIN =  e.options[e.selectedIndex].text;
+		//var url = localUrlStub + "/loadMatrix?VIN="+currentVIN;
+		//blockchainRestApi(url, syncReady);  
 	}
 	function syncReady(response){
 		console.log(response)
