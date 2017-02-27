@@ -187,7 +187,8 @@
 
 	// Get the smart contracts from the Blockchain service using the NODE JS REST API
 	function displayConfiguration() {
-
+		  $('#SubSystem').prop('disabled',false);
+		    $('#SubSystem').fadeTo(500, 1);
 		//document.getElementById('ConfigurationPage').style.display = "block"
 		
 		retrieveConfiguration()
