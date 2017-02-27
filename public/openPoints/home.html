@@ -187,13 +187,13 @@
 	// Get the smart contracts from the Blockchain service using the NODE JS REST API
 	function displayConfiguration() {
 
-		document.getElementById('ConfigurationPage').style.display = "block"
+		//document.getElementById('ConfigurationPage').style.display = "block"
 		
 		retrieveConfiguration()
         retrieveHistory()
 	}
 	function submitSynchronize(){
-		//var SubSystem = $("#SubSystem")[0];
+		$('#SynchronizeMessage').text('')
 		var VIN=$("#VIN")[0]		
     	var currentVIN =  VIN.options[VIN.selectedIndex].text;
 		//var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
@@ -201,12 +201,13 @@
 		blockchainRestApi(url, syncResult);  
 	}
 	function syncResult(response){
-		//if(JSON.parse(response).result.status=="OK")
-		$('#SynchronizeMessage').text(response)
-		//else
-		//$('#SynchronizeMessage').text("There is some issue, try again")	
+		if(JSON.parse(response).result.status=="OK")
+		$('#SynchronizeMessage').text("success")
+		else
+		$('#SynchronizeMessage').text("There is some issue, try again")	
 	}
     function updateOTA(){
+    	$('#updateMessage').html('')
         var SubSystem = $("#SubSystem")[0];
         var version=$("#subcategory")[0];        
         var VIN=$("#VIN")[0]		
@@ -221,7 +222,7 @@
     
 	function updateResult(response){
 		
-       $('#updateTable').html(response)
+       $('#updateMessage').html(response)
 		console.log(response)
 	}
 	
@@ -276,16 +277,14 @@
 	// Refresh the 'Transfer Points' tab after a user submits a points transfer
 	function displayCompatibility() {
       
-		document.getElementById('CompatibilityPage').style.display = "block";
+		//document.getElementById('CompatibilityPage').style.display = "block";
 		retrieveCompatibility()
 
 	}
 	
 	function displayUpdate() {
+		$('#updateMessage').html('')
 		
-		//var url = localUrlStub + "/updateEmbedded";
-		//blockchainRestApi(url, updateResult);       
-		//document.getElementById('UpdatePage').style.display = "block";
        var subSystem=$("#SubSystem")[0]
 		var currentSubSystem = subSystem.options[subSystem.selectedIndex].value;
         $('#UpdateLabel').text('Update '+currentSubSystem)
@@ -293,57 +292,13 @@
 	
 	
 	function displaySynchronize() {
-		//$('#SynchronizePage').style.display = "block";
-		//document.getElementById('SynchronizeMessage').style.display = "none";
-		//var e=$("#VIN")[0];
-	    //var currentVIN =  e.options[e.selectedIndex].text;
-		//var url = localUrlStub + "/loadMatrix?VIN="+currentVIN;
-		//blockchainRestApi(url, syncReady);  
+		$('#SynchronizeMessage').text('')	
+		
 	}
 	function syncReady(response){
 		console.log(response)
 		var out=response
-		/*var obj=JSON.parse(response).matrix;
-	    var ChassisString="";
-		var SafetyString="";
-		var TeleString="";
-		var PowerString="";
-		if(obj["Chassis"]!=null)
-		obj["Chassis"].forEach(function(e){
-			ChassisString=ChassisString+e+"</br>"
-		});
-		if(obj["Safety"]!=null)
-		obj["Safety"].forEach(function(e){
-			SafetyString=SafetyString+e+"</br>"
-		});
-		if(obj["Telematics"]!=null)
-		obj["Telematics"].forEach(function(e){
-			TeleString=TeleString+e+"</br>"
-		});
-		if(obj["Powertrain"]!=null)
-			obj["Powertrain"].forEach(function(e){
-				PowerString=PowerString+e+"</br>"
-			});
-		console.log(ChassisString)
-		var out = "<table border='1'><tr><td style='width: 80%; text-align: center; color: black; background-color:#f1f1f1;'>Subsystem</td>";
-		out += "<td style='width: 100%; color: black; text-align: center; background-color:#f1f1f1;'>Compatibility Versions</td>";
-		out += "</tr>"
-
-		out += "<tr><td style='text-align:center;'>" + "Chassis"
-				+ "</td><td style='text-align: center;'>" + ChassisString
-				+ "</td></tr>"
-				+"<tr><td style='text-align:center;'>" + "Safety"
-				+ "</td><td style='text-align: center;'>" + SafetyString
-				+ "</td></tr>"
-				+"<tr><td style='text-align:center;'>" + "Telemetrics"
-				+ "</td><td style='text-align: center;'>" + TeleString
-				+ "</td></tr>"
-				+"<tr><td style='text-align:center;'>" + "Powertrain"
-				+ "</td><td style='text-align: center;'>" + PowerString
-				+ "</td></tr>";
-				
-
-		out += "</table>";*/
+		
 		
 		$('#SynchronizeMessage').html(out)	
 		
@@ -444,7 +399,7 @@
        <button type="button" class="btn btn-default" onclick="updateOTA()" >Submit</button> 				
 	     <h3> Update Status</h3>
 	         <hr>
-	      <p id="updateTable"></p> 	
+	      <p id="updateMessage"></p> 	
 	 
 	   </span>	
 	     	    

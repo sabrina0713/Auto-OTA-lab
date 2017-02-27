@@ -158,9 +158,18 @@ app.get('/', function(req, res) {
 })*/
 app.get('/loadMatrix',function(req,res){
 	var VIN = url.parse(req.url, true).query.VIN;
-	var options = {
+	var json = JSON.parse(fs.readFileSync('./public/openPoints/matrix.json', 'utf8'));
+	console.log(json);
+	chaincode.invoke.setCompatibility([VIN,json.toString()],function(e,data){	
+		cb_received_response(e,data,res)
+	}); 
+	
+	
+	/*var options = {
 		    host: 'gsclabblockchainapp.mybluemix.net',
 		    path: '/openPoints/matrix.json'
+			// host:'https://raw.githubusercontent.com',
+			// path:'/sabrina0713/Auto-OTA-lab/master/public/openPoints/matrix.json'
 		}
 		var request = http.request(options, function (resdata) {
 		    var data = '';
@@ -178,22 +187,11 @@ app.get('/loadMatrix',function(req,res){
 		    console.log(e.message);
 		});
 		request.end();
-		  
+		*/  
 	
-	//var json = JSON.parse(fs.readFileSync('./public/openPoints/matrix.json', 'utf8'));
-	//var json = JSON.parse(fs.readFileSync('https://raw.githubusercontent.com/sabrina0713/Auto-OTA-lab/master/public/openPoints/matrix.json', 'utf8'));
-	
-})
+		
+});
 
-// Get all smart contracts from the blockchain
-/*app.get('/getAllContracts', function(req, res) {
-
-	chaincode.query.getAllContracts(['getAllContracts', 'dummy_argument'], function(e,data){	
-			var jsonObj = "{\"array\":" + data + "}";
-			cb_received_response(e,jsonObj,res);
-		});
-
-}); */
 
 app.get('/getCompatibility', function(req, res) {
 	
@@ -223,8 +221,8 @@ app.get('/getHistory', function(req, res) {
 	console.log("getHistory")
 	chaincode.query.getOps([VIN,ssid], function(e,data){	
 		
-		var jsonObj =  data;
-		cb_received_response(e,jsonObj,res);
+		
+		cb_received_response(e,data,res);
 
 	});
 	
@@ -239,8 +237,8 @@ app.get('/pushUpdate', function(req, res) {
 	
 	chaincode.invoke.updateEmbedded([ VIN, ssid, desc,version],function(e,data){	
 		
-		var jsonObj =  data;
-		cb_received_response(e,jsonObj,res);
+		
+		cb_received_response(e,data,res);
 
 	});
 }); 
