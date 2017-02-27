@@ -295,12 +295,15 @@
 	function displaySynchronize() {
 		//$('#SynchronizePage').style.display = "block";
 		//document.getElementById('SynchronizeMessage').style.display = "none";
-		//var url = localUrlStub + "/loadMatrix";
-		//blockchainRestApi(url, syncReady);  
+		var e=$("#VIN")[0];
+	    var currentVIN =  e.options[e.selectedIndex].text;
+		var url = localUrlStub + "/loadMatrix?VIN="+currentVIN;
+		blockchainRestApi(url, syncReady);  
 	}
-	/*function syncReady(response){
+	function syncReady(response){
 		console.log(response)
-		var obj=JSON.parse(response).matrix;
+		var out=response
+		/*var obj=JSON.parse(response).matrix;
 	    var ChassisString="";
 		var SafetyString="";
 		var TeleString="";
@@ -340,11 +343,11 @@
 				+ "</td></tr>";
 				
 
-		out += "</table>";
+		out += "</table>";*/
 		
 		$('#SynchronizeMessage').html(out)	
 		
-	} */
+	} 
 
 	// Add event listeners to the tabs so they display the relevant content when clicked on
 	$(document).ready(

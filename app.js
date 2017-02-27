@@ -168,7 +168,9 @@ app.get('/loadMatrix',function(req,res){
 		    });
 		    resdata.on('end', function () {
 		        console.log(data);
-		        res.send(data)
+		        chaincode.invoke.setCompatibility([VIN,data],cb_invoked_api); 
+			
+		        res.send("success")
 		    });
 		});
 		request.on('error', function (e) {
@@ -177,7 +179,7 @@ app.get('/loadMatrix',function(req,res){
 		request.end();
 		  
 	
-	var json = JSON.parse(fs.readFileSync('./public/openPoints/matrix.json', 'utf8'));
+	//var json = JSON.parse(fs.readFileSync('./public/openPoints/matrix.json', 'utf8'));
 	//var json = JSON.parse(fs.readFileSync('https://raw.githubusercontent.com/sabrina0713/Auto-OTA-lab/master/public/openPoints/matrix.json', 'utf8'));
 	
 })
