@@ -158,18 +158,19 @@ app.get('/', function(req, res) {
 })*/
 app.get('/loadMatrix',function(req,res){
 	var VIN = url.parse(req.url, true).query.VIN;
-	var json = JSON.parse(fs.readFileSync('./public/openPoints/matrix.json', 'utf8'));
-	console.log(json);
-	chaincode.invoke.setCompatibility([VIN,json.toString()],function(e,data){	
-		cb_received_response(e,data,res)
+	fs.readFile('public/openPoints/matrix.txt', 'utf8', function(err, data) {
+	
+	console.log(JSON.parse(data));
+	chaincode.invoke.setCompatibility([VIN,data.toString()],cb_invoked_api); 
+	});
+	res.send("success");
 	}); 
 	
 	
 	/*var options = {
 		    host: 'gsclabblockchainapp.mybluemix.net',
 		    path: '/openPoints/matrix.json'
-			// host:'https://raw.githubusercontent.com',
-			// path:'/sabrina0713/Auto-OTA-lab/master/public/openPoints/matrix.json'
+			
 		}
 		var request = http.request(options, function (resdata) {
 		    var data = '';
@@ -187,10 +188,10 @@ app.get('/loadMatrix',function(req,res){
 		    console.log(e.message);
 		});
 		request.end();
-		*/  
+		});*/  
 	
 		
-});
+
 
 
 app.get('/getCompatibility', function(req, res) {

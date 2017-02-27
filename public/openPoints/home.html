@@ -201,10 +201,10 @@
 		blockchainRestApi(url, syncResult);  
 	}
 	function syncResult(response){
-		if(JSON.parse(response).result.status=="OK")
+		//if(JSON.parse(response).result.status=="OK")
 		$('#SynchronizeMessage').text("success")
-		else
-		$('#SynchronizeMessage').text("There is some issue, try again")	
+		//else
+		//$('#SynchronizeMessage').text("There is some issue, try again")	
 	}
     function updateOTA(){
     	$('#updateMessage').html('')
@@ -230,14 +230,14 @@
 	
 	// Get a car's subsystem information from the Blockchain service using the NODE JS REST API
 	function changeSubsystem() {
-		// $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
-		// $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
-		//var currentSubSystem=$(this).text();
+		/* $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+		 $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+		var currentSubSystem=$(this).text();*/
 		var SubSystem=$("#SubSystem")[0]
 		var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
         $('#UpdateLabel').text('Update '+currentSubSystem)
 		retrieveConfiguration()
-		retrieveHistory()
+		retrieveHistory() 
 	}
    function changeVIN(){
 	  
@@ -314,7 +314,7 @@
 						"click", displayCompatibility);
 				document.getElementById("Synchronize").addEventListener(
 						"click", displaySynchronize);
-				//$('.dropdown-menu li a').click(changeSubsystem)
+				$('.dropdown-menu li a').click(changeSubsystem)
 			});
 	
 </script>
@@ -335,7 +335,7 @@
 			   </select></div>
 			  <div class="col-md-3">
 			   <h3>
-				  <!--  <div class="dropdown">
+				 <!--   <div class="dropdown">
 				  <button class="btn btn-primary dropdown-toggle" id="titleSubsystem" type="button" data-toggle="dropdown">Subsystem
 				  <span class="caret"></span></button>
 				  <ul class="dropdown-menu">
@@ -346,7 +346,7 @@
 				  </ul>
 				</div>-->
 				</h3>
-					    SubSystem <select class="selectpicker" id="SubSystem" onchange= changeSubsystem()>
+				  	    SubSystem <select class="selectpicker" id="SubSystem" onchange= changeSubsystem()>
 					 
 					 <option value="Telematics">Telematics</option>
 					<option value="Powertrain">Powertrain</option>
@@ -356,8 +356,10 @@
 			
 			</div>
 		</div>
-
-		<ul class="nav nav-tabs">
+       <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+           <ul class="nav navbar-nav">
+		<!--<ul class="nav nav-tabs">  -->
 			<li><a href="#" class=""
 				onclick="openTab(event, 'Configuration')">Configuration</a></li>
 			<li><a href="#" class=""
@@ -367,7 +369,7 @@
 			<li id=""><a href="#" class=""
 				onclick="openTab(event, 'Synchronize')">Synchronize</a></li>			
 		</ul>
-
+       </div></nav>
 		<div id="Configuration" class="tabcontent">
 			<span id='ConfigurationPage'>
 
