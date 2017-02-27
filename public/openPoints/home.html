@@ -136,6 +136,7 @@
 	
 	// Parse a user account response from the Blockchain service into an HTML table
 	function parseCompatibility(response) {
+		   $('#compatibilityStatus').hide()
 		console.log(response)
 		var obj=JSON.parse(response).array;
 		//will replace this with response
@@ -265,6 +266,8 @@
    }
    
    function retrieveCompatibility(){
+		$('#compatibilityTable').html('')
+	   $('#compatibilityStatus').show()
 	   var e=$("#VIN")[0];
 	   var currentVIN =  e.options[e.selectedIndex].text;
 	   var url = localUrlStub + "/getCompatibility?VIN="+currentVIN;
@@ -276,7 +279,7 @@
 	
 	// Refresh the 'Transfer Points' tab after a user submits a points transfer
 	function displayCompatibility() {
-      
+	
 		//document.getElementById('CompatibilityPage').style.display = "block";
 		retrieveCompatibility()
 
@@ -408,8 +411,9 @@
 		</div>
 
 		<div id="Compatibility" class="tabcontent">
-        
+            
 			<span id='CompatibilityPage'>
+			<i id="compatibilityStatus" class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
 			 <p id="compatibilityTable"></p>
 			</span>
 		
