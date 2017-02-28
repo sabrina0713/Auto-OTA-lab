@@ -17,7 +17,7 @@
 
 	// Variables for passing blockchain REST calls from NODE JS
 	var hostName 		= "#HOSTNAME#";
-	var localUrlStub 	= "https://" + hostName;
+	var localUrlStub 	= "http://" + hostName;
   
 	// Open the tabs of the Open Points Website
 	function openTab(evt, tabName) {
@@ -32,11 +32,11 @@
 		}
 
 		// Get all elements with class="tablinks" and remove the class "active"
-		tablinks = document.getElementsByClassName("tablinks");
+		/*tablinks = document.getElementsByClassName("tablinks");
 		for (i = 0; i < tablinks.length; i++) {
 			tablinks[i].className = tablinks[i].className
 					.replace("active", "");
-		}
+		}*/
 
 		// Show the current tab, and add an "active" class to the link that opened the tab
 		document.getElementById(tabName).style.display = "block";
@@ -235,12 +235,13 @@
 	
 	// Get a car's subsystem information from the Blockchain service using the NODE JS REST API
 	function changeSubsystem() {
-		/* $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
-		 $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
-		var currentSubSystem=$(this).text();*/
+		 /*$(this).parents(".dropdown").find('a').html($(this).text() + ' <span class="caret"></span>');
+		$(this).parents(".dropdown").find('a').val($(this).data('value'));
+		
+		 var currentSubSystem=$(this).text();*/
 		var SubSystem=$("#SubSystem")[0]
-		var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
-        $('#UpdateLabel').text('Update '+currentSubSystem)
+		var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value; 
+        $('#UpdateLabel').text('Update '+currentSubSystem) 
 		retrieveConfiguration()
 		retrieveHistory() 
 	}
@@ -326,7 +327,9 @@
 						"click", displayCompatibility);
 				document.getElementById("Synchronize").addEventListener(
 						"click", displaySynchronize);
-				$('.dropdown-menu li a').click(changeSubsystem)
+				//$('.dropdown-menu li a').click(changeSubsystem)
+				//$('#titleSubsystem').click(changeSubsystem)
+				//$('#titleVIN').click(changeVIN)
 			});
 	
 </script>
@@ -347,16 +350,7 @@
 			   </select></div>
 			  <div class="col-md-3">
 			   <h3>
-				<!--      <div class="dropdown">
-				  <button class="btn btn-primary dropdown-toggle" id="titleSubsystem" type="button" data-toggle="dropdown">Subsystem
-				  <span class="caret"></span></button>
-				  <ul class="dropdown-menu">
-				    <li><a href="#">Chassis</a></li>				    
-				    <li><a href="#">Powertrain</a></li>				  
-				    <li><a href="#">safey</a></li>
-				    <li><a href="#">Telematics</a></li>
-				  </ul>
-				</div>-->
+				
 				</h3>
 				       SubSystem <select class="selectpicker" id="SubSystem" onchange= changeSubsystem()>
 					 <option value="Chassis">Chassis</option>					
@@ -380,6 +374,33 @@
 			<li><a href="#" class=""
 				onclick="openTab(event, 'Synchronize')">Synchronize</a></li>	
 				
+				
+				<!--  <li role="presentation" class="dropdown navbar-right">
+				
+				  <a class="dropdown-toggle" id="titleSubsystem" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Subsystem
+				  <span class="caret"></span></a>
+				  <ul class="dropdown-menu">
+				    <li><a href="#">Chassis</a></li>				    
+				    <li><a href="#">Powertrain</a></li>				  
+				    <li><a href="#">Safey</a></li>
+				    <li><a href="#">Telematics</a></li>
+				  </ul>
+			    
+			     </li>
+			     <li role="presentation" class="dropdown navbar-right">
+				
+				  <a class="dropdown-toggle" id="titleVIN" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">VIN
+				  <span class="caret"></span></a>
+				  <ul class="dropdown-menu">
+				    <li><a href="#">1FTYR44VX2PB60564</a></li>				    
+				    <li><a href="#">KMHCN46CX9U370929</a></li>				  
+				    <li><a href="#">JTDKTUD33DD559195</a></li>
+				    <li><a href="#">4T1CE30P08U765674</a></li>
+				    <li><a href="#">4A4AR3AU6FE004670</a></li>
+				  </ul>
+				
+				
+				</li>-->
 		</ul>
      
 		<div id="Configuration" class="tabcontent">
