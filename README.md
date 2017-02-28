@@ -1,9 +1,9 @@
-# IBM Blockchain - Open Points Application
+# IBM Blockchain - OTA Application
 
 Welcome! These instructions describe the prerequisites you should complete before attending the lab session. Please follow these steps to ensure that you are fully 
 prepared to participate on the day of the lab.
 
-<b>IMPORTANT NOTICE: This lab relies on Bluemix and services such as Blockchain and Node JS. It may not work exactly as documented when Bluemix and/or the underlying services are updated. Please contact us if you experience problems with the lab. The lab documents were last updated on September 9th of 2016, and the Bluemix service functionality was last validated on December 5th of 2016. 
+<b>IMPORTANT NOTICE: This lab relies on Bluemix and services such as Blockchain and Node JS. It may not work exactly as documented when Bluemix and/or the underlying services are updated. Please contact us if you experience problems with the lab. The lab documents were last updated on Feb 2017, and the Bluemix service functionality was last validated on Feburary of 2017. 
 </b>
 
 
