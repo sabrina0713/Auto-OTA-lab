@@ -285,7 +285,7 @@ app.get('/pushUpdate', function(req, res) {
 */
 
 // Get a single participant's account information
-app.get('/getCustomerPoints', function(req, res) {
+/*app.get('/getCustomerPoints', function(req, res) {
 
 	var userId = url.parse(req.url, true).query.userid;
 
@@ -295,7 +295,7 @@ app.get('/getCustomerPoints', function(req, res) {
 		cb_received_response(e, data, res);
 	});
 
-}); 
+});  */
 
 
 // Get a single participant's transaction history
@@ -490,8 +490,8 @@ function check_if_deployed(e, attempt) {
 			process.error = {type : 'deploy',msg : msg};
 	} else {
 		console.log('[preflight check]', attempt, ': testing if chaincode is ready');
-		chaincode.query.getUserAccount([ 'getUserAccount', "U2974034" ], function(err, resp) {
-			
+		//chaincode.query.getUserAccount([ 'getUserAccount', "U2974034" ], function(err, resp) {
+			chaincode.query.getCompatibility(['1FTYR44VX2PB60564'], function(err, resp){	
 			var cc_deployed = false;
 			try {
 				if (err == null) { 
@@ -500,7 +500,7 @@ function check_if_deployed(e, attempt) {
 						cc_deployed = true; 
 					else {
 						var json = JSON.parse(resp);
-						if (json.UserId == "U2974034")
+						//if (json.UserId == "U2974034")
 							cc_deployed = true; 
 					}
 				}

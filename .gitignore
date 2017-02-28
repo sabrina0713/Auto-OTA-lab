@@ -8,3 +8,5 @@
 /ServiceCredentials.json
 /cc_summaries/
 /chaincode/
+/busters_css_ignore.json
+/busters_js_ignore.json
