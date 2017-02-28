@@ -55,7 +55,7 @@ td{padding:5px;}
 
 .amount{padding:4px;border-radius:5px;border:#959595 solid 1px;font-size: 11pt;}
 
-select{border: 1px solid #808685;  height: 27px;font-size: 11pt;-moz-appearance : none; border-radius:5px;background-image:url('arrow.png');background-repeat:no-repeat;background-position:0px 40px;}
+select{border: 1px solid #808685;  height: 27px;font-size: 11pt;-moz-appearance : none; border-radius:5px;background-repeat:no-repeat;background-position:0px 40px;}
 
 
 select{height:25px; font-size:11pt;}

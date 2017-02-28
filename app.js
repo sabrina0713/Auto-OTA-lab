@@ -26,7 +26,7 @@ var url 				= require('url');
 var setup 				= require('./setup');
 var fs 					= require('fs');
 var cors 				= require('cors');
-//var compatibility		= require('./public/openPoints/matrix.json')
+
 
 // Set Server Parameters
 var host = setup.SERVER.HOST;
@@ -117,7 +117,7 @@ app.use(function(req, res, next) {
 // Set the home page for the Open Points app by sending an html file
 app.get('/', function(req, res) {
 
-	var filePath = path.join(__dirname, '/public/openPoints/home.html');
+	var filePath = path.join(__dirname, '/public/view/home.html');
 	var homeFile = fs.readFile(filePath);
 
 	fs.readFile(filePath, {encoding : 'utf-8'}, function(err, data) {
@@ -158,7 +158,7 @@ app.get('/', function(req, res) {
 })*/
 app.get('/loadMatrix',function(req,res){
 	var VIN = url.parse(req.url, true).query.VIN;
-	fs.readFile('public/openPoints/matrix.txt', 'utf8', function(err, data) {
+	fs.readFile('public/view/matrix.txt', 'utf8', function(err, data) {
 	
 	console.log(JSON.parse(data));
 	chaincode.invoke.setCompatibility([VIN,data.toString()],cb_invoked_api); 
@@ -169,9 +169,9 @@ app.get('/loadMatrix',function(req,res){
 	/*var VIN = url.parse(req.url, true).query.VIN;
 	var options = {
 		    host: 'gsclabblockchainapp.mybluemix.net',
-		    path: '/openPoints/matrix.json'
+		    path: '/view/matrix.json'
 			//host: 'raw.githubusercontent.com',
-			//path:'/sabrina0713/Auto-OTA-lab/master/public/openPoints/matrix.json'
+			//path:'/sabrina0713/Auto-OTA-lab/master/public/view/matrix.json'
 			
 		}
 		var request = http.request(options, function (resdata) {
