@@ -7,5 +7,5 @@ applications:
   instances: 1
   memory: 512M
   services:
-    - OpenPointsBlockchainService
+    - GscLabBlockchainService
   host: GscLabBlockchainApp
