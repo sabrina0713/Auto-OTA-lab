@@ -78,9 +78,9 @@
 		var arr = JSON.parse(response);
         console.log(response); 
 		var i, j;
-		var out = "<table border=''><tr><td style='width: 300px;padding:7px; color:#000; background-color:#f1f1f1; text-align: center;'>Subsystem</td>";
-		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Version</td>";
-		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Build Date</td></tr>";
+		var out = "<table class='table table-striped'><tr><th >Subsystem</th>";
+		out += "<th >Version</th>";
+		out += "<th >Build Date</th></tr>";
 
 			var thisConfiguration = arr;
 		
@@ -100,12 +100,12 @@
 		var arr = JSON.parse(response).operations;
         console.log(response); 
 		var i, j;
-		var out = "<table border=''><tr><td style='width: 300px;padding:7px; color:#000; background-color:#f1f1f1; text-align: center;'>Date</td>";
+		var out = "<table class='table table-striped'><tr><th text-align: center;'>Date</th>";
 		//out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>From</td>";
-		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>To</td>";
-		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Desc</td>";
-		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Version</td>";
-		out += "<td style='width: 300px; color:#000;padding:7px;background-color:#f1f1f1; text-align: center;'>Status</td></tr>";
+		out += "<th text-align: center;'>To</th>";
+		out += "<th text-align: center;'>Desc</th>";
+		out += "<th text-align: center;'>Version</th>";
+		out += "<th text-align: center;'>Status</th></tr>";
 		if(arr!=null)
 			{
 			var arrLength = arr.length;
@@ -166,8 +166,8 @@
 				PowerString=PowerString+e+"</br>"
 			});
 		console.log(ChassisString)
-		var out = "<table class='table table-striped' border='1'><tr><td style='text-align:center;' >Subsystem</td>";
-		out += "<td style='text-align:center;'>Compatibility Versions</td>";
+		var out = "<table class='table table-striped' ><tr><th style='text-align:center;' >Subsystem</th>";
+		out += "<th style='text-align:center;'>Compatibility Versions</th>";
 		out += "</tr>"
 
 		out += "<tr><td style='text-align:center;'>" + "Chassis"
@@ -240,7 +240,7 @@
      	var currentVIN =  e.options[e.selectedIndex].text;
 	    var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
 		var url 		= localUrlStub + "/getSubsystem?ssid=" + currentSubSystem+"&VIN="+currentVIN;
-		setTimeout( function() { blockchainRestApi(url, confirmUpdate) } ,500);
+		setTimeout( function() { blockchainRestApi(url, confirmUpdate) } ,1000);
 		
 	}
 	function confirmUpdate(response){
