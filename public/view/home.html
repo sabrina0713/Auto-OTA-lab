@@ -96,6 +96,7 @@
 	}
 
 	function parseHistory(response) {
+		  $('#ConfigurationStatus').hide();
 		var arr = JSON.parse(response).operations;
         console.log(response); 
 		var i, j;
@@ -190,6 +191,7 @@
 
 	// Get the smart contracts from the Blockchain service using the NODE JS REST API
 	function displayConfiguration() {
+		
 		  $('#SubSystem').prop('disabled',false);
 		    $('#SubSystem').fadeTo(500, 1);
 		//document.getElementById('ConfigurationPage').style.display = "block"
@@ -272,6 +274,7 @@
 	   }
    
    function retrieveHistory(){
+	  $('#configurationStatus').show()
 	   var e=$("#VIN")[0]
 		var SubSystem=$("#SubSystem")[0]
     	var currentVIN =  e.options[e.selectedIndex].text;
@@ -425,7 +428,7 @@
      
 		<div id="Configuration" class="tabcontent">
 			<span id='ConfigurationPage'>
-
+ 			<i id="ConfigurationStatus" class="fa fa-spinner fa-spin fa-3x fa-fw" ></i>
 				<h3>Active Configuration</h3>
 				<hr>
 				<p id="configurationTable"></p>
