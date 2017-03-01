@@ -18,7 +18,7 @@
 	// Variables for passing blockchain REST calls from NODE JS
 	var hostName 		= "#HOSTNAME#";
 	var localUrlStub 	= "http://" + hostName;
-  
+    var VersionSubmitted ='';
 	// Open the tabs of the Open Points Website
 	function openTab(evt, tabName) {
 		
@@ -46,6 +46,7 @@
 	}	
 	// Make REST calls to the blockchain using the NODE JS REST API
 	function blockchainRestApi(url, parsingFunction) {	
+		
 		var xmlhttp = null;
 		if (window.XMLHttpRequest) {
 			xmlhttp = new XMLHttpRequest();
@@ -138,7 +139,7 @@
 	
 	// Parse a user account response from the Blockchain service into an HTML table
 	function parseCompatibility(response) {
-		   $('#compatibilityStatus').hide()
+		$('#compatibilityStatus').hide()
 		console.log(response)
 		var obj=JSON.parse(response).array;
 		//will replace this with response
@@ -171,14 +172,14 @@
 		out += "<tr><td style='text-align:center;'>" + "Chassis"
 				+ "</td><td style='text-align: center;'>" + ChassisString
 				+ "</td></tr>"
+				+"<tr><td style='text-align:center;'>" + "Powertrain"
+				+ "</td><td style='text-align: center;'>" + PowerString
+				+ "</td></tr>"
 				+"<tr><td style='text-align:center;'>" + "Safety"
 				+ "</td><td style='text-align: center;'>" + SafetyString
 				+ "</td></tr>"
 				+"<tr><td style='text-align:center;'>" + "Telematics"
 				+ "</td><td style='text-align: center;'>" + TeleString
-				+ "</td></tr>"
-				+"<tr><td style='text-align:center;'>" + "Powertrain"
-				+ "</td><td style='text-align: center;'>" + PowerString
 				+ "</td></tr>";
 				
 
@@ -212,6 +213,7 @@
 		//$('#SynchronizeMessage').text("There is some issue, try again")	
 	}
     function updateOTA(){
+    	//$('#updateStatus').show()
     	$('#updateMessage').html('')
         var SubSystem = $("#SubSystem")[0];
         var version=$("#subcategory")[0];        
@@ -220,17 +222,34 @@
 		var desc="customer update"
 		var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
 		var currentVersion = document.getElementById("subcategory").value;
+		VersionSubmitted=currentVersion;
 		var url 		= localUrlStub + "/pushUpdate?ssid=" + currentSubSystem+"&VIN="+currentVIN+"&desc="+desc+"&version="+currentVersion;
-		blockchainRestApi(url, updateResult);  
-
+		
+		blockchainRestApi(url, updateResult)
+		
+		
+		
 	}
     
 	function updateResult(response){
+		$('#updateStatus').show()
+		var e=$("#VIN")[0]
+		var SubSystem=$("#SubSystem")[0]
+     	var currentVIN =  e.options[e.selectedIndex].text;
+	    var currentSubSystem = SubSystem.options[SubSystem.selectedIndex].value;
+		var url 		= localUrlStub + "/getSubsystem?ssid=" + currentSubSystem+"&VIN="+currentVIN;
+		setTimeout( function() { blockchainRestApi(url, confirmUpdate) } ,500);
 		
-       $('#updateMessage').html(response)
-		console.log(response)
 	}
-	
+	function confirmUpdate(response){
+		$('#updateStatus').hide()
+		var version=JSON.parse(response).Version.Build
+		if (VersionSubmitted==version)
+		 $('#updateMessage').html('Update Accepted')
+		 else
+		 $('#updateMessage').html('Update Rejected')	 
+			console.log(response)
+	}
 	
 	
 	// Get a car's subsystem information from the Blockchain service using the NODE JS REST API
@@ -292,6 +311,7 @@
 	}
 	
 	function displayUpdate() {
+		$('#updateStatus').hide()
 		$('#SubSystem').prop('disabled',false);
 	    $('#SubSystem').fadeTo(500, 1);
 		$('#updateMessage').html('')
@@ -352,7 +372,7 @@
 			   <h3>
 				
 				</h3>
-				       SubSystem <select class="selectpicker" id="SubSystem" onchange= changeSubsystem()>
+				       Subsystem <select class="selectpicker" id="SubSystem" onchange= changeSubsystem()>
 					 <option value="Chassis">Chassis</option>					
 					<option value="Powertrain">Powertrain</option>					
 					<option value="Safety">Safety</option>
@@ -422,21 +442,16 @@
 		<span id='UpdatePage'>
 			<h3><div id='UpdateLabel'>Update System </div></h3>
 			<hr>
-        <!--  <select name="userAccount" id="userAccount" onchange=changeCategory()>
-              <option value="Telematics" selected>Telematics</option>
-   		      <option value="Powertrain">Powertrain</option>
-              <option value="Chassis">Chassis</option>
-              <option value="Safety">Safety</option>
-       </select>	-->
-       Version: <input type="text" name="version" id="subcategory">	
+       
+       	Version: <input type="text" name="version" id="subcategory">	
     
-       <br><br><br><br>					
+       	<br><br><br><br>					
        <button type="button" class="btn btn-default" onclick="updateOTA()" >Submit</button> 				
 	     <h3> Update Status</h3>
 	         <hr>
 	      <p id="updateMessage"></p> 	
-	 
-	   </span>	
+	   	  <i id="updateStatus" class="fa fa-spinner fa-spin fa-3x fa-fw" ></i>
+	     </span>	
 	     	    
 		</div>
 
